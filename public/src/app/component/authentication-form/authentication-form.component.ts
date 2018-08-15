@@ -22,8 +22,8 @@ export class AuthenticationFormComponent implements OnInit {
     }
 
     login(login: string, pass: string, checked: boolean): void {
-        var self =this;
-        console.log(checked);
+        var self = this;
+        
         this.authenticationService.authentication({
             username: login,
             password: pass

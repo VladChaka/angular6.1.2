@@ -3,8 +3,10 @@ let express = require('express'),
     userDataServise = Core.userDataServise,
     libraryDataService = Core.libraryDataService,
     router = express.Router(),
-    fs = require('fs'),
+    token__module = require('../util/token/token'),
     path = require('path');
+
+router.get('/token', token__module, (req, res) => res.status(200).json({ status: 'ok' }));
 
 /**
  * Users

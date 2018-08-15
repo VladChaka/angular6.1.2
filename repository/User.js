@@ -67,7 +67,7 @@ function UserRepository(){
                             return;
                         }
     
-                        const token = jwt.sign({ username: Zone.current.data.username }, 'yqawv8nqi5', { expiresIn: '1d' });
+                        const token = jwt.sign({ username: Zone.current.data.username }, 'yqawv8nqi5');
                         resolve({ id: user._id, token: token });
                     },
                     user.password

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Users } from '../../model/users';
 
@@ -17,7 +18,7 @@ export class MainPageComponent implements OnInit {
 
     users: Users[]; 
     countUsers: number;
-    token: string;
+    token: string = localStorage['token'] || sessionStorage['token'];
 
     filterByDate: boolean = true;
     showUserProfile: boolean;
@@ -32,10 +33,13 @@ export class MainPageComponent implements OnInit {
         private formService: FormService,
         protected remoteService: RemoteService,
         protected authenticationService: AuthenticationService,
-        protected tokenService: TokenService
+        protected router: Router
     ) { }
 
     ngOnInit() {
+        // if (this.token === undefined) {
+            // this.router.navigate(['/login']);
+        // }
         this.getUsers();
     }
 
