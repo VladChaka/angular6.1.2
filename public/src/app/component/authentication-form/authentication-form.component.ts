@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { AuthenticationService } from '../../service/authentication.service';
-import { RemoteService } from '../../service/remote.service';
 
 @Component({
   selector: 'authentication-form',
@@ -16,12 +15,10 @@ export class AuthenticationFormComponent implements OnInit {
     input;
 
     constructor(
-        protected remoteService: RemoteService,
         protected authenticationService: AuthenticationService
     ) { }
 
     ngOnInit() {
-        this.authenticationService.isAuthentication();
     }
 
     login(login: string, pass: string, checked: boolean): void {
