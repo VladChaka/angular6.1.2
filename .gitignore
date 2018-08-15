@@ -2,7 +2,7 @@
 /public/package-lock.json
 /public/npm-debug.log
 /public/.idea
-/node_modules
+node_modules/
 package-lock.json
 npm-debug.log
-/.idea
+.idea/
