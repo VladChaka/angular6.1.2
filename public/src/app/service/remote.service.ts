@@ -9,79 +9,34 @@ export class RemoteService {
 
     constructor(private http: HttpClient) { }
 
+    tokenValid(token: string): Observable<any>{
+        return this.http.get('http://localhost:4000/token', { params: { token: token } });
+        // return this.checkToken('http://localhost:4000/token', token, null, 'get');
+    }
     authentication(authInfo: object): Observable<any>{
         return this.http.post('http://localhost:4000/login', authInfo);
     }
     getAll(token: string): Observable<any> {
-        return this.checkToken('http://localhost:4000/users', token, null, 'get');
-        // return defer(() => {
-        //     if (token !== undefined) {
-        //         return this.http.get('http://localhost:4000/users', { params: { token: token } });
-        //     } else {
-        //         console.log('error');
-        //     }
-        // });
-        
+        return this.checkToken('http://localhost:4000/users', token, null, 'get'); 
     }
     create(data: object, token: string): Observable<any> {
         return this.checkToken('http://localhost:4000/users', token, data, 'post');
-        // return defer(() => {
-        //     if (token !== undefined) {
-        //         return this.http.post('http://localhost:4000/users', data, { params: { token: token } });
-        //     } else {
-        //         console.log('error');
-        //     }
-        // });
     }
     delete(id: string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/${id}`, token, null, 'delete');
-        // return defer(() => {
-        //     if (token !== undefined) {
-        //         return this.http.delete(`http://localhost:4000/users/${id}`, { params: { token: token } });
-        //     } else {
-        //         console.log('error');
-        //     }
-        // });
     }
     getById(id: string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/${id}`, token, null, 'get');
-        // return defer(() => {
-        //     if (token !== undefined) {
-        //         return this.http.get(`http://localhost:4000/users/${id}`, { params: { id: id, token: token } });
-        //     } else {
-        //         console.log('error');
-        //     }
-        // });
     }
     update(data: object, id: string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/${id}`, token, data, 'put');
-        // return defer(() => {
-        //     if (token !== undefined) {
-        //         return this.http.put(`http://localhost:4000/users/${id}`, data, { params: { token: token } });
-        //     } else {
-        //         console.log('error');
-        //     }
-        // });
     }
     takeBook(data: object, id: string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/${id}/books`, token, data, 'post');
-        // return defer(() => {
-        //     if (token !== undefined) {
-        //         return this.http.post(`http://localhost:4000/users/${id}/books`, data, { params: { token: token } });
-        //     } else {
-        //         console.log('error');
-        //     }
-        // });
     }
     passBook(id: string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/${id}/books`, token, null, 'delete');
-        // return defer(() => {
-        //     if (token !== undefined) {
-        //         return this.http.delete(`http://localhost:4000/users/${id}/books`, { params: { token: token } });
-        //     } else {
-        //         console.log('error');
-        //     }
-        // });
+
     }
     // getBookById(data: object, id: string, token: string): Observable<any> {
     //     return this.http.get(`http://localhost:4000/users/${id}/books`, { params: { token: token } });

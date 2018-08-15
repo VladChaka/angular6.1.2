@@ -23,16 +23,26 @@ export class AuthenticationService {
         return this.remoteService.authentication(authenticationInfo);
     }
 
-    isAuthentication(): any {        
-        if (localStorage['token'] !== undefined) {
-            this.userAuthentication = true;
-            this.route.navigate(['/users']);
+    isAuthentication(): any {
+        let token = localStorage['token'] || sessionStorage['token'];
+        if (token !== undefined) {
+            
+            this.remoteService.tokenValid(token)
+            .subscribe(
+                data => {
+                    this.userAuthentication = true;
+                    this.route.navigate(['/users']);
+                },
+                err => this.route.navigate(['/'])               
+            );
+        } else {
+            this.route.navigate(['/']);
         }
     }
 
     logout(): void {
-        delete localStorage['token'];
-        this.tokenService.setToken(null);
+        sessionStorage.clear();
+        localStorage.clear();
         this.userAuthentication = false;
     }
 }
