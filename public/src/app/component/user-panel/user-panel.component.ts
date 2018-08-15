@@ -9,7 +9,7 @@ export class UserPanelComponent {
 
     pageSize: number = 18;
 
-    @Input() users: string;
+    @Input() user: string;
     @Input() filterByDate: string;
     @Input() filterByRating: string;
 
