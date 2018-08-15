@@ -20,6 +20,8 @@ export class MainPageComponent implements OnInit {
     token: string;
 
     filterByDate: boolean = true;
+    showUserProfile: boolean;
+
 
     currentPage: number = 1;
     numberOfPages: number = 1;
@@ -27,7 +29,7 @@ export class MainPageComponent implements OnInit {
 
     constructor(
         protected userService: UserService,
-        protected formService: FormService,
+        private formService: FormService,
         protected remoteService: RemoteService,
         protected authenticationService: AuthenticationService,
         protected tokenService: TokenService

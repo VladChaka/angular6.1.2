@@ -1,5 +1,5 @@
 <div id="popupsContainer"
-     *ngIf="this.formService.showUserProfile || this.formService.showLibraryCard || this.formService.showFormAddUser">
+     *ngIf="showUserProfile || formService.showLibraryCard || formService.showFormAddUser">
     <form-add-user *ngIf="this.formService.showFormAddUser"
                    email-conflict="emailConflict"
                    login-conflict="loginConflict"
@@ -9,7 +9,7 @@
     <user-profile email-conflict="emailConflict"
                   user-profile="userProfile"
                   close-user-profile=" closeUserProfile"
-                  *ngIf="this.formService.showUserProfile"
+                  *ngIf="showUserProfile"
                   edit-user=" editUser"></user-profile>
     <library-card library-card=" libraryCard"
                   close-library-card=" closeLibraryCard"

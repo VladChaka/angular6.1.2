@@ -9,6 +9,9 @@
     <input type="password" #pass placeholder="Enter your pass">
     <!-- <span [hidden]="this.authenticationService.loginError == false">Incorrect login or password</span> -->
     <br><br>
+        <label>
+            <input type="checkbox" checked="checked" name="remember"> Remember me
+        </label>
     <button (click)="login(log.value, pass.value)" routerLink="/users">{{btnText}}</button>
     
 </form>
