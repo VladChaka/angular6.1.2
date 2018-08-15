@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Route } from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { RemoteService } from './remote.service';
@@ -16,19 +16,18 @@ export class AuthenticationService {
     constructor(
         protected remoteService: RemoteService,
         protected tokenService: TokenService,
-        protected route: ActivatedRoute,
-        // protected routee: Route,
+        private route: Router,
     ) { }
 
     authentication(authenticationInfo): Observable<any> {
         return this.remoteService.authentication(authenticationInfo);
     }
 
-    isAuthentication(): any {
-        console.log(this.route);
-        // this.routee.redirectTo['/users']
-        
-        if (localStorage['token'] !== undefined) this.userAuthentication = true;
+    isAuthentication(): any {        
+        if (localStorage['token'] !== undefined) {
+            this.userAuthentication = true;
+            this.route.navigate(['/users']);
+        }
     }
 
     logout(): void {
