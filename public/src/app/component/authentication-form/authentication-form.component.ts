@@ -25,7 +25,7 @@ export class AuthenticationFormComponent implements OnInit {
     }
 
     login(login: string, pass: string, checked: boolean): void {
-
+        var self =this;
         console.log(checked);
         this.authenticationService.authentication({
             username: login,
@@ -43,7 +43,7 @@ export class AuthenticationFormComponent implements OnInit {
             err => {
                 this.authenticationService.loginError = true;
                 setTimeout(function () {
-                    this.authenticationService.loginError = false;
+                    self.authenticationService.loginError = false;
                 }, 4000);
             }
         );

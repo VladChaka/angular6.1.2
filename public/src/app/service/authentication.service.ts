@@ -19,6 +19,7 @@ export class AuthenticationService {
         private route: Router,
     ) { }
 
+
     authentication(authenticationInfo): Observable<any> {
         return this.remoteService.authentication(authenticationInfo);
     }

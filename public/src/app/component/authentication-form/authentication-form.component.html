@@ -2,18 +2,18 @@
 <div *ngIf="this.authenticationService.userAuthentication === false" class="users-login-block">
     <form class="users-login">
         <h2><i class="fas fa-book"></i> Library App</h2>
-    <p>Login {{authenticationLogin}}</p>
-    <input type="text" #log placeholder="Enter your login">
+        <p>Login {{authenticationLogin}}</p>
+        <input type="text" #log placeholder="Enter your login">
 
-    <p>Password</p>
-    <input type="password" #pass placeholder="Enter your pass">
-    <!-- <span [hidden]="this.authenticationService.loginError == false">Incorrect login or password</span> -->
-    <br><br>
+        <p>Password</p>
+        <input type="password" #pass placeholder="Enter your pass">
+        <span *ngIf="authenticationService.loginError">Incorrect login or password</span>
+        <br><br>
         <label>
-            <input type="checkbox" #checkbox name="remember"> Remember me
+            <input type="checkbox" checked="checked" name="remember"> Remember me
         </label>
-    <button (click)="login(log.value, pass.value, checkbox.checked)" routerLink="/users">{{btnText}}</button>
-    
-</form>
+        <button (click)="login(log.value, pass.value)" routerLink="/users">{{btnText}}</button>
+
+    </form>
 </div>
 <router-outlet></router-outlet>
