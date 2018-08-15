@@ -1,0 +1,78 @@
+<div id="popupsContainer"
+     *ngIf="this.formService.showUserProfile || this.formService.showLibraryCard || this.formService.showFormAddUser">
+    <form-add-user *ngIf="this.formService.showFormAddUser"
+                   email-conflict="emailConflict"
+                   login-conflict="loginConflict"
+                   form-add-user="formAddUser"
+                   close-form-add-user="closeFormAddUser"
+                   add-user="addUser"></form-add-user>
+    <user-profile email-conflict="emailConflict"
+                  user-profile="userProfile"
+                  close-user-profile=" closeUserProfile"
+                  *ngIf="this.formService.showUserProfile"
+                  edit-user=" editUser"></user-profile>
+    <library-card library-card=" libraryCard"
+                  close-library-card=" closeLibraryCard"
+                  *ngIf="this.formService.showLibraryCard"
+                  pass-book=" passBook"
+                  take-book=" takeBook"></library-card>
+</div>
+<div class="users-container" *ngIf="this.authenticationService.userAuthentication === true">
+    <div id="test"
+         class="users-block">
+        <ul class="users-menu">
+            <li class="filters-pages">
+                    <button [disabled]="currentPage == 1" (click)="currentPage = currentPage - 1">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    {{currentPage}}<i class="fab fa-deviantart"></i>{{numberOfPages}}
+                    <button [disabled] ="currentPage >=  countUsers / pageSize" (click)="currentPage = currentPage + 1">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+            </li>
+            <li>
+                <button class="users-add-new" (click)="this.formService.showFormAddUser = true">
+                    <i class="fas fa-user-plus"></i>
+                </button>
+            </li>
+            <li class="users-search">
+                <!--<input placeholder="Search user">-->
+                <button>
+                    <i class="fab fa-searchengin"></i>
+                </button>
+            </li>
+            <li>
+                <button>
+                    <i class="fas fa-user-tie"></i>
+                </button>
+            </li>
+            <li>
+                <button class="logout" ng-show=" userAuthentication" routerLink="/login" (click)=" logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </li>
+        </ul>
+        <div class="users-list">
+            <div class="list-user-names">
+                <div>Full Name</div>
+                <div>User Login</div>
+                <div>User Posts</div>
+                <div class="filters-order">
+                    <button class="filters-order-active" (click)="showFilterRD = !showFilterRD">
+                        <span [hidden]="!filterByRating">By Rating</span>
+                        <span [hidden]="!filterByDate">By Date</span>
+                        <i class="fas fa-caret-down"></i>
+                    </button>
+                    <div class="filters-order-popup" [hidden]="!showFilterRD">
+                        <div (click)="filterByRating = true; filterByDate = false; showFilterRD=false">By Rating</div>
+                        <div (click)="filterByDate = true; filterByRating = false; showFilterRD=false">By Date</div>
+                    </div>
+                </div>
+                <div class="users-title">
+                    <h2>List of users <i class="fas fa-users"></i></h2>
+                </div>
+            </div>
+                <user-panel [users]="users" [filterByDate]="filterByDate" [filterByRating]="filterByRating"></user-panel>
+        </div>
+    </div>
+    <router-outlet></router-outlet>

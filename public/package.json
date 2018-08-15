@@ -1,0 +1,31 @@
+{
+  "name": "my-app",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "ng serve -o",
+    "build": "ng build"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "^6.1.0",
+    "@angular/compiler": "^6.1.0",
+    "@angular/core": "^6.1.0",
+    "@angular/forms": "^6.1.0",
+    "@angular/http": "^6.1.0",
+    "@angular/platform-browser": "^6.1.0",
+    "@angular/platform-browser-dynamic": "^6.1.0",
+    "@angular/router": "^6.1.0",
+    "core-js": "^2.5.4",
+    "less": "^3.8.1",
+    "rxjs": "^6.0.0",
+    "zone.js": "~0.8.26"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~0.7.0",
+    "@angular/compiler-cli": "^6.1.0",
+    "@angular/cli": "^6.1.0",
+    "@types/node": "~8.9.4",
+    "ts-node": "~5.0.1",
+    "typescript": "~2.7.2"
+  }
+}

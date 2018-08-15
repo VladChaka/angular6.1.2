@@ -1,0 +1,37 @@
+{
+  "name": "angular6.1.2",
+  "version": "1.0.0",
+  "description": "angular6.1.2",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "mocha",
+    "start": "node testing/zone.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VladChaka/angular6.1.2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VladChaka/angular6.1.2/issues"
+  },
+  "homepage": "https://github.com/VladChaka/angular6.1.2#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "express-fileupload": "^0.4.0",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.1.5",
+    "zone.js": "^0.8.26"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.3"
+  }
+}

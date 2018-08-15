@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MyApp</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/public/src/app/favicon/favicon.ico">
+</head>
+<body>
+    <authentication-form
+        btn-text="Enter"
+        authentication-login="authenticationLogin"
+        authentication-pass="authenticationPass"
+        login="login()"
+        login-error="this.authenticationService.loginError"
+        user-authorized="this.authenticationService.userAuthentication">
+    </authentication-form>
+</body>
+</html>
