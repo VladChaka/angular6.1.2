@@ -17,24 +17,24 @@ export class AuthenticationGuard {
         protected router: Router
     ) { }
 
-    canActivate(): any {
+    // canActivate(): any {
 
-        let route = this.router.url;
-        console.log(route);
-        if (this.token !== undefined) {       
-            this.remoteService.tokenValid(this.token)
-            .subscribe(
-                () => {
-                    console.log(route);
+    //     let route = this.router.url;
+    //     console.log(route);
+    //     if (this.token !== undefined) {       
+    //         this.remoteService.tokenValid(this.token)
+    //         .subscribe(
+    //             () => {
+    //                 console.log(route);
                     
-                    this.authenticationService.userAuthentication = true;
-                    return true;
-                },
-                () => {
-                    console.log('error');
-                    return false;
-                }
-            );
-        } 
-    }
+    //                 this.authenticationService.userAuthentication = true;
+    //                 return true;
+    //             },
+    //             () => {
+    //                 console.log('error');
+    //                 return false;
+    //             }
+    //         );
+    //     } 
+    // }
 }

@@ -1,5 +1,5 @@
 
-<div class="users-login-block"> <!-- *ngIf="this.authenticationService.userAuthentication === false"  -->
+<div *ngIf="this.authenticationService.userAuthentication === false" class="users-login-block">
     <form class="users-login">
         <h2><i class="fas fa-book"></i> Library App</h2>
         <p>Login {{authenticationLogin}}</p>

@@ -8,18 +8,14 @@ import { AuthenticationGuard } from "../service/authentication-guard.service";
 
 const routes: Routes = [
     {
-        path: 'test',
-        component: AuthenticationFormComponent
-    },
-    {
         path: 'users',
         component: MainPageComponent,
-        canActivate: [AuthenticationGuard]
+        // canActivate: [AuthenticationGuard]
     },
     {
         path: '',
         component: AuthenticationFormComponent,
-        canActivate: [AuthenticationGuard]
+        // canActivate: [AuthenticationGuard]
     },
     {
         path: '',

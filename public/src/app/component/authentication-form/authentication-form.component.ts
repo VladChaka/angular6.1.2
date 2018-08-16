@@ -32,7 +32,7 @@ export class AuthenticationFormComponent implements OnInit {
         })
         .subscribe(
             data => {
-                // this.authenticationService.userAuthentication = true;
+                this.authenticationService.userAuthentication = true;
                 if (checked) {
                     localStorage.setItem('token', data.token);
                 } else {
