@@ -37,9 +37,6 @@ export class MainPageComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        // if (this.token === undefined) {
-            // this.router.navigate(['/login']);
-        // }
         this.getUsers();
     }
 

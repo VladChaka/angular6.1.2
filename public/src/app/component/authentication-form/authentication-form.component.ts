@@ -23,6 +23,8 @@ export class AuthenticationFormComponent implements OnInit {
 
     login(login: string, pass: string, checked: boolean): void {
         var self = this;
+
+        console.log(checked);
         
         this.authenticationService.authentication({
             username: login,
@@ -30,7 +32,7 @@ export class AuthenticationFormComponent implements OnInit {
         })
         .subscribe(
             data => {
-                this.authenticationService.userAuthentication = true;
+                // this.authenticationService.userAuthentication = true;
                 if (checked) {
                     localStorage.setItem('token', data.token);
                 } else {

@@ -1,5 +1,5 @@
 
-<div *ngIf="this.authenticationService.userAuthentication === false" class="users-login-block">
+<div class="users-login-block"> <!-- *ngIf="this.authenticationService.userAuthentication === false"  -->
     <form class="users-login">
         <h2><i class="fas fa-book"></i> Library App</h2>
         <p>Login {{authenticationLogin}}</p>
@@ -10,9 +10,9 @@
         <span *ngIf="authenticationService.loginError">Incorrect login or password</span>
         <br><br>
         <label>
-            <input type="checkbox" checked="checked" name="remember"> Remember me
+            <input type="checkbox" #checkbox name="remember"> Remember me
         </label>
-        <button (click)="login(log.value, pass.value)" routerLink="/users">{{btnText}}</button>
+        <button (click)="login(log.value, pass.value, checkbox.checked)" routerLink="/users">{{btnText}}</button>
 
     </form>
 </div>

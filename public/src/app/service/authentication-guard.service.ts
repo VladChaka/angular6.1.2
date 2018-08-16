@@ -7,7 +7,7 @@ import { AuthenticationService } from './authentication.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationGuard implements CanActivate {
+export class AuthenticationGuard {
 
     token: string = localStorage['token'] || sessionStorage['token'];
 
@@ -17,20 +17,21 @@ export class AuthenticationGuard implements CanActivate {
         protected router: Router
     ) { }
 
-    canActivate() {
-        if (this.token === undefined) {
-            this.router.navigate(['/']);
-            return false;
-        } else {        
+    canActivate(): any {
+
+        let route = this.router.url;
+        console.log(route);
+        if (this.token !== undefined) {       
             this.remoteService.tokenValid(this.token)
             .subscribe(
                 () => {
+                    console.log(route);
+                    
                     this.authenticationService.userAuthentication = true;
-                    this.router.navigate(['/users']);
                     return true;
                 },
                 () => {
-                    this.router.navigate(['/']);
+                    console.log('error');
                     return false;
                 }
             );
