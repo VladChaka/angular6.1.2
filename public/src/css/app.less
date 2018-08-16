@@ -30,6 +30,7 @@ a, input, button {
 body {
   font: 100% 'Open Sans', sans-serif;
   font-size: 1rem;
+  background: @color2;
 }
 
 .user-add > div.add-login-used, .user-add > div.add-email-used, .user-edit > div.edit-email-used {
@@ -561,27 +562,74 @@ authorization-form * {
 /* USERS LIST AND FILTER ENDS */
 
 /* USER ADD FORM START */
+.dashboard-caption{
+  background: @color3;
+  color: @color2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  ul{
+    flex-basis: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  li{
+    cursor: pointer;
+    list-style-type: none;
+    padding: 5px;
+    text-transform: capitalize;
+    font-weight: bold;
+    text-align: center;
+    border-left: 3px solid @color3;
+    border-right: 3px solid @color3;
+  }
+  li.active{
+    border-left: 3px solid @color2;
+    border-right: 3px solid @color2;
+    background: @color2;
+    color:@color1;
+  }
+  li:hover:not(.active){
+    border-left: 3px solid @color2;
+    border-right: 3px solid @color2;
+    background: @color2;
+    color:@color1;
+  }
+}
+.route{
+  text-align: left;
+  flex-basis: 25%;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
 .user-profile{
   position: relative;
   display: flex;
-  justify-content: center;
-  overflow-y: auto;
   height: 100%;
   font-size: 1rem;
-  color: @grey;
-  background: @color1;
+  color: @color1;
   padding: 15px 30px;
-  border: 2px solid @grey;
-  h3{
-    text-transform: capitalize;
-    font-weight: bold;
-    color: @color2;
-    text-align: center;
-    padding-bottom: 10px;
+  border: 5px solid @color3;
+  border-top: none;
+  text-align: left;
+}
+.close-button {
+  text-align: right;
+  flex-basis: 25%;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: 0.2s;
+  i{
+    cursor: pointer;
   }
-  p{
-    display: none;//DELETE THIS
+  i:hover{
+    color:@color1;
   }
+}
+.user-edit > p{
+  display: none;//DELETE THIS
 }
 .user-edit > div {
   margin-bottom: 5px;
@@ -599,13 +647,15 @@ div.user-edit-btn {
 
 .user-edit-btn button {
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bold;
-  color: @color1;
-  border: 1px solid @grey;
-  padding: 4px 5px 2px 5px;
+  color: @color2;
+  text-transform: uppercase;
+  border: 2px solid @grey;
+  padding: 6px 10px 4px 10px;
   transition: 0.2s ease;
-  background: @color2;
+  border-radius: 5px;
+  background: @color1;
 }
 
 .user-edit-btn button:not(:disabled):hover {
@@ -625,15 +675,20 @@ div.user-edit-btn {
 .user-edit > div > input {
   flex-basis: 65%;
 }
-
+.user-edit{
+  input::-webkit-input-placeholder { color: @color2; }
+  input:-ms-input-placeholder { color: @color2; }
+  input::-ms-input-placeholder { color: @color2; }
+  input::placeholder { color: @color2; }
+}
 .user-edit input {
   font-size: 1rem;
-  background: @color2;
-  color: @color1;
-  border: 1px solid @grey;
+  background: @color1;
+  color: @color2;
+  .border-radius(2px);
+  border: 2px solid @color1;
   padding: 2px 5px;
 }
-
 .user-edit input.invalid {
   border-color: @red;
 }
@@ -686,29 +741,6 @@ div.user-edit-btn {
   margin: 10px 0;
   padding: 0 8px;
   border: 1px solid @grey;
-}
-
-.close-editform, .close-addform, .close-library-card {
-  cursor: pointer;
-  font-size: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  right: -7px;
-  top: -7px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: @color2;
-  color: @color1;
-  font-weight: bold;
-  transition: 0.5s;
-}
-
-.close-addform:hover, .close-editform:hover, .close-library-card:hover {
-  font-size: 1.4rem;
-  transform: rotate(360deg);
 }
 
 @import "adaptive";

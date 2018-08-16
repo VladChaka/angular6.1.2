@@ -1,5 +1,4 @@
 <div class="user-profile">
-    <div class="close-editform" (click)=" closeUserProfile()"><i class="fas fa-times"></i></div>
     <form class="user-edit"
           name="userEdit"
           id="userEdit"
@@ -7,7 +6,6 @@
           novalidate>
         <input type="hidden"
                [(ngModel)]=" userProfile.id">
-        <h3>User modification</h3>
         <div>
             <span>Username</span>
             <input disabled
@@ -97,7 +95,7 @@
             <p>All fields are required</p>
             <button type="submit"
             ><!-- [disabled]="!userEdit.$valid" -->
-                Edit user
+                Submit <i class="fas fa-user-check"></i>
             </button>
         </div>
     </form>

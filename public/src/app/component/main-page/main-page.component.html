@@ -37,43 +37,53 @@
         </ul>
 
         <div class="users-list">
-            <div class="list-user-names">
-                <div>Full Name</div>
-                <div>User Login</div>
-                <div class="filters-order">
-                    <button class="filters-order-active" (click)="showFilterRD = !showFilterRD">
-                        <span [hidden]="!filterByRating">By Rating</span>
-                        <span [hidden]="!filterByDate">By Date</span>
-                        <i class="fas fa-caret-down"></i>
-                    </button>
-                    <div class="filters-order-popup" [hidden]="!showFilterRD">
-                        <div (click)="filterByRating = true; filterByDate = false; showFilterRD=false">By Rating</div>
-                        <div (click)="filterByDate = true; filterByRating = false; showFilterRD=false">By Date</div>
-                    </div>
-                </div>
-                <div class="list-buttons">
-                    <div class="filters-pages">
-                        <button [disabled]="currentPage == 1" (click)="currentPage = currentPage - 1">
-                            <i class="fas fa-arrow-left"></i>
-                        </button>
-                        {{currentPage}}/{{numberOfPages}}
-                        <button [disabled] ="currentPage >=  countUsers / pageSize" (click)="currentPage = currentPage + 1">
-                            <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                    <div class="list-search">
-                        <input placeholder="Search user">
-                        <i class="fab fa-searchengin"></i>
-                    </div>
-                    <div>
-                        <button (click)="this.formService.showFormAddUser = true">
-                            <i class="fas fa-user-plus"></i>
-                        </button>
-                    </div>
-                </div>
+            <!--<div class="list-user-names">-->
+                <!--<div>Full Name</div>-->
+                <!--<div>User Login</div>-->
+                <!--<div class="filters-order">-->
+                    <!--<button class="filters-order-active" (click)="showFilterRD = !showFilterRD">-->
+                        <!--<span [hidden]="!filterByRating">By Rating</span>-->
+                        <!--<span [hidden]="!filterByDate">By Date</span>-->
+                        <!--<i class="fas fa-caret-down"></i>-->
+                    <!--</button>-->
+                    <!--<div class="filters-order-popup" [hidden]="!showFilterRD">-->
+                        <!--<div (click)="filterByRating = true; filterByDate = false; showFilterRD=false">By Rating</div>-->
+                        <!--<div (click)="filterByDate = true; filterByRating = false; showFilterRD=false">By Date</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="list-buttons">-->
+                    <!--<div class="filters-pages">-->
+                        <!--<button [disabled]="currentPage == 1" (click)="currentPage = currentPage - 1">-->
+                            <!--<i class="fas fa-arrow-left"></i>-->
+                        <!--</button>-->
+                        <!--{{currentPage}}/{{numberOfPages}}-->
+                        <!--<button [disabled] ="currentPage >=  countUsers / pageSize" (click)="currentPage = currentPage + 1">-->
+                            <!--<i class="fas fa-arrow-right"></i>-->
+                        <!--</button>-->
+                    <!--</div>-->
+                    <!--<div class="list-search">-->
+                        <!--<input placeholder="Search user">-->
+                        <!--<i class="fab fa-searchengin"></i>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                        <!--<button (click)="this.formService.showFormAddUser = true">-->
+                            <!--<i class="fas fa-user-plus"></i>-->
+                        <!--</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="dashboard-caption">
+                <p class="route">Users <i class="fas fa-angle-right"></i> Ignat <i class="fas fa-angle-right"></i> Modify</p>
+                <ul>
+                <li class="active">User modification <i class="fas fa-user-cog"></i></li>
+                <li>Book list <i class="fas fa-swatchbook"></i></li>
+                <li>Books at user <i class="fas fa-bookmark"></i></li>
+                </ul>
+                <div class="close-button"><i class="fas fa-backspace" (click)=" closeUserProfile()"></i></div>
             </div>
             <!--<user-panel *ngFor="let user of users | slice:0:pageSize"  [user]="user" [filterByDate]="filterByDate" [filterByRating]="filterByRating"></user-panel>-->
-            <user-profile></user-profile>
+            <!--<user-profile></user-profile>-->
+            <library-card></library-card>
         </div>
     </div>
 </div>
