@@ -1,11 +1,11 @@
 <div class="list-user-block">
   <div>{{user.fullname}}</div>
   <div>{{user.username}}</div>
-  <div>{{user.post}}</div>
   <div [hidden]="!filterByDate">{{user.regDate}}</div>
   <div [hidden]="!filterByRating">{{user.rating}}</div>
-  <profile-control-panel open-user-profile=" openUserProfile(user._id)"
-                         open-library-card=" openLibraryCard(user._id)"
-                         delete-user="deleteUser(user)"
-                         class="list-user-buttons"></profile-control-panel>
+  <div></div>
+  <button class="list-user-button">
+    <span>Open user profile</span>
+    <i class="fas fa-user"></i>
+  </button>
 </div>
