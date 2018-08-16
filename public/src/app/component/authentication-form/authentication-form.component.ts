@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../../service/authentication.service';
 
@@ -10,21 +11,16 @@ import { AuthenticationService } from '../../service/authentication.service';
 
 
 
-export class AuthenticationFormComponent implements OnInit {
+export class AuthenticationFormComponent {
     btnText: string = 'Enter';
-    input;
 
     constructor(
-        protected authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        private router: Router
     ) { }
-
-    ngOnInit() {
-    }
 
     login(login: string, pass: string, checked: boolean): void {
         var self = this;
-
-        console.log(checked);
         
         this.authenticationService.authentication({
             username: login,

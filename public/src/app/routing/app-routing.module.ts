@@ -8,20 +8,21 @@ import { AuthenticationGuard } from "../service/authentication-guard.service";
 
 const routes: Routes = [
     {
-        path: 'users',
+        path: 'dashboard',
         component: MainPageComponent,
         // canActivate: [AuthenticationGuard]
     },
     {
-        path: '',
+        path: 'login',
         component: AuthenticationFormComponent,
         // canActivate: [AuthenticationGuard]
     },
     {
         path: '',
         redirectTo: '/login',
-        pathMatch: 'full'
-    },
+        pathMatch: 'full',
+        canActivate: [AuthenticationGuard]
+    }
 ];
 
 @NgModule({

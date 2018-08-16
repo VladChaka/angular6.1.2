@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
 
-import { RemoteService } from './remote.service';
 import { AuthenticationService } from './authentication.service';
 
 @Injectable({
@@ -9,32 +8,24 @@ import { AuthenticationService } from './authentication.service';
 })
 export class AuthenticationGuard {
 
-    token: string = localStorage['token'] || sessionStorage['token'];
-
     constructor(
         protected authenticationService: AuthenticationService,
-        protected remoteService: RemoteService,
         protected router: Router
     ) { }
 
-    // canActivate(): any {
+    canActivate(route, state) {
+        let path = state.url;
+        
+                
+        if (!this.authenticationService.isLogged()) {
+            if (path !== '/login') {
 
-    //     let route = this.router.url;
-    //     console.log(route);
-    //     if (this.token !== undefined) {       
-    //         this.remoteService.tokenValid(this.token)
-    //         .subscribe(
-    //             () => {
-    //                 console.log(route);
-                    
-    //                 this.authenticationService.userAuthentication = true;
-    //                 return true;
-    //             },
-    //             () => {
-    //                 console.log('error');
-    //                 return false;
-    //             }
-    //         );
-    //     } 
-    // }
+                console.log("path",path)
+                // this.router.navigate([path]);
+            };
+            return false;
+        }
+
+        return true;
+    }
 }
