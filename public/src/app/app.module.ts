@@ -13,7 +13,6 @@ import { LibraryCardComponent } from './component/library-card/library-card.comp
 
 import { LoginValidationDirective } from './directive/login-validation.directive';
 import { UserPanelComponent } from './component/user-panel/user-panel.component';
-import { RootComponent } from './component/root/root.component';
 
 @NgModule({
   declarations: [
@@ -24,8 +23,7 @@ import { RootComponent } from './component/root/root.component';
     UserProfileComponent,
     ProfileControlPanelComponent,
     LibraryCardComponent,
-    UserPanelComponent,
-    RootComponent
+    UserPanelComponent
   ],
   imports: [
     BrowserModule,
