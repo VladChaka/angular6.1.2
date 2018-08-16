@@ -21,8 +21,7 @@ function UserRepository(){
             required: true
         },
         post: {
-            type: String,
-            required: true
+            type: String
         },
         phone: {
             type: String,
@@ -50,15 +49,14 @@ function UserRepository(){
 
     self.login = () => {
         return new Promise((resolve, reject) => {
-            self.SchemaModel.findOne({ username: Zone.current.data.username })
-            .then((user) => {
+            self.SchemaModel.findOne({ username: Zone.current.data.login })
+            .then(user => {
                 let error = { message: 'Authentication failed. Login or password wrong.' };
-                
                 if (!user) {
                     reject(error);                    
                     return;
                 }
-    
+
                 self.UserSchema.methods.verifyPassword(
                     Zone.current.data.password,
                     (err, success) => {
@@ -66,21 +64,21 @@ function UserRepository(){
                             reject(error);
                             return;
                         }
-    
+
                         const token = jwt.sign({ username: Zone.current.data.username }, 'yqawv8nqi5');
                         resolve({ id: user._id, token: token });
                     },
                     user.password
                 );
             })
-            .catch((err) => reject({ message: 'Authentication failed. Login or password wrong.' }));
+            .catch(err => reject({ message: 'Authentication failed. Login or password wrong.' }));
         });
     }
 
     self.getAll = () => {
         return new Promise((resolve, reject) => {
             self.SchemaModel.find({})
-            .then((users) => {
+            .then(users => {
                 let data = rebuildUserData(users, null, [
                         'password',
                         'phone',
@@ -89,14 +87,14 @@ function UserRepository(){
                 
                 resolve(data);
             })
-            .catch((err) => reject({ message: err.message }));
+            .catch(err => reject({ message: err.message }));
         });
     }
 
-    self.getOne = () => {
+    self.getOne = (key, data) => {
         return new Promise((resolve, reject) => {         
-            self.SchemaModel.findOne({ _id: Zone.current.data.id })
-            .then((user) => {
+            self.SchemaModel.findOne({ [key]: data })
+            .then(user => {
                 let data = rebuildUserData(user, null, [
                         'password',
                         'rating',
@@ -104,38 +102,56 @@ function UserRepository(){
                     ]);
                 resolve(data);
             })
-            .catch((err) => reject({ message: err.message, status: 400 }));
+            .catch(err => reject({ message: err.message, status: 400 }));
         });
     }
 
     self.add = () => {
-        const new_user = new self.SchemaModel(Zone.current.data);
         return new Promise((resolve, reject) => {
+            let userData = Zone.current.data;
+            userData.rating = '0';
+            userData.regDate = Date.now();
+
+            const new_user = new self.SchemaModel(userData);
+
             self.createHashPassword(new_user)
-            .then((user) => {
+            .then(user => {
                 user.save()
-                .then((user) => {
+                .then(user => {
                     let data = rebuildUserData(user);					
                     resolve(data);
-                })
-                .catch((err) => reject({ message: err.message, status: 500 }));
+                   })
+                .catch(err => reject({ message: err.message, status: 500 }));
             })
-            .catch((err) => reject({ message: err.message, status: 500 }));
+            .catch(err => reject({ message: err.message, status: 500 }));  
         });
     }
 
     self.update = () => {
-        return new Promise((resolve, reject) => {            
-            self.createHashPassword(Zone.current.data)
-            .then((user) => {
-                self.SchemaModel.findOneAndUpdate({ username: user.username }, user)
-                .then((user) => {
-                    let data = rebuildUserData(user);					
-                    resolve(data);
+        return new Promise((resolve, reject) => {   
+            self.getOne('username', Zone.current.data.test)
+            .then(user => {
+                if (user.post === 'Administrator') {
+                    reject({ message: 'No access.', status: 403 });
+                    return
+                }
+
+                self.createHashPassword(Zone.current.data)
+                .then(user => {
+                    console.log("1",user);
+                    
+                    self.SchemaModel.findOneAndUpdate({ _id: user.id }, user)
+                    .then(user => {
+                        console.log("2",user);
+                        
+                        let data = rebuildUserData(user);                        					
+                        resolve(data);
+                    })
+                    .catch(err => {console.log(err.message); reject({ message: err.message, status: 400 })});
                 })
-                .catch((err) => reject({ message: err.message, status: 500 }));
+                .catch(err => reject({ message: err.message, status: 500 }));
             })
-            .catch((err) => reject({ message: err.message, status: 500 }));
+            .catch(err => reject({ message: err.message, status: 500 }));
         });
     }
 
@@ -144,21 +160,21 @@ function UserRepository(){
             self.SchemaModel.findOneAndUpdate(
                 { username: Zone.current.data.username },
                 { photo: pathToPhoto })
-                .then((user) => {
+                .then(user => {
                     let data = rebuildUserData(user);					
                     resolve(data);
                 })
-                .catch((err) => reject({ message: err.message, status: 500 }));
+                .catch(err => reject({ message: err.message, status: 500 }));
         });
     }
 
     self.delete = () => {
         return new Promise((resolve, reject) => {            
             self.SchemaModel.findOneAndRemove({ username: Zone.current.data.username })
-            .then((user) => {				
+            .then(() => {				
                 resolve({ message: 'ok' });
             })
-            .catch((err) => reject({ message: err.message, status: 500 }));
+            .catch(err => reject({ message: err.message, status: 500 }));
 
         });
     }    
@@ -173,7 +189,7 @@ function UserRepository(){
         });
     };
 
-    self.createHashPassword = (data) => {
+    self.createHashPassword = data => {
         return new Promise((resolve, reject) => {
             const user = data;
             if (data.password !== undefined && data.password.length !== 0) {
@@ -219,7 +235,7 @@ function UserRepository(){
         if (userData.length === undefined) {
             user = buildUserData(userData, standartUserFields, addField, delField);
         } else {
-            userData.map((element) => {
+            userData.map(element => {
                 user.push(buildUserData(element, standartUserFields, addField, delField));
             });
         }

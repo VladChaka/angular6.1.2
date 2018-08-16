@@ -1,0 +1,107 @@
+    <div class="user-profile">
+        <div class="close-editform"
+             ng-click="uc.closeUserProfile()">
+            +
+        </div>
+        <form class="user-edit"
+              name="userEdit"
+              id="userEdit"
+              ng-submit="uc.editUser()"
+              novalidate>
+            <input type="hidden"
+                   ng-model="uc.userProfile.id">
+            <div>
+                <span>Username</span>
+                <input disabled
+                       ng-model="uc.userProfile.username"
+                       name="username"
+                       type="text"></div>
+            <div>
+                <span>E-mail</span>
+                <input ng-class="{ 'invalid' : userEdit.email.$invalid && userEdit.email.$dirty }"
+                       name="email"
+                       ng-model="uc.userProfile.email"
+                       type="email"
+                       placeholder="Enter email"></div>
+            <div class="edit-email-used"
+                 ng-show="uc.emailConflict">
+                This email already used.
+            </div>
+            <p ng-show="userEdit.email.$invalid && userEdit.email.$dirty">
+                Enter a valid email.
+            </p>
+            <p ng-show="userEdit.email.$dirty && userEdit.email.$error.required">
+                Email is required
+            </p>
+            <div>
+                <span>Post</span>
+                <input ng-class="{ 'invalid' : userEdit.post.$error.required && userEdit.post.$dirty }"
+                       ng-required="true"
+                       type="text"
+                       name="post"
+                       ng-model="uc.userProfile.post"
+                       placeholder="User post"></div>
+            <p ng-show="userEdit.post.$error.required && userEdit.post.$dirty">
+                Enter a user post.
+            </p>
+            <div>
+                <span>Phone</span>
+                <input ng-class="{ 'invalid' : userEdit.phone.$invalid && userEdit.phone.$dirty }"
+                       ng-minlength="7"
+                       ng-maxlength="13"
+                       name="phone"
+                       type="tel"
+                       ng-required="true"
+                       ng-model="uc.userProfile.phone"
+                       placeholder="Enter phone number"
+                       tel-validation></div>
+            <p ng-show="userEdit.phone.$error.required && userEdit.phone.$dirty">
+                Enter valid phone number.
+            </p>
+            <p ng-show="userEdit.phone.$error.minlength || userEdit.phone.$error.maxlength || userEdit.phone.$error.correctNumber">
+                Enter a correct phone.
+            </p>
+            <div>
+                <span>Password</span>
+                <input ng-class="{ 'invalid' : userEdit.password.$invalid && userEdit.password.$dirty }"
+                       name="password"
+                       ng-model="uc.userProfile.password"
+                       ng-minlength="8"
+                       type="password"
+                       placeholder="Enter password"
+                       pass-validation></div>
+            <p class="text-error"
+               ng-show="userEdit.password.$error.strongPass">
+                Your password should contain digit and non-digit symbol
+            </p>
+            <p ng-show="userEdit.password.$error.required && userEdit.password.$dirty">
+                Password is required.
+            </p>
+            <p ng-show="userEdit.password.$error.minlength">
+                Password is too short.
+            </p>
+            <div>
+                <span>Full name</span>
+                <input ng-class="{ 'invalid' : userEdit.fullname.$invalid && userEdit.fullname.$dirty}"
+                       ng-required="true"
+                       name="fullname"
+                       ng-model="uc.userProfile.fullname"
+                       type="text"
+                       placeholder="Full name of user"
+                       name-validation></div>
+            <p ng-show="userEdit.fullname.$error.required && userEdit.fullname.$dirty">
+                Enter full name.
+            </p>
+            <p ng-show="userEdit.fullname.$error.realName && userEdit.fullname.$dirty">
+                Enter real name.
+            </p>
+            <div class="user-edit-btn">
+                <p>All fields are required</p>
+                <button type="submit"
+						><!-- ng-disabled="!userEdit.$valid" -->
+                    Edit user
+                    <span>✓</span>
+                </button>
+            </div>
+        </form>
+    </div>

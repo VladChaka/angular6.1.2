@@ -9,32 +9,29 @@ function UserDataServise (userRepository) {
     self.login = () => {
         return new Promise((resolve, reject) => {
             userRepository.login()
-            .then((result) => resolve(result))
-            .catch((err) => reject(err));
+            .then(result => resolve(result))
+            .catch(err => reject(err));
         });
     }
 
     self.findAll = () => {
         return new Promise((resolve, reject) => {
             userRepository.getAll()
-            .then((result) => { resolve(result) })
-            .catch((err) => { reject(err); });
+            .then(result => { resolve(result) })
+            .catch(err => { reject(err); });
         });
     }
 
     self.findOne = () => {	
         return new Promise((resolve, reject) => {
-            userRepository.getOne()
-            .then((result) => resolve(result))
-            .catch((err) => reject(err));
+            userRepository.getOne('id', Zone.current.data.id)
+            .then(result => resolve(result))
+            .catch(err => reject(err));
         });	
     }
 
     self.add = () => {
         return new Promise((resolve, reject) => {
-            delete Zone.current.data.bookname;
-            Zone.current.data.rating = '0';
-
             if (checkEmptyField()) {
                 reject({ message: "Fields empty.", status: 400 });
                 return;
@@ -53,8 +50,8 @@ function UserDataServise (userRepository) {
             }
 
             userRepository.add()
-            .then((result) => resolve(result))
-            .catch((err) => reject(err));
+            .then(result => resolve(result))
+            .catch(err => reject(err));
         });
     }
 
@@ -67,50 +64,54 @@ function UserDataServise (userRepository) {
                     resolve({ message: "Incorrect password.", status: 400 });
                     return;
                 }
-            }
-            delete Zone.current.data.bookname;
-            delete Zone.current.data.regDate;            
+            }         
 
             if (checkEmptyField()) {
                 reject({ message: "Fields empty.", status: 400 });
                 return;
             }
-            if (!checkRegExEmail(Zone.current.data.email)) {
-                reject({ message: "Incorrect email.", status: 400 });
-                return;
-            }
+            // if (!checkRegExEmail(Zone.current.data.email)) {
+            //     reject({ message: "Incorrect email.", status: 400 });
+            //     return;
+            // }
             if (!checkRegExLogin(Zone.current.data.username)) {
                 reject({ message: "Incorrect login.", status: 400 });
                 return;
             }
 
             userRepository.update()
-            .then((result) => resolve(result))
-            .catch((err) => reject(err));
+            .then(result => {console.log(result); resolve(result)})
+            .catch(err => reject(err));
         });
     }
 
     self.upadtePhoto = (pathToPhoto) => {
         return new Promise((resolve, reject) => {
             userRepository.updatePhoto(pathToPhoto)
-            .then((result) => resolve(result))
-            .catch((err) => reject(err));
+            .then(result => resolve(result))
+            .catch(err => reject(err));
         });	
     }
 
     self.delete = () => {
         return new Promise((resolve, reject) => {
             userRepository.delete()
-            .then((result) => resolve(result))
-            .catch((err) => reject(err));
+            .then(result => resolve(result))
+            .catch(err => reject(err));
         });	
     }
 
     function checkEmptyField() {
         let result = false;
-
+        console.log(Zone.current.data);
+        
         for (let index in Zone.current.data) {
-            let field = Zone.current.data[index];   
+            console.log(index);
+            let field = Zone.current.data[index];
+            
+            console.log(typeof field);
+            console.log(field);
+            
             field = field.replace(/\s*/g, '');
 
             if (field === "") result = true

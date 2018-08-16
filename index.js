@@ -4,7 +4,7 @@ let express = require("express"),
     bodyParser = require("body-parser"),
     mongoose = require("mongoose"),
     getParam = require("./util/common"),
-    port = getParam("port", 4000),
+    port = getParam("port", 5000),
     dbMlab = "mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb",
     dbMlabTest = "mongodb://admin:vlad12345@ds121088.mlab.com:21088/unittest",
     jwt = require('jsonwebtoken'),
@@ -12,11 +12,11 @@ let express = require("express"),
     test = require('express-fileupload'),
     db = getParam("local", dbMlab);
 
-mongoose.connect(db, { useNewUrlParser: true }, (err) => {
+mongoose.connect(db, { useNewUrlParser: true }, err => {
     if (err) return console.log("Connection error: ", err.message);
 });
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', "*");
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -26,7 +26,7 @@ app.use(function(req, res, next) {
 app.use(test());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(__dirname));
+// app.use(express.static(__dirname));
 // app.use(express.static(__dirname + '/public_chameleon47'));
 // app.use((req, res, next) => {
 //     if (req.path !== '/login') {
@@ -46,14 +46,34 @@ app.use((req, res, next) => {
             email: req.body.email || '',
             phone: req.body.phone || '',
             password: req.body.password || '',
-            fullname: req.body.fullname || '',
-            post: req.body.post || '',
-            regDate: Date.now() + '',
-            bookname: req.body.bookname || ''
+            fullname: req.body.fullname || ''
         }
         next();
     });
 });
+
+// app.use((req, res, next) => {
+//     const token = req.body.token || req.query.token || req.headers['x-access-token'],
+//           decoded = jwt.decode(token) || '';
+//     console.log(token);
+    
+//     console.log(req.body.username);
+//     console.log(decoded);
+//     console.log('========================');
+    
+//     Zone.current.fork({}).run(() => {
+//         Zone.current.data = {
+//             id: req.body.id || req.query.id,
+//             login: req.body.username || decoded.username,
+//             // email: req.body.email || '',
+//             phone: req.body.phone || '',
+//             password: req.body.password || '',
+//             fullname: req.body.fullname || '',
+            
+//         }
+//         next();
+//     });
+// });
 
 //route
 app.use('/', require(__dirname + '/controller/index').router);
