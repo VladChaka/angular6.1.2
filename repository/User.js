@@ -49,7 +49,7 @@ function UserRepository(){
 
     self.login = () => {
         return new Promise((resolve, reject) => {
-            self.SchemaModel.findOne({ username: Zone.current.data.login })
+            self.SchemaModel.findOne({ username: Zone.current.data.username })
             .then(user => {
                 let error = { message: 'Authentication failed. Login or password wrong.' };
                 if (!user) {
