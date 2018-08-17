@@ -41,11 +41,12 @@ export class MainPageComponent implements OnInit {
     }
 
     getUsers(): void {
-        this.token = localStorage.getItem('token');
-        
         this.userService.getAll(this.token)
         .subscribe(
             users => {
+
+                console.log(this.token);
+                console.log(users);
                 this.users = users;
                 this.convertDate(this.users);
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, defer } from 'rxjs';
+import {st} from "@angular/core/src/render3";
 
 @Injectable({
   providedIn: 'root'
@@ -46,10 +47,10 @@ export class RemoteService {
     getBooksUser(token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/:id/books`, token, null, 'get');
     }
-    takeBook(data: string, userId: string, bookId, token: string): Observable<any> {
+    takeBook(data: string, userId: string, bookId:string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/${userId}/books/${bookId}`, token, data, 'post');
     }
-    passBook(userId: string, bookId, data: string, token: string): Observable<any> {
+    passBook( data: string, userId: string, bookId:string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/${userId}/books/${bookId}`, token, data, 'put');
     }
 

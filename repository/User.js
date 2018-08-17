@@ -99,7 +99,7 @@ function UserRepository() {
                             'regDate'
                         ]
                     );
-                
+                console.log(data);
                 resolve(data);
             })
             .catch(err => reject({ message: err.message }));
@@ -280,7 +280,7 @@ function UserRepository() {
         });
     };
 
-    function rebuildUserData(userData, addField, delField) {
+    function rebuildUserData(userData, addField) {
         let user = [],
             standartUserFields = [
                 '_id',
@@ -295,31 +295,22 @@ function UserRepository() {
             ];
 
         if (userData.length === undefined) {
-            user = buildUserData(userData, standartUserFields, addField, delField);
+            user = buildUserData(userData, addField);
         } else {
             userData.map(element => {
-                user.push(buildUserData(element, standartUserFields, addField, delField));
+                user.push(buildUserData(element, addField));
             });
         }
         return user;
     }
 
-    function buildUserData(userData, standartUserFields, addField, delField) {
+    function buildUserData(userData, addField) {
         let user = {};
         for (const index in userData) {
-            standartUserFields.map((element) => {
+            addField.map((element) => {
                 if (element === index) {
                     user[index]	= userData[index];
                 }
-                if (addField !== undefined && addField !== null && addField[i] === index) {
-                    user[index] = userData[index];
-                }
-            });
-        }
-
-        if (delField !== undefined && delField !== null && delField.length !== null) {
-            delField.map((element) => {
-                delete user[element];
             });
         }
 
