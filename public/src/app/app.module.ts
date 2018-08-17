@@ -13,6 +13,7 @@ import { LibraryCardComponent } from './component/library-card/library-card.comp
 
 import { LoginValidationDirective } from './directive/login-validation.directive';
 import { UserPanelComponent } from './component/user-panel/user-panel.component';
+import { BookListComponent } from './component/book-list/book-list.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { UserPanelComponent } from './component/user-panel/user-panel.component'
     UserProfileComponent,
     ProfileControlPanelComponent,
     LibraryCardComponent,
-    UserPanelComponent
+    UserPanelComponent,
+    BookListComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +34,6 @@ import { UserPanelComponent } from './component/user-panel/user-panel.component'
     HttpClientModule
   ],
   exports: [ ],
-  bootstrap: [MainPageComponent]
+  bootstrap: [AuthenticationFormComponent]
 })
 export class AppModule { }

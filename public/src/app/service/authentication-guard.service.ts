@@ -25,7 +25,7 @@ export class AuthenticationGuard {
             };
             return false;
         }
-
+        this.router.navigate(['dashboard']);
         return true;
     }
 }

@@ -1,11 +1,11 @@
-import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnInit, Input, ChangeDetectionStrategy} from '@angular/core';
 
 @Component({
     selector: 'user-panel',
     templateUrl: './user-panel.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserPanelComponent {
+export class UserPanelComponent implements OnInit{
 
     pageSize: number = 18;
 
@@ -16,4 +16,10 @@ export class UserPanelComponent {
     constructor() {
     }
 
+    ngOnInit() {
+        this.hero$ = this.route.paramMap.pipe(
+            switchMap((params: ParamMap) =>
+                this.service.getHero(params.get('id')))
+        );
+    }
 }
