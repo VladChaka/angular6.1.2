@@ -63,14 +63,6 @@ body {
   position: fixed;
   background: rgba(0, 0, 0, 0.72);
 }
-
-.users-block {
-  margin: 0 auto;
-  max-width: 1920px;
-  display: flex;
-  flex-direction: column;
-}
-
 .user-form {
   position: relative;
   display: flex;
@@ -604,17 +596,6 @@ authorization-form * {
   font-weight: bold;
   font-size: 0.85rem;
 }
-.user-profile{
-  position: relative;
-  display: flex;
-  height: 100%;
-  font-size: 1rem;
-  color: @color1;
-  padding: 15px 30px;
-  border: 5px solid @color3;
-  border-top: none;
-  text-align: left;
-}
 .close-button {
   text-align: right;
   flex-basis: 25%;
@@ -628,6 +609,120 @@ authorization-form * {
     color:@color1;
   }
 }
+
+.user-add > p, .user-edit > p {
+  text-align: right;
+  font-size: 0.7rem;
+  background: @color2;
+  color: @red;
+  font-weight: bold;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  margin: 5px 0;
+  padding: 0 8px;
+  border: 1px solid @color1;
+}
+
+.user-add-btn > p, .user-edit-btn > p{
+  text-align: center;
+  font-size: 0.7rem;
+  background: @color2;
+  color: @color1;
+  font-weight: bold;
+  border-radius: 20px;
+  margin: 10px 0;
+  padding: 0 8px;
+  border: 1px solid @grey;
+}
+.user-dashboard{
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  position: relative;
+  display: flex;
+  font-size: 1rem;
+  color: @color1;
+  padding: 15px 30px;
+  border: 5px solid @color3;
+  border-top: none;
+  text-align: left;
+  input::-webkit-input-placeholder { color: @color2; }
+  input:-ms-input-placeholder { color: @color2; }
+  input::-ms-input-placeholder { color: @color2; }
+  input::placeholder { color: @color2; }
+
+  .user-profile-title{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    img{
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+    p{
+      color:@color3;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+//Library starts
+.library-card > div {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+div.library-card-btns {
+  margin-top: 15px;
+  margin-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.library-card button {
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  color: @color2;
+  text-transform: uppercase;
+  border: 2px solid @grey;
+  padding: 6px 10px 4px 10px;
+  transition: 0.2s ease;
+  border-radius: 5px;
+  background: @color1;
+}
+
+.library-card button:not(:disabled):hover {
+  border-color: @color3;
+  color: @color3;
+}
+
+.library-card button:disabled:hover {
+  cursor: not-allowed;
+}
+
+.library-card > div > span {
+  padding-right: 10px;
+  flex-basis: 35%;
+}
+
+.library-card > div > input {
+  flex-basis: 65%;
+}
+
+.library-card input {
+  font-size: 1rem;
+  background: @color1;
+  color: @color2;
+  .border-radius(2px);
+  border: 2px solid @color1;
+  padding: 2px 5px;
+}
+//Library ends
 .user-edit > p{
   display: none;//DELETE THIS
 }
@@ -689,58 +784,19 @@ div.user-edit-btn {
   border: 2px solid @color1;
   padding: 2px 5px;
 }
+.user-edit input:disabled {
+  text-align: right;
+  background: transparent;
+  color: @color1;
+  .border-radius(2px);
+  border: none;
+  padding: 2px 5px;
+}
 .user-edit input.invalid {
   border-color: @red;
 }
 
 /* USER ADD FORM ENDS */
 
-/* LIBRARY CARD START */
-
-
-/* LIBRARY CARD ENDS */
-
-//.user-add, .user-edit, .library-card {
-//  overflow-y: auto;
-//  height: 100%;
-//  font-size: 1rem;
-//  color: @grey;
-//  background: @color1;
-//  padding: 15px 30px;
-//  border: 2px solid @grey;
-//  max-width: 400px;
-//  h3{
-//    text-transform: capitalize;
-//    font-weight: bold;
-//    color: @color2;
-//    text-align: center;
-//    padding-bottom: 10px;
-//  }
-//}
-
-.user-add > p, .user-edit > p {
-  text-align: right;
-  font-size: 0.7rem;
-  background: @color2;
-  color: @red;
-  font-weight: bold;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  margin: 5px 0;
-  padding: 0 8px;
-  border: 1px solid @color1;
-}
-
-.user-add-btn > p, .user-edit-btn > p, .library-card-btns > p {
-  text-align: center;
-  font-size: 0.7rem;
-  background: @color2;
-  color: @color1;
-  font-weight: bold;
-  border-radius: 20px;
-  margin: 10px 0;
-  padding: 0 8px;
-  border: 1px solid @grey;
-}
 
 @import "adaptive";

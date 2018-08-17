@@ -1,12 +1,10 @@
-<div class="library-card-container">
-    <div class="close-library-card"
-         (click)="closeLibraryCard()">
-        <i class="fas fa-times"></i>
-    </div>
     <form class="library-card"
           name="libraryCard"
           id="libraryCard">
-        <h3>Library card</h3>
+        <div class="user-profile-title">
+            <div><img src="/assets/user-default.jpg.png"></div>
+            <p>Vladislav</p>
+        </div>
         <input type="hidden"
                [(ngModel)]=" libraryCard.id">
         <div>
@@ -20,7 +18,6 @@
                    name="date"
                    type="text"></div>
         <div class="library-card-btns">
-            <p>All fields are required</p>
             <button type="submit"
                     (click)=" takeBook()"
             ><!-- [disabled]="!userEdit.$valid" -->
@@ -33,4 +30,3 @@
             </button>
         </div>
     </form>
-</div>
