@@ -6,34 +6,35 @@ Core.module('app').service('app.libraryDataService', LibraryDataService);
 function LibraryDataService (libraryRepository) {
     let self = this;
 
-    self.take = () => {
+    self.getAll = () => {
         return new Promise((resolve, reject) => {
-            if (checkEmptyField()) {
-                reject({ message: "Fields empty.", status: 400 });
-                return;
-            }
-            libraryRepository.take()
+            libraryRepository.getAll()
             .then((result) => resolve(result))
             .catch((err) => reject(err));
         });
     }
 
-    self.return = () => {
+    self.getOne = (book) => {
         return new Promise((resolve, reject) => {
-            libraryRepository.return()
+            libraryRepository.getOne(book)
             .then((result) => resolve(result))
             .catch((err) => reject(err));
         });
     }
 
-    function checkEmptyField() {
-        let result = false;
+    self.add = (bookData) => {
+        return new Promise((resolve, reject) => {
+            libraryRepository.add(bookData)
+            .then((result) => resolve(result))
+            .catch((err) => reject(err));
+        });
+    }
 
-        let field = Zone.current.data.bookname;
-        field = field.replace(/\s*/g, '');
-        
-        if (field === "") result = true
-        
-        return result;
+    self.update = (bookData) => {
+        return new Promise((resolve, reject) => {
+            libraryRepository.update(bookData)
+            .then((result) => resolve(result))
+            .catch((err) => reject(err));
+        });
     }
 }

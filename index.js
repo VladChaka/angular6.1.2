@@ -27,7 +27,7 @@ app.use(test());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(express.static(__dirname));
-// app.use(express.static(__dirname + '/public_chameleon47'));
+app.use(express.static(__dirname + '/public_chameleon47'));
 // app.use((req, res, next) => {
 //     if (req.path !== '/login') {
 //         token__module(req, res, next);
@@ -35,45 +35,43 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //         next();
 //     }
 // });
-app.use((req, res, next) => {
-    const token = req.body.token || req.query.token || req.headers['x-access-token'],
-          decoded = jwt.decode(token) || '';
-
-    Zone.current.fork({}).run(() => {
-        Zone.current.data = {
-            id: req.body.id || req.query.id,
-            username: req.body.username || decoded.username,
-            email: req.body.email || '',
-            phone: req.body.phone || '',
-            password: req.body.password || '',
-            fullname: req.body.fullname || ''
-        }
-        next();
-    });
-});
 
 // app.use((req, res, next) => {
 //     const token = req.body.token || req.query.token || req.headers['x-access-token'],
 //           decoded = jwt.decode(token) || '';
-//     console.log(token);
-    
-//     console.log(req.body.username);
-//     console.log(decoded);
-//     console.log('========================');
-    
+
 //     Zone.current.fork({}).run(() => {
 //         Zone.current.data = {
 //             id: req.body.id || req.query.id,
-//             login: req.body.username || decoded.username,
-//             // email: req.body.email || '',
+//             username: req.body.username || decoded.username,
+//             email: req.body.email || '',
 //             phone: req.body.phone || '',
 //             password: req.body.password || '',
-//             fullname: req.body.fullname || '',
-            
+//             fullname: req.body.fullname || ''
 //         }
 //         next();
 //     });
 // });
+
+app.use((req, res, next) => {
+    const token = req.body.token || req.query.token || req.headers['x-access-token'],
+          decoded = jwt.decode(token) || '';
+    
+    Zone.current.fork({}).run(() => {
+        Zone.current.data = {
+            id: req.body.id || req.query.id,
+            username: req.body.username || '',
+            login: decoded.username || '',
+            email: req.body.email || '',
+            phone: req.body.phone || '',
+            password: req.body.password || '',
+            fullname: req.body.fullname || '',
+            bookname: req.body.bookname || '',
+            bookcount: req.body.bookcount || ''
+        }
+        next();
+    });
+});
 
 //route
 app.use('/', require(__dirname + '/controller/index').router);

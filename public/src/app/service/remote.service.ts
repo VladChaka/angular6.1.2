@@ -31,18 +31,29 @@ export class RemoteService {
     update(data: object, id: string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/${id}`, token, data, 'put');
     }
-    takeBook(data: object, id: string, token: string): Observable<any> {
-        return this.checkToken(`http://localhost:4000/users/${id}/books`, token, data, 'post');
+    addBook(data: object, token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/books`, token, data, 'post');
     }
-    passBook(id: string, token: string): Observable<any> {
-        return this.checkToken(`http://localhost:4000/users/${id}/books`, token, null, 'delete');
-
+    getBooks(token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/books`, token, null, 'get');
     }
-    // getBookById(data: object, id: string, token: string): Observable<any> {
-    //     return this.http.get(`http://localhost:4000/users/${id}/books`, { params: { token: token } });
-    // }
+    getOneBook(id: string, token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/books/${id}`, token, null, 'get');
+    }
+    updateBook(id: string, data: object, token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/books/${id}`, token, data, 'put');
+    }
+    getBooksUser(token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/users/:id/books`, token, null, 'get');
+    }
+    takeBook(data: string, userId: string, bookId, token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/users/${userId}/books/${bookId}`, token, data, 'post');
+    }
+    passBook(userId: string, bookId, data: string, token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/users/${userId}/books/${bookId}`, token, data, 'put');
+    }
 
-    checkToken(url: string, token: string, data: object, method: string): Observable<any> {
+    checkToken(url: string, token: string, data: any, method: string): Observable<any> {
         return defer(() => {
             let result;
 

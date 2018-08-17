@@ -1,14 +1,14 @@
 let Core = require("../util/dataCore").Core;
 
-UserDataServise.$inject = ['app.userRepository'];
+UserDataServise.$inject = ['app.userRepository', 'app.libraryRepository'];
 Core.module('app').service('app.userDataServise', UserDataServise);
 
-function UserDataServise (userRepository) {
+function UserDataServise (userRepository, libraryRepository) {
     let self = this;
 
-    self.login = () => {
+    self.login = (userData) => {
         return new Promise((resolve, reject) => {
-            userRepository.login()
+            userRepository.login(userData)
             .then(result => resolve(result))
             .catch(err => reject(err));
         });
@@ -22,105 +22,133 @@ function UserDataServise (userRepository) {
         });
     }
 
-    self.findOne = () => {	
+    self.findOne = (username) => {	
         return new Promise((resolve, reject) => {
-            userRepository.getOne('id', Zone.current.data.id)
+            userRepository.getOne('username', username)
             .then(result => resolve(result))
             .catch(err => reject(err));
         });	
     }
 
-    self.add = () => {
+    self.add = (userData) => {
         return new Promise((resolve, reject) => {
-            if (checkEmptyField()) {
+            if (checkEmptyField(userData)) {
                 reject({ message: "Fields empty.", status: 400 });
                 return;
             }
-            if (!checkRegExEmail(Zone.current.data.email)) {
+            if (!checkRegExpEmail(userData.email)) {
                 reject({ message: "Incorrect email.", status: 400 });
                 return;
             }
-            if (!checkRegExLogin(Zone.current.data.username)) {
+            if (!checkRegExpLogin(userData.username)) {
                 reject({ message: "Incorrect login.", status: 400 });
                 return;
             }
-            if (!checkRegExPassword(Zone.current.data.password)) {
+            if (!checkRegExpPassword(userData.password)) {
                 resolve({ message: "Incorrect password.", status: 400 });
                 return;
             }
 
-            userRepository.add()
+            userRepository.add(userData)
             .then(result => resolve(result))
             .catch(err => reject(err));
         });
     }
 
-    self.update = () => {
+    self.update = (userData) => {
         return new Promise((resolve, reject) => {
-            if (Zone.current.data.password === '') {
-                delete Zone.current.data.password;
-            } else {
-                if (!checkRegExPassword(Zone.current.data.password)) {
-                    resolve({ message: "Incorrect password.", status: 400 });
-                    return;
-                }
-            }         
+            let user = delEmptyFieldForUpdate(userData);
 
-            if (checkEmptyField()) {
-                reject({ message: "Fields empty.", status: 400 });
+            if (user.password !== undefined && !checkRegExpPassword(user.password)) {
+                reject({ message: "Incorrect password.", status: 400 });
                 return;
             }
-            // if (!checkRegExEmail(Zone.current.data.email)) {
-            //     reject({ message: "Incorrect email.", status: 400 });
-            //     return;
-            // }
-            if (!checkRegExLogin(Zone.current.data.username)) {
+            if (user.email !== undefined && !checkRegExpEmail(user.email)) {
+                reject({ message: "Incorrect email.", status: 400 });
+                return;
+            }
+            if (user.username !== undefined && !checkRegExpLogin(user.username)) {
                 reject({ message: "Incorrect login.", status: 400 });
                 return;
             }
 
-            userRepository.update()
-            .then(result => {console.log(result); resolve(result)})
+            userRepository.update(user)
+            .then(result => resolve(result))
             .catch(err => reject(err));
         });
     }
 
-    self.upadtePhoto = (pathToPhoto) => {
+    self.upadtePhoto = (pathToPhoto, username) => {
         return new Promise((resolve, reject) => {
-            userRepository.updatePhoto(pathToPhoto)
+            userRepository.updatePhoto(pathToPhoto, username)
             .then(result => resolve(result))
             .catch(err => reject(err));
         });	
     }
 
-    self.delete = () => {
+    self.delete = (username) => {
         return new Promise((resolve, reject) => {
-            userRepository.delete()
+            userRepository.delete(username)
             .then(result => resolve(result))
             .catch(err => reject(err));
         });	
     }
 
-    function checkEmptyField() {
+    self.getBooks = (username) => {
+        return new Promise((resolve, reject) => {
+            userRepository.getBooks(username)
+            .then(result => resolve(result))
+            .catch(err => reject(err));
+        });
+    }
+
+    self.takeBook = (userData) => {
+        return new Promise((resolve, reject) => {
+            userRepository.takeBook(userData)
+            .then(result => {
+                libraryRepository.take(userData.namebook)
+                .then(result => resolve(result))
+                .catch(err => reject(err));
+            })
+            .catch(err => reject(err));
+        });	
+    }
+
+    self.returnBook = (userData) => {
+        return new Promise((resolve, reject) => {
+            userRepository.returnBook(userData.namebook)
+            .then(result => resolve(result))
+            .catch(err => reject(err));
+        });	
+    }
+
+    function checkEmptyField(userData) {
         let result = false;
-        console.log(Zone.current.data);
-        
-        for (let index in Zone.current.data) {
-            console.log(index);
-            let field = Zone.current.data[index];
-            
-            console.log(typeof field);
-            console.log(field);
-            
+
+        for (let index in userData) {
+            let field = userData[index];            
             field = field.replace(/\s*/g, '');
 
-            if (field === "") result = true
+            if (field === "") {
+                result = true;
+                break;
+            }
         }
-        
+
         return result;
     }
 
-    function checkRegExLogin(login) { return /^[a-zA-Z1-9].{4,16}$/.test(login); }
-    function checkRegExPassword(pass) { return /^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/.test(pass) && pass.length > 7; }
-    function checkRegExEmail(email) { return /(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/.test(email); }	
+    function delEmptyFieldForUpdate(userData) {
+        for (let index in userData) {
+            let field = userData[index];                
+            field = field.replace(/\s*/g, '');
+    
+            if (field === "") delete userData[index];
+        }
+
+        return userData;
+    }
+    function checkRegExpLogin(login) { return /^[a-zA-Z1-9].{4,16}$/.test(login); }
+    function checkRegExpPassword(pass) { return /^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/.test(pass) && pass.length > 7; }
+    function checkRegExpEmail(email) { return /(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/.test(email); }	
 }
