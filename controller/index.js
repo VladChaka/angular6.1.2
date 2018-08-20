@@ -149,7 +149,7 @@ router.post('/books', (req, res) => {
     
     libraryDataService.add(bookData)
     .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
+    .catch(err => {console.log(err.message); res.status(err.status).json({ error: err.message })});
 });
 
 router.post('/books/:bookId/photo', (req, res) => {

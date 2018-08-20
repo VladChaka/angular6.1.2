@@ -59,7 +59,7 @@ function Library() {
 
     self.add = bookData => {
         return new Promise((resolve, reject) => {
-            findOne({ username: userData.login })
+            findOne({ username: bookData.login })
             .then(user => {
                 if (user.post !== 'Administrator') {
                     reject({ message: 'No access.', status: 403 });
@@ -78,7 +78,7 @@ function Library() {
 
     self.update = bookData => {
         return new Promise((resolve, reject) => {
-            findOne({ username: userData.login })
+            findOne({ username: bookData.login })
             .then(user => {
                 if (user.post !== 'Administrator') {
                     reject({ message: 'No access.', status: 403 });
