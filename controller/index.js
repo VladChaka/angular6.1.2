@@ -152,7 +152,17 @@ router.post('/books', (req, res) => {
     .catch(err => {console.log(err.message); res.status(err.status).json({ error: err.message })});
 });
 
+router.post('/books/:bookId/photo', (req, res) => {
+    let id = req.params.bookId,
+        path = req.body.path;
 
+    libraryDataService.upadtePhoto(pathToPhoto, id)
+    .then(() => {
+        res.status(200).sendFile(path);
+        // res.status(200).json(result);
+    })
+    .catch(err => res.status(err.status).json({ error: err.message }));
+});
 
 router.post('/books/:bookId/photo', (req, res) => {
     if (!req.files) return res.status(400).json({ error: 'No files uploaded.' });
