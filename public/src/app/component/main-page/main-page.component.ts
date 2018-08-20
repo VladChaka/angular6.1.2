@@ -15,40 +15,47 @@ import { TokenService } from '../../service/token.service';
   styleUrls: ['./main-page.component.less']
 })
 export class MainPageComponent implements OnInit {
+
+    users: Users[];
+    countUsers: number;
     token: string = localStorage['token'] || sessionStorage['token'];
 
+    filterByDate: boolean = true;
     showUserProfile: boolean;
 
+
+    currentPage: number = 1;
+    numberOfPages: number = 1;
     pageSize: number = 18;
 
     constructor(
-        private userService: UserService,
+        protected userService: UserService,
         private formService: FormService,
-        private remoteService: RemoteService,
-        private authenticationService: AuthenticationService,
-        private router: Router
+        protected remoteService: RemoteService,
+        protected authenticationService: AuthenticationService,
+        protected router: Router
     ) { }
 
     ngOnInit() {
-        // this.getUsers();
+        this.getUsers();
     }
 
-    // getUsers(): void {
-    //     this.userService.getAll(this.token)
-    //     .subscribe(
-    //         users => {
-    //
-    //             console.log(this.token);
-    //             console.log(users);
-    //             this.users = users;
-    //             this.convertDate(this.users);
-    //
-    //             this.countUsers = users.length;
-    //             this.numberOfPages = Math.ceil(users.length / this.pageSize);
-    //         },
-    //         err => console.log("err",err)
-    //     );
-    // }
+    getUsers(): void {
+        this.userService.getAll(this.token)
+        .subscribe(
+            users => {
+
+                console.log(this.token);
+                console.log(users);
+                this.users = users;
+                this.convertDate(this.users);
+
+                this.countUsers = users.length;
+                this.numberOfPages = Math.ceil(users.length / this.pageSize);
+            },
+            err => console.log("err",err)
+        );
+    }
 
     convertDate(users: Users[]): void {
         users.map((element: any) => {
@@ -67,7 +74,7 @@ export class MainPageComponent implements OnInit {
     }
 
     logout(): void {
-        // this.users = undefined;
+        this.users = undefined;
         this.authenticationService.logout();
     }
 
