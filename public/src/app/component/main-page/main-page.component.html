@@ -22,9 +22,9 @@
          class="users-block">
         <ul class="users-menu">
             <li class="dashboard-title">
-                <p class="active">Users <i class="fas fa-users"></i></p>
+                <p class="active" routerLink="users">Users <i class="fas fa-users"></i></p>
                 <span></span>
-                <p>Books <i class="fas fa-book"></i></p>
+                <p routerLink="books">Books <i class="fas fa-book"></i></p>
             </li>
             <li>
                 <button>
@@ -74,8 +74,8 @@
                     </div>
                 </div>
             </div>
-
-            <user-panel *ngFor="let user of users | slice:0:pageSize"  [user]="user" [filterByDate]="filterByDate" [filterByRating]="filterByRating"></user-panel>
+            <router-outlet></router-outlet>
+            <!-- <user-panel *ngFor="let user of users | slice:0:pageSize"  [user]="user" [filterByDate]="filterByDate" [filterByRating]="filterByRating"></user-panel> -->
 
             <!--<div class="dashboard-caption">-->
                 <!--<p class="route">Users <i class="fas fa-angle-right"></i> Ignat <i class="fas fa-angle-right"></i> Modify</p>-->
@@ -93,4 +93,3 @@
         </div>
     </div>
 </div>
-<!--<router-outlet></router-outlet>-->

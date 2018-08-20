@@ -6,7 +6,15 @@ import {Component, OnInit, Input, ChangeDetectionStrategy} from '@angular/core';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserPanelComponent implements OnInit{
-
+user = {
+id: "rfawqw1rfasevq3r1",
+     username: "Vladislav",
+       email:"vlad4402@mail.com",
+       fullname: "Vladislav Chaka",
+       password: "vlad44478",
+       phone: "5125113563",
+       post:"odmen"
+}
     pageSize: number = 18;
 
     @Input() user: string;

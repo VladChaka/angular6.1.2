@@ -1,4 +1,18 @@
+<div class="dashboard-caption">
+                <p class="route">Users <i class="fas fa-angle-right"></i> Ignat <i class="fas fa-angle-right"></i> Modify</p>
+                <ul>
+                    <li routerLink="user.id">User modification <i class="fas fa-user-cog"></i></li>
+                    <li routerLink="books" class="active">Book list <i class="fas fa-swatchbook"></i></li>
+                    <li routerLink="librarycard">Books at user <i class="fas fa-bookmark"></i></li>
+                </ul>
+                <div class="close-button"><i class="fas fa-backspace" (click)=" closeUserProfile()"></i></div>
+            </div>
 
+            <div class="user-dashboard">
+              <router-outlet></router-outlet>
+                <!-- <user-profile></user-profile> -->
+                <!-- <library-card></library-card> -->
+            </div>
 <form class="user-edit"
           name="userEdit"
           id="userEdit"

@@ -54,7 +54,7 @@ const routes: Routes = [
     },
     {
         path: '',
-        redirectTo: '/login',
+        redirectTo: '/dashboard',
         pathMatch: 'full',
         // canActivate: [AuthenticationGuard]
     },

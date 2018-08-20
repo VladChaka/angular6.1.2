@@ -4,8 +4,9 @@
   <div [hidden]="!filterByDate">{{user.regDate}}</div>
   <div [hidden]="!filterByRating">{{user.rating}}</div>
   <div></div>
-  <button class="list-user-button">
+  <button [routerLink]="user.id" class="list-user-button">
     <span>Open user profile</span>
     <i class="fas fa-user"></i>
   </button>
 </div>
+<router-outlet></router-outlet>

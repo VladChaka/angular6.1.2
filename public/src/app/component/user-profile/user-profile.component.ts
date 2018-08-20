@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ActivatedRoute } from '@angular/router';
 import { FormService } from '../../service/form.service';
 
 @Component({
@@ -17,7 +17,9 @@ export class UserProfileComponent implements OnInit {
        phone: "5125113563",
        post:"odmen"
 }
-  constructor(protected formService: FormService) { }
+  constructor(protected formService: FormService, private ar: ActivatedRoute) {
+  ar.params.subscribe(param => console.log(param));
+   }
 
   ngOnInit() {
   }
