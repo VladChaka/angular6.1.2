@@ -471,6 +471,9 @@ authorization-form * {
     flex-basis: 25%;
   }
 }
+.list-user-block.active, .list-user-names.active{
+  display: none;
+}
 .list-user-block:hover .list-user-button{
   display: flex;
 }
@@ -641,7 +644,6 @@ authorization-form * {
   display: flex;
   font-size: 1rem;
   color: @color1;
-  padding: 15px 30px;
   border: 5px solid @color3;
   border-top: none;
   text-align: left;
@@ -649,7 +651,9 @@ authorization-form * {
   input:-ms-input-placeholder { color: @color2; }
   input::-ms-input-placeholder { color: @color2; }
   input::placeholder { color: @color2; }
-
+>*{
+  padding: 15px 30px;
+}
   .user-profile-title{
     display: flex;
     justify-content: space-around;

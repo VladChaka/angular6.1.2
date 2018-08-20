@@ -22,9 +22,9 @@
          class="users-block">
         <ul class="users-menu">
             <li class="dashboard-title">
-                <p class="active" routerLink="users">Users <i class="fas fa-users"></i></p>
+                <p routerLink="users" routerLinkActive="active">Users <i class="fas fa-users"></i></p>
                 <span></span>
-                <p routerLink="books">Books <i class="fas fa-book"></i></p>
+                <p routerLink="books" routerLinkActive="active">Books <i class="fas fa-book"></i></p>
             </li>
             <li>
                 <button>
@@ -39,7 +39,7 @@
 
 
         <div class="users-list">
-            <div class="list-user-names">
+            <div class="list-user-names" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" >
                 <div>Full Name</div>
                 <div>User Login</div>
                 <div class="filters-order">

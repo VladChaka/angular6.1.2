@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location} from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { FormService } from '../../service/form.service';
 
@@ -17,13 +18,19 @@ export class UserProfileComponent implements OnInit {
        phone: "5125113563",
        post:"odmen"
 }
-  constructor(protected formService: FormService, private ar: ActivatedRoute) {
-  ar.params.subscribe(param => console.log(param));
+  constructor(private formService: FormService,
+              private route: ActivatedRoute,
+              private location: Location) {
+
    }
 
-  ngOnInit() {
-  }
-
+    ngOnInit(): void {
+        console.log(this.location);
+        console.log(this.route.params);
+    }
+    // goBack(): void {
+    //     this.location.go('dashboard/users');
+    // }
   closeUserProfile(): void {
     this.formService.closeUserProfile();
 }

@@ -1,29 +1,25 @@
 <div class="dashboard-caption">
                 <p class="route">Users <i class="fas fa-angle-right"></i> Ignat <i class="fas fa-angle-right"></i> Modify</p>
                 <ul>
-                    <li routerLink="user.id">User modification <i class="fas fa-user-cog"></i></li>
-                    <li routerLink="books" class="active">Book list <i class="fas fa-swatchbook"></i></li>
-                    <li routerLink="librarycard">Books at user <i class="fas fa-bookmark"></i></li>
+                    <li routerLink="books" routerLinkActive="active">Book list <i class="fas fa-swatchbook"></i></li>
+                    <li routerLink="librarycard" routerLinkActive="active">Books at user <i class="fas fa-bookmark"></i></li>
                 </ul>
-                <div class="close-button"><i class="fas fa-backspace" (click)=" closeUserProfile()"></i></div>
+                <div class="close-button"><i class="fas fa-backspace" routerLink="../"></i></div>
             </div>
 
-            <div class="user-dashboard">
-              <router-outlet></router-outlet>
-                <!-- <user-profile></user-profile> -->
-                <!-- <library-card></library-card> -->
-            </div>
-<form class="user-edit"
+
+<div class="user-dashboard">
+    <form class="user-edit"
           name="userEdit"
           id="userEdit"
           ng-submit=" editUser()"
           novalidate>
         <input type="hidden"
                [(ngModel)]=" userProfile.id">
-    <div class="user-profile-title">
-        <div><img src="/assets/user-default.jpg.png"></div>
-        <p>{{userProfile.username}}</p>
-    </div>
+        <div class="user-profile-title">
+            <div><img src="/assets/user-default.jpg.png"></div>
+            <p>{{userProfile.username}}</p>
+        </div>
         <div>
             <span>E-mail</span>
             <input ng-class="{ 'invalid' : userEdit.email.$invalid && userEdit.email.$dirty }"
@@ -116,3 +112,7 @@
             </button>
         </div>
     </form>
+    <router-outlet></router-outlet>
+    <!-- <user-profile></user-profile> -->
+    <!-- <library-card></library-card> -->
+</div>
