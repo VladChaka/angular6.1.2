@@ -22,9 +22,9 @@ function UserDataServise (userRepository, libraryRepository) {
         });
     }
 
-    self.findOne = (username) => {	
+    self.findOne = (id) => {
         return new Promise((resolve, reject) => {
-            userRepository.getOne('username', username)
+            userRepository.getOne('_id', id)
             .then(result => resolve(result))
             .catch(err => reject(err));
         });	
@@ -86,28 +86,32 @@ function UserDataServise (userRepository, libraryRepository) {
         });	
     }
 
-    self.delete = (username) => {
+    self.delete = (userData) => {
         return new Promise((resolve, reject) => {
-            userRepository.delete(username)
+            userRepository.delete(userData)
             .then(result => resolve(result))
             .catch(err => reject(err));
         });	
     }
 
-    self.getBooks = (username) => {
+    self.getBooks = (id) => {
         return new Promise((resolve, reject) => {
-            userRepository.getBooks(username)
+            userRepository.getBooks(id)
             .then(result => resolve(result))
             .catch(err => reject(err));
         });
     }
 
-    self.takeBook = (userData) => {
+    self.takeBook = (id) => {
         return new Promise((resolve, reject) => {
-            userRepository.takeBook(userData)
-            .then(result => {
-                libraryRepository.take(userData.namebook)
-                .then(result => resolve(result))
+            libraryRepository.getOne(id.bookId)
+            .then(book => {
+                userRepository.takeBook(id, book)
+                .then(result => {
+                    libraryRepository.take(id.bookId)
+                    .then(() => resolve(result))
+                    .catch(err => reject(err));
+                })
                 .catch(err => reject(err));
             })
             .catch(err => reject(err));
@@ -116,8 +120,16 @@ function UserDataServise (userRepository, libraryRepository) {
 
     self.returnBook = (userData) => {
         return new Promise((resolve, reject) => {
-            userRepository.returnBook(userData.namebook)
-            .then(result => resolve(result))
+            libraryRepository.getOne(userData.bookId)
+            .then(book => {
+                userRepository.returnBook(userData, book)
+                .then(result => {
+                    libraryRepository.return(userData.bookId)
+                    .then(() => resolve(result))
+                    .catch(err => reject(err));
+                })
+                .catch(err => reject(err));
+            })
             .catch(err => reject(err));
         });	
     }
@@ -126,7 +138,7 @@ function UserDataServise (userRepository, libraryRepository) {
         let result = false;
 
         for (let index in userData) {
-            let field = userData[index];            
+            let field = userData[index] + '';   
             field = field.replace(/\s*/g, '');
 
             if (field === "") {
@@ -139,14 +151,16 @@ function UserDataServise (userRepository, libraryRepository) {
     }
 
     function delEmptyFieldForUpdate(userData) {
-        for (let index in userData) {
-            let field = userData[index];                
+        let result = userData;
+
+        for (let index in result) {
+            let field = result[index] + ''; 
             field = field.replace(/\s*/g, '');
     
-            if (field === "") delete userData[index];
+            if (field === "") delete result[index];
         }
 
-        return userData;
+        return result;
     }
     function checkRegExpLogin(login) { return /^[a-zA-Z1-9].{4,16}$/.test(login); }
     function checkRegExpPassword(pass) { return /^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/.test(pass) && pass.length > 7; }

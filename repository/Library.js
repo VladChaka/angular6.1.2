@@ -25,69 +25,90 @@ function Library(){
         return new Promise((resolve, reject) => {            
             self.SchemaModel.find({ count: { $gt: 0 } })
             .then((books) => resolve(books))
-            .catch((err) => reject({ message: err.message, status: 400 }));
+            .catch((err) => reject({ error: err.message, status: 400 }));
         });
     }
 
-    self.getOne = (book) => {
+    self.getOne = (id) => {
         return new Promise((resolve, reject) => {
-            self.SchemaModel.findOne({ bookname: book })
+            findOne({ _id: id })
             .then((book) => resolve(book))
-            .catch((err) => reject({ message: err.message, status: 400 }));
+            .catch((err) => reject({ error: err.message, status: 400 }));
         });
     }
 
     self.add = (bookData) => {
         return new Promise((resolve, reject) => {
             const new_book = new self.SchemaModel(bookData);
-            console.log(new_book);
-            
             new_book.save()
             .then(book => resolve(book))
-            .catch(err => {console.log(err.message); reject({ message: err.message, status: 500 })});
+            .catch(err => reject({ error: err.message, status: 500 }));
         });
     }
 
     self.update = (bookData) => {
         return new Promise((resolve, reject) => {
-            self.SchemaModel.findOneAndUpdate(
+            findOneAndUpdate(
                 { bookname: bookData.bookname },
                 bookData
             )
             .then((book) => resolve(book))
-            .catch((err) => reject({ message: err.message, status: 400 }));
+            .catch((err) => reject({ error: err.message, status: 400 }));
         });
     }
 
-    self.take = (bookname) => {
+    self.take = (id) => {
         return new Promise((resolve, reject) => {
-            self.SchemaModel.findOne({ bookname: bookname })
-            .then((book) => {
-                self.SchemaModel.findOneAndUpdate(
-                    { bookname: book.bookname },
-                    { count: book.count - 1 }
-                )
-                .then((book) => resolve(book))
-                .catch((err) => reject({ message: err.message, status: 400 }));
+            findOne({ _id: id })
+            .then((book) => {                
+                if (book.count === 0 || book.count < 1) {
+                    reject({ error: 'Not available.', status: 400 })
+                } else {
+                    findOneAndUpdate([
+                        { bookname: book.bookname },
+                        { count: book.count - 1 }
+                    ])
+                    .then(book => resolve(book))
+                    .catch(err => reject({ error: err.message, status: 400 }));
+                }
             })
-            .catch((err) => reject({ message: err.message, status: 400 }));
+            .catch((err) => reject({ error: err.message, status: 400 }));
             
         });
     }
 
-    self.return = (bookname) => {
+    self.return = (id) => {
         return new Promise((resolve, reject) => {
-            self.SchemaModel.findOne({ bookname: bookname })
+            findOne({ _id: id })
             .then((book) => {
-                self.SchemaModel.findOneAndUpdate(
+                findOneAndUpdate(
                     { bookname: book.bookname },
                     { count: book.count + 1 }
                 )
                 .then((book) => resolve(book))
-                .catch((err) => reject({ message: err.message, status: 400 }));
+                .catch((err) => reject({ error: err.message, status: 400 }));
             })
-            .catch((err) => reject({ message: err.message, status: 400 }));
+            .catch((err) => reject({ error: err.message, status: 400 }));
             
+        });
+    }
+
+    function findOne(query) {
+        return new Promise((resolve, reject) => {
+            self.SchemaModel.findOne(query)
+            .then(user => {
+                resolve(user);
+            })
+            .catch(err => reject({ error: err.message, status: 400 }));
+        });
+    }
+
+    function findOneAndUpdate(query, data) {
+        return new Promise((resolve, reject) => {
+            
+            self.SchemaModel.findOneAndUpdate(query, data)
+            .then(user => resolve(user))
+            .catch(err => reject({ error: err.message, status: 500 }));
         });
     }
 }

@@ -55,19 +55,20 @@ app.use(express.static(__dirname + '/public_chameleon47'));
 
 app.use((req, res, next) => {
     const token = req.body.token || req.query.token || req.headers['x-access-token'],
-          decoded = jwt.decode(token) || '';
+          decoded = jwt.decode(token) || '';          
     
     Zone.current.fork({}).run(() => {
         Zone.current.data = {
-            id: req.body.id || req.query.id,
             username: req.body.username || '',
             login: decoded.username || '',
             email: req.body.email || '',
             phone: req.body.phone || '',
+            post: req.body.post || '',
             password: req.body.password || '',
             fullname: req.body.fullname || '',
             bookname: req.body.bookname || '',
-            bookcount: req.body.bookcount || ''
+            bookcount: req.body.bookcount || '',
+            rating: req.body.rating || ''
         }
         next();
     });

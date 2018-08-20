@@ -25,12 +25,12 @@ router.post('/login', (req, res) => {
 router.get('/users', (req, res) => {
     userDataServise.findAll()
     .then(result => res.status(200).json(result))
-    .catch(err => {console.log(err.message); res.status(500).json({ error: err.message })});
+    .catch(err => res.status(500).json({ error: err.message }));
 });
 
-router.get('/users/:id', (req, res) => {
-    let username = Zone.current.data.username;
-    userDataServise.findOne(username)
+router.get('/users/:userId', (req, res) => {
+    let id = req.params.userId;
+    userDataServise.findOne(id)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
@@ -47,13 +47,15 @@ router.post('/users', (req, res) => {
         regDate: Date.now(),
         photo: path.join(__dirname, '..', 'tmp', 'standart.png')
     };
-    userDataServise.add()
+    
+    userDataServise.add(userData)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
-router.put('/users/:id', (req, res) => {
+router.put('/users/:userId', (req, res) => {
     let userData = {
+        login: Zone.current.data.login,
         username: Zone.current.data.username,
         email: Zone.current.data.email,
         post: Zone.current.data.post,
@@ -62,12 +64,13 @@ router.put('/users/:id', (req, res) => {
         fullname: Zone.current.data.fullname,
         rating: Zone.current.data.rating
     };
+    
     userDataServise.update(userData)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
-router.post('/users/:id/photo', (req, res) => {
+router.post('/users/:userId/photo', (req, res) => {
         if (!req.files) return res.status(400).json({ error: 'No files uploaded.' });
         let username = Zone.current.data.username,
             photo = req.files.image,
@@ -82,36 +85,39 @@ router.post('/users/:id/photo', (req, res) => {
         .catch(err => res.status(500).json({ error: err.message }));
 });
 
-router.delete('/users/:id', (req, res) => {
-    let username = Zone.current.data.username;
-    userDataServise.delete(username)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
-});
-
-router.get('/users/:id/books', (req, res) => {
-    let username = Zone.current.data.username;
-    userDataServise.getBooks(username)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
-});
-
-router.post('/users/:id/books/:id', (req, res) => {
+router.delete('/users/:userId', (req, res) => {
     let userData = {
-        username: Zone.current.data.username,
-        bookname: Zone.current.data.bookname
-    };
-    userDataServise.takebook(userData)
+        id: req.params.userId,
+        login: Zone.current.data.login
+    };    
+    userDataServise.delete(userData)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
-router.put('/users/:id/books/:id', (req, res) => {
+router.get('/users/:userId/books', (req, res) => {
+    let id = req.params.userId;
+    userDataServise.getBooks(id)
+    .then(result => res.status(200).json(result))
+    .catch(err => res.status(err.status).json({ error: err.message }));
+});
+
+router.post('/users/:userId/books/:bookId', (req, res) => {
     let userData = {
-        username: Zone.current.data.username,
-        bookname: Zone.current.data.bookname
+        userId: req.params.userId,
+        bookId: req.params.bookId
+    };    
+    userDataServise.takeBook(userData)
+    .then(result => res.status(200).json(result))
+    .catch(err => res.status(err.status).json({ error: err.message }));
+});
+
+router.put('/users/:userId/books/:bookId', (req, res) => {
+    let userData = {
+        userId: req.params.userId,
+        bookId: req.params.bookId
     };
-    userDataServise.return(userData)
+    userDataServise.returnBook(userData)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
@@ -126,7 +132,7 @@ router.get('/books', (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }));
 });
 
-router.get('/books/:id', (req, res) => {
+router.get('/books/:bookId', (req, res) => {
     let book = Zone.current.data.bookname;
     libraryDataService.findOne(book)
     .then(result => res.status(200).json(result))
@@ -139,13 +145,12 @@ router.post('/books', (req, res) => {
         count: Zone.current.data.bookcount
     };
     
-    console.log(bookData);
     libraryDataService.add(bookData)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
-router.put('/books/:id', (req, res) => {
+router.put('/books/:bookId', (req, res) => {
     let bookData = {
         bookname: Zone.current.data.bookname,
         count: Zone.current.data.bookCount
