@@ -125,13 +125,13 @@ router.put('/users/:userId/books/:bookId', (req, res) => {
  */
 
 router.get('/books', (req, res) => {
-    libraryDataService.findAll()
+    libraryDataService.getAll()
     .then(result => res.status(200).json(result))
     .catch(err => res.status(500).json({ error: err.message }));
 });
 
 router.get('/books/:bookId', (req, res) => {
-    libraryDataService.findOne(req.body.bookname)
+    libraryDataService.getOne(req.body.bookname)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
@@ -151,6 +151,8 @@ router.post('/books', (req, res) => {
     .then(result => res.status(200).json(result))
     .catch(err => {console.log(err.message); res.status(err.status).json({ error: err.message })});
 });
+
+
 
 router.post('/books/:bookId/photo', (req, res) => {
     if (!req.files) return res.status(400).json({ error: 'No files uploaded.' });
