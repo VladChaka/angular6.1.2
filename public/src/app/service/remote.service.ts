@@ -39,7 +39,7 @@ export class RemoteService {
         return this.checkToken(`http://localhost:4000/books`, token, null, 'get');
     }
     getImageBook(id: string, path:string, token: string): Observable<any> {
-        return this.checkToken(`http://localhost:4000/books/${id}/photo`, token, null, 'get');
+        return this.checkToken(`http://localhost:4000/books/${id}/photo`, token, path, 'post');
     }
     getOneBook(id: string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/books/${id}`, token, null, 'get');
