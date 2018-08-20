@@ -6,7 +6,7 @@ Core.module('app').service('app.userDataServise', UserDataServise);
 function UserDataServise (userRepository, libraryRepository) {
     let self = this;
 
-    self.login = (userData) => {
+    self.login = userData => {
         return new Promise((resolve, reject) => {
             userRepository.login(userData)
             .then(result => resolve(result))
@@ -22,7 +22,7 @@ function UserDataServise (userRepository, libraryRepository) {
         });
     }
 
-    self.findOne = (id) => {
+    self.findOne = id => {
         return new Promise((resolve, reject) => {
             userRepository.getOne('_id', id)
             .then(result => resolve(result))
@@ -30,7 +30,7 @@ function UserDataServise (userRepository, libraryRepository) {
         });	
     }
 
-    self.add = (userData) => {
+    self.add = userData => {
         return new Promise((resolve, reject) => {
             if (checkEmptyField(userData)) {
                 reject({ message: "Fields empty.", status: 400 });
@@ -55,7 +55,7 @@ function UserDataServise (userRepository, libraryRepository) {
         });
     }
 
-    self.update = (userData) => {
+    self.update = userData => {
         return new Promise((resolve, reject) => {
             let user = delEmptyFieldForUpdate(userData);
 
@@ -86,7 +86,7 @@ function UserDataServise (userRepository, libraryRepository) {
         });	
     }
 
-    self.delete = (userData) => {
+    self.delete = userData => {
         return new Promise((resolve, reject) => {
             userRepository.delete(userData)
             .then(result => resolve(result))
@@ -94,7 +94,7 @@ function UserDataServise (userRepository, libraryRepository) {
         });	
     }
 
-    self.getBooks = (id) => {
+    self.getBooks = id => {
         return new Promise((resolve, reject) => {
             userRepository.getBooks(id)
             .then(result => resolve(result))
@@ -102,7 +102,7 @@ function UserDataServise (userRepository, libraryRepository) {
         });
     }
 
-    self.takeBook = (id) => {
+    self.takeBook = id => {
         return new Promise((resolve, reject) => {
             libraryRepository.getOne(id.bookId)
             .then(book => {
@@ -118,7 +118,7 @@ function UserDataServise (userRepository, libraryRepository) {
         });	
     }
 
-    self.returnBook = (userData) => {
+    self.returnBook = userData => {
         return new Promise((resolve, reject) => {
             libraryRepository.getOne(userData.bookId)
             .then(book => {

@@ -29,8 +29,7 @@ router.get('/users', (req, res) => {
 });
 
 router.get('/users/:userId', (req, res) => {
-    let id = req.params.userId;
-    userDataServise.findOne(id)
+    userDataServise.findOne(req.params.userId)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
@@ -45,7 +44,7 @@ router.post('/users', (req, res) => {
         fullname: Zone.current.data.fullname,
         rating: '0',
         regDate: Date.now(),
-        photo: path.join(__dirname, '..', 'tmp', 'standart.png')
+        photo: path.join(__dirname, '..', 'tmp', 'users', 'standart.png')
     };
     
     userDataServise.add(userData)
@@ -74,7 +73,7 @@ router.post('/users/:userId/photo', (req, res) => {
         if (!req.files) return res.status(400).json({ error: 'No files uploaded.' });
         let username = Zone.current.data.username,
             photo = req.files.image,
-            pathToPhoto = path.join(__dirname, '..', 'tmp', `${username}.${photo.name}`);
+            pathToPhoto = path.join(__dirname, '..', 'tmp', 'users', `${username}.${photo.name}`);
 
         photo.mv(pathToPhoto)
         .then(() => {
@@ -96,8 +95,7 @@ router.delete('/users/:userId', (req, res) => {
 });
 
 router.get('/users/:userId/books', (req, res) => {
-    let id = req.params.userId;
-    userDataServise.getBooks(id)
+    userDataServise.getBooks(req.params.userId)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
@@ -133,16 +131,20 @@ router.get('/books', (req, res) => {
 });
 
 router.get('/books/:bookId', (req, res) => {
-    let book = Zone.current.data.bookname;
-    libraryDataService.findOne(book)
+    libraryDataService.findOne(req.body.bookname)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
 router.post('/books', (req, res) => {
     let bookData = {
-        bookname: Zone.current.data.bookname,
-        count: Zone.current.data.bookcount
+        bookname: req.body.bookname,
+        count: req.body.count,
+        description: req.body.description,
+        rating: 0,
+        author: req.body.author,
+        released: req.body.released,
+        photo: path.join(__dirname, '..', 'tmp', 'books', 'standart.png')
     };
     
     libraryDataService.add(bookData)
@@ -150,10 +152,25 @@ router.post('/books', (req, res) => {
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
+router.post('/books/:bookId/photo', (req, res) => {
+    if (!req.files) return res.status(400).json({ error: 'No files uploaded.' });
+    let id = req.params.bookId,
+        photo = req.files.image,
+        pathToPhoto = path.join(__dirname, '..', 'tmp', 'books', `${id}.${photo.name}`);
+
+    photo.mv(pathToPhoto)
+    .then(() => {
+        libraryDataService.upadtePhoto(pathToPhoto, id)
+        .then(() => res.status(200).json(result))
+        .catch(err => res.status(err.status).json({ error: err.message }));
+    })
+    .catch(err => res.status(500).json({ error: err.message }));
+});
+
 router.put('/books/:bookId', (req, res) => {
     let bookData = {
-        bookname: Zone.current.data.bookname,
-        count: Zone.current.data.bookCount
+        bookname: req.body.bookname,
+        count: req.body.count
     };    
     libraryDataService.update(bookData)
     .then(result => res.status(200).json(result))

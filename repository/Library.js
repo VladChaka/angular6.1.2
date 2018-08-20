@@ -4,7 +4,7 @@ let mongoose = require("mongoose"),
 
 Core.module('app').service('app.libraryRepository', Library);
 
-function Library(){
+function Library() {
     let self = this;
 
     self.BookSchema = new Schema({
@@ -16,51 +16,110 @@ function Library(){
         count: {
             type: Number,
             required: true
+        },
+        description: {
+            type: String,
+            required: true
+        },
+        author: {
+            type: String,
+            required: true
+        },
+        released: {
+            type: String,
+            required: true
+        },
+        photo: {
+            type: String,
+            required: true
+        },
+        rating: {
+            type: String,
+            required: true
         }
     });	
 
     self.SchemaModel = mongoose.model("Book", self.BookSchema);
 
     self.getAll = () => {
-        return new Promise((resolve, reject) => {            
+        return new Promise((resolve, reject) => {          
             self.SchemaModel.find({ count: { $gt: 0 } })
             .then((books) => resolve(books))
             .catch((err) => reject({ error: err.message, status: 400 }));
         });
     }
 
-    self.getOne = (id) => {
+    self.getOne = id => {
         return new Promise((resolve, reject) => {
             findOne({ _id: id })
-            .then((book) => resolve(book))
-            .catch((err) => reject({ error: err.message, status: 400 }));
-        });
-    }
-
-    self.add = (bookData) => {
-        return new Promise((resolve, reject) => {
-            const new_book = new self.SchemaModel(bookData);
-            new_book.save()
             .then(book => resolve(book))
-            .catch(err => reject({ error: err.message, status: 500 }));
+            .catch(err => reject({ error: err.message, status: 400 }));
         });
     }
 
-    self.update = (bookData) => {
+    self.add = bookData => {
         return new Promise((resolve, reject) => {
-            findOneAndUpdate(
-                { bookname: bookData.bookname },
-                bookData
-            )
-            .then((book) => resolve(book))
-            .catch((err) => reject({ error: err.message, status: 400 }));
+            findOne({ username: userData.login })
+            .then(user => {
+                if (user.post !== 'Administrator') {
+                    reject({ message: 'No access.', status: 403 });
+                    return;
+                }
+
+                const new_book = new self.SchemaModel(bookData);
+
+                new_book.save()
+                .then(book => resolve(book))
+                .catch(err => reject({ error: err.message, status: 500 }));
+            })
+            .catch(err => reject({ message: err.message, status: 500 }));
         });
     }
 
-    self.take = (id) => {
+    self.update = bookData => {
+        return new Promise((resolve, reject) => {
+            findOne({ username: userData.login })
+            .then(user => {
+                if (user.post !== 'Administrator') {
+                    reject({ message: 'No access.', status: 403 });
+                    return;
+                }
+
+                findOneAndUpdate(
+                    { bookname: bookData.bookname },
+                    bookData
+                )
+                .then(book => resolve(book))
+                .catch(err => reject({ error: err.message, status: 400 }));
+            })
+            .catch(err => reject({ message: err.message, status: 500 }));
+        });
+    }
+
+    self.updatePhoto = (pathToPhoto, id) => {
+        return new Promise((resolve, reject) => {
+            findOne({ username: userData.login })
+            .then(user => {
+                if (user.post !== 'Administrator') {
+                    reject({ message: 'No access.', status: 403 });
+                    return;
+                }
+
+                findOneAndUpdate(
+                    { _id: id },
+                    { photo: pathToPhoto }
+                )
+                .then(() => resolve({ message: 'Ok' }))
+                .catch(err => reject({ message: err.message, status: 500 }));
+            })
+            .catch(err => reject({ message: err.message, status: 500 }));
+        });
+    }
+
+    self.take = id => {
         return new Promise((resolve, reject) => {
             findOne({ _id: id })
-            .then((book) => {                
+            .then(book => {                
                 if (book.count === 0 || book.count < 1) {
                     reject({ error: 'Not available.', status: 400 })
                 } else {
@@ -72,23 +131,23 @@ function Library(){
                     .catch(err => reject({ error: err.message, status: 400 }));
                 }
             })
-            .catch((err) => reject({ error: err.message, status: 400 }));
+            .catch(err => reject({ error: err.message, status: 400 }));
             
         });
     }
 
-    self.return = (id) => {
+    self.return = id => {
         return new Promise((resolve, reject) => {
             findOne({ _id: id })
-            .then((book) => {
+            .then(book => {
                 findOneAndUpdate(
                     { bookname: book.bookname },
                     { count: book.count + 1 }
                 )
-                .then((book) => resolve(book))
-                .catch((err) => reject({ error: err.message, status: 400 }));
+                .then(book => resolve(book))
+                .catch(err => reject({ error: err.message, status: 400 }));
             })
-            .catch((err) => reject({ error: err.message, status: 400 }));
+            .catch(err => reject({ error: err.message, status: 400 }));
             
         });
     }

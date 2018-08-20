@@ -37,4 +37,12 @@ function LibraryDataService (libraryRepository) {
             .catch((err) => reject(err));
         });
     }
+
+    self.upadtePhoto = (pathToPhoto, id) => {
+        return new Promise((resolve, reject) => {
+            userRepository.updatePhoto(pathToPhoto, id)
+            .then(result => resolve(result))
+            .catch(err => reject(err));
+        });	
+    }
 }

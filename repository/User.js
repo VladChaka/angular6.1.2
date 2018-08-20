@@ -86,9 +86,18 @@ function UserRepository() {
 
     self.getAll = () => {
         return new Promise((resolve, reject) => {
-            self.SchemaModel.find({})
-            .then(users => {
-                let data = rebuildUserData(users, [
+            findOne({ username: userData.login })
+            .then(user => {
+                if (user.post !== 'Administrator') {
+                    reject({ message: 'No access.', status: 403 });
+                    return;
+                }
+
+                self.SchemaModel.find({})
+                .then(users => {
+                    let data = rebuildUserData(
+                        users,
+                        [
                             '_id',
                             'username',
                             'email',
@@ -99,10 +108,11 @@ function UserRepository() {
                             'regDate'
                         ]
                     );
-
-                resolve(data);
+                    resolve(data);
+                })
+                .catch(err => reject({ message: err.message }));
             })
-            .catch(err => reject({ message: err.message }));
+            .catch(err => reject({ message: err.message, status: 500 }));
         });
     }
 
@@ -131,27 +141,36 @@ function UserRepository() {
 
     self.add = (userData) => {
         return new Promise((resolve, reject) => {
-            const new_user = new self.SchemaModel(userData);
-
-            self.createHashPassword(new_user)
+            findOne({ username: userData.login })
             .then(user => {
-                user.save()
+                if (user.post !== 'Administrator') {
+                    reject({ message: 'No access.', status: 403 });
+                    return;
+                }
+
+                const new_user = new self.SchemaModel(userData);
+
+                self.createHashPassword(new_user)
                 .then(user => {
-                    let data = rebuildUserData(user, [
-                            '_id',
-                            'username',
-                            'email',
-                            'fullname',
-                            'phone',
-                            'post',
-                            'rating',
-                            'regDate',
-                            'photo',
-                            'books'
-                        ]
-                    );					
-                    resolve(data);
-                   })
+                    user.save()
+                    .then(user => {
+                        let data = rebuildUserData(user, [
+                                '_id',
+                                'username',
+                                'email',
+                                'fullname',
+                                'phone',
+                                'post',
+                                'rating',
+                                'regDate',
+                                'photo',
+                                'books'
+                            ]
+                        );					
+                        resolve(data);
+                    })
+                    .catch(err => reject({ message: err.message, status: 500 }));
+                })
                 .catch(err => reject({ message: err.message, status: 500 }));
             })
             .catch(err => reject({ message: err.message, status: 500 }));  
@@ -209,7 +228,7 @@ function UserRepository() {
         });
     }
 
-    self.getBooks = (id) => {  
+    self.getBooks = (id) => {
         return new Promise((resolve, reject) => {
             findOne({
                 _id: id,
