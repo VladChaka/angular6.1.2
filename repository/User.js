@@ -60,7 +60,7 @@ function UserRepository() {
         return new Promise((resolve, reject) => {
             findOne({ username: userData.username })
             .then(user => {
-                let error = { message: 'Authentication failed. Login or password wrong.' };
+                let error = { error: 'Authentication failed. Login or password wrong.' };
                 if (!user) {
                     reject(error);                    
                     return;
@@ -80,16 +80,16 @@ function UserRepository() {
                     user.password
                 );
             })
-            .catch(err => reject({ message: 'Authentication failed. Login or password wrong.' }));
+            .catch(() => reject({ error: 'Authentication failed. Login or password wrong.' }));
         });
     }
 
     self.getAll = (username) => {
         return new Promise((resolve, reject) => {
             findOne({ username: username })
-            .then(user => {
+            .then(user => {                
                 if (user.post !== 'Administrator') {
-                    reject({ message: 'No access.', status: 403 });
+                    reject({ error: 'No access.', status: 403 });
                     return;
                 }
 
@@ -110,16 +110,16 @@ function UserRepository() {
                     );
                     resolve(data);
                 })
-                .catch(err => reject({ message: err.message }));
+                .catch(err => reject({ error: err.message }));
             })
-            .catch(err => reject({ message: err.message, status: 500 }));
+            .catch(err => reject({ error: err.message, status: 500 }));
         });
     }
 
     self.getOne = (key, data) => {
         return new Promise((resolve, reject) => {
             findOne({ [key]: data })
-            .then(user => {
+            .then(user => {                
                 let userData = rebuildUserData(user, [
                             '_id',
                             'username',
@@ -127,15 +127,15 @@ function UserRepository() {
                             'fullname',
                             'phone',
                             'post',
-                            'photo',
                             'books',
                             'rating',
-                            'regDate'
+                            'regDate',
+                            'photo'
                         ]
                     );                    
                 resolve(userData);
             })
-            .catch(err => reject({ message: err.message, status: 400 }));
+            .catch(err => reject({ error: err.message, status: 400 }));
         });
     }
 
@@ -143,10 +143,10 @@ function UserRepository() {
         return new Promise((resolve, reject) => {
             findOne({ username: userData.login })
             .then(user => {
-                if (user.post !== 'Administrator') {
-                    reject({ message: 'No access.', status: 403 });
-                    return;
-                }
+                // if (user.post !== 'Administrator') {
+                //     reject({ error: 'No access.', status: 403 });
+                //     return;
+                // }
 
                 const new_user = new self.SchemaModel(userData);
 
@@ -163,17 +163,16 @@ function UserRepository() {
                                 'post',
                                 'rating',
                                 'regDate',
-                                'photo',
                                 'books'
                             ]
                         );					
                         resolve(data);
                     })
-                    .catch(err => reject({ message: err.message, status: 500 }));
+                    .catch(err => reject({ error: err.message, status: 500 }));
                 })
-                .catch(err => reject({ message: err.message, status: 500 }));
+                .catch(err => reject({ error: err.message, status: 500 }));
             })
-            .catch(err => reject({ message: err.message, status: 500 }));  
+            .catch(err => reject({ error: err.message, status: 500 }));  
         });
     }
 
@@ -182,7 +181,7 @@ function UserRepository() {
             findOne({ username: userData.login })
             .then(user => {
                 if (user.post !== 'Administrator') {
-                    reject({ message: 'No access.', status: 403 });
+                    reject({ error: 'No access.', status: 403 });
                     return;
                 }
 
@@ -190,25 +189,31 @@ function UserRepository() {
                 .then(user => {                    
                     findOneAndUpdate({ email: user.email }, user)
                     .then(() => resolve({ message: 'Ok' }))
-                    .catch(err => reject({ message: err.message, status: 400 }));
+                    .catch(err => reject({ error: err.message, status: 400 }));
                 })
-                .catch(err => reject({ message: err.message, status: 500 }));
+                .catch(err => reject({ error: err.message, status: 500 }));
             })
-            .catch(err => reject({ message: err.message, status: 500 }));
+            .catch(err => reject({ error: err.message, status: 500 }));
         });
     }
 
-    self.updatePhoto = (pathToPhoto, username) => {
+    self.updatePhoto = data => {
         return new Promise((resolve, reject) => {
-            findOneAndUpdate(
-                { username: username },
-                { photo: pathToPhoto }
-            )
+            findOne({ username: data.login })
             .then(user => {
-                let data = rebuildUserData(user);					
-                resolve(data);
+                if (user.post !== 'Administrator') {
+                    reject({ error: 'No access.', status: 403 });
+                    return;
+                }
+
+                findOneAndUpdate(
+                    { username: data.name },
+                    { photo: data.photo.name }
+                )
+                .then(() => resolve({ message: 'Ok' }))
+                .catch(err => reject({ error: err.message, status: 500 }));
             })
-            .catch(err => reject({ message: err.message, status: 500 }));
+            .catch(err => reject({ error: err.message, status: 500 }));
         });
     }
 
@@ -217,14 +222,14 @@ function UserRepository() {
             findOne({ username: userData.login })
             .then(user => {
                 if (user.post !== 'Administrator') {
-                    reject({ message: 'No access.', status: 403 });
+                    reject({ error: 'No access.', status: 403 });
                     return;
                 }                
                 self.SchemaModel.findOneAndRemove({ _id: userData.id })
                 .then(() => resolve({ message: 'ok' }))
-                .catch(err => reject({ message: err.message, status: 500 }));
+                .catch(err => reject({ error: err.message, status: 500 }));
             })
-            .catch(err => reject({ message: err.message, status: 500 }));
+            .catch(err => reject({ error: err.message, status: 500 }));
         });
     }
 
@@ -245,7 +250,7 @@ function UserRepository() {
                     resolve({ books: user.books });
                 }
             })
-            .catch((err) => reject({ message: err.message, status: 500 }));
+            .catch((err) => reject({ error: err.message, status: 500 }));
         });
     }
 
@@ -262,7 +267,7 @@ function UserRepository() {
             })
             .then((user) => {
                 if (user !== null) {
-                    reject({ message: 'User have this book.', status: 400 });
+                    reject({ message: 'User have this book.', status: 204 });
                     return;
                 } else {
                     findOneAndUpdate(
@@ -277,10 +282,10 @@ function UserRepository() {
                         }
                     )
                     .then(() => resolve({ message: 'Ok' }))
-                    .catch(err => reject({ message: err.message, status: 500 }));
+                    .catch(err => reject({ error: err.message, status: 500 }));
                 }
             })
-            .catch(err => reject({ message: err.message, status: 500 }));
+            .catch(err => reject({ error: err.message, status: 500 }));
         });
     }
 
@@ -297,7 +302,7 @@ function UserRepository() {
             })
             .then((user) => {
                 if (user === null) {
-                    reject({ message: 'User don\'t have this book.', status: 400 });
+                    reject({ message: 'User don\'t have this book.', status: 204 });
                     return;
                 } else {
                     findOneAndUpdate({
@@ -312,10 +317,10 @@ function UserRepository() {
                         { $set: { "books.$.dateReturned": Date.now() } }
                     )
                     .then(() => resolve({ message: 'Ok' }))
-                    .catch((err) => reject({ message: err.message, status: 500 }));
+                    .catch((err) => reject({ error: err.message, status: 500 }));
                 }
             })
-            .catch(err => reject({ message: err.message, status: 500 }));
+            .catch(err => reject({ error: err.message, status: 500 }));
         });
     }
 
@@ -334,18 +339,18 @@ function UserRepository() {
             const user = data;
             if (data.password !== undefined && data.password.length !== 0) {
                 if (!checkRegExpPassword(data.password)) {
-                    reject({ message: "Incorrect password" }, 400);
+                    reject({ error: "Incorrect password" }, 400);
                     return;
                 }
                 bcrypt.genSalt(5, (err, salt) => {
                     if (err) {
-                        reject({ message: err.message, status: 500 });
+                        reject({ error: err.message, status: 500 });
                         return;
                     }
 
                     bcrypt.hash(user.password, salt, null, (err, hash) => {
                         if (err) {
-                            reject({ message: err.message, status: 500 });
+                            reject({ error: err.message, status: 500 });
                             return;
                         }
                         user.password = hash;
@@ -359,12 +364,12 @@ function UserRepository() {
     };
 
     function findOne(query) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {            
             self.SchemaModel.findOne(query)
             .then(user => {
                 resolve(user);
             })
-            .catch(err => reject({ message: err.message, status: 400 }));
+            .catch(err => reject({ error: err.message, status: 400 }));
         });
     }
 
@@ -372,12 +377,12 @@ function UserRepository() {
         return new Promise((resolve, reject) => {
             self.SchemaModel.findOneAndUpdate(query, data)
             .then(user => resolve(user))
-            .catch(err => reject({ message: err.message, status: 500 }));
+            .catch(err => reject({ error: err.message, status: 500 }));
         });
     }
 
     function rebuildUserData(userData, addField) {
-        let user = [];            
+        let user = [];
 
         if (userData.length === undefined) {
             user = buildUserData(userData, addField);

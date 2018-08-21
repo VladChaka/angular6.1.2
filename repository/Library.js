@@ -62,7 +62,7 @@ function Library() {
             findOne({ username: bookData.login })
             .then(user => {
                 if (user.post !== 'Administrator') {
-                    reject({ message: 'No access.', status: 403 });
+                    reject({ error: 'No access.', status: 403 });
                     return;
                 }
 
@@ -72,7 +72,7 @@ function Library() {
                 .then(book => resolve(book))
                 .catch(err => reject({ error: err.message, status: 500 }));
             })
-            .catch(err => reject({ message: err.message, status: 500 }));
+            .catch(err => reject({ error: err.message, status: 500 }));
         });
     }
 
@@ -81,7 +81,7 @@ function Library() {
             findOne({ username: bookData.login })
             .then(user => {
                 if (user.post !== 'Administrator') {
-                    reject({ message: 'No access.', status: 403 });
+                    reject({ error: 'No access.', status: 403 });
                     return;
                 }
 
@@ -92,27 +92,27 @@ function Library() {
                 .then(book => resolve(book))
                 .catch(err => reject({ error: err.message, status: 400 }));
             })
-            .catch(err => reject({ message: err.message, status: 500 }));
+            .catch(err => reject({ error: err.message, status: 500 }));
         });
     }
 
-    self.updatePhoto = (pathToPhoto, id) => {
+    self.updatePhoto = data => {
         return new Promise((resolve, reject) => {
-            findOne({ username: userData.login })
+            findOne({ username: data.login })
             .then(user => {
                 if (user.post !== 'Administrator') {
-                    reject({ message: 'No access.', status: 403 });
+                    reject({ error: 'No access.', status: 403 });
                     return;
                 }
 
                 findOneAndUpdate(
-                    { _id: id },
-                    { photo: pathToPhoto }
+                    { bookname: data.bookname },
+                    { photo: data.photo.name }
                 )
                 .then(() => resolve({ message: 'Ok' }))
-                .catch(err => reject({ message: err.message, status: 500 }));
+                .catch(err => reject({ error: err.message, status: 500 }));
             })
-            .catch(err => reject({ message: err.message, status: 500 }));
+            .catch(err => reject({ error: err.message, status: 500 }));
         });
     }
 

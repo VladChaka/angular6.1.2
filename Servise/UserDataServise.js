@@ -33,19 +33,19 @@ function UserDataServise (userRepository, libraryRepository) {
     self.add = userData => {
         return new Promise((resolve, reject) => {
             if (checkEmptyField(userData)) {
-                reject({ message: "Fields empty.", status: 400 });
+                reject({ error: "Fields empty.", status: 400 });
                 return;
             }
             if (!checkRegExpEmail(userData.email)) {
-                reject({ message: "Incorrect email.", status: 400 });
+                reject({ error: "Incorrect email.", status: 400 });
                 return;
             }
             if (!checkRegExpLogin(userData.username)) {
-                reject({ message: "Incorrect login.", status: 400 });
+                reject({ error: "Incorrect login.", status: 400 });
                 return;
             }
             if (!checkRegExpPassword(userData.password)) {
-                resolve({ message: "Incorrect password.", status: 400 });
+                resolve({ error: "Incorrect password.", status: 400 });
                 return;
             }
 
@@ -60,15 +60,15 @@ function UserDataServise (userRepository, libraryRepository) {
             let user = delEmptyFieldForUpdate(userData);
 
             if (user.password !== undefined && !checkRegExpPassword(user.password)) {
-                reject({ message: "Incorrect password.", status: 400 });
+                reject({ error: "Incorrect password.", status: 400 });
                 return;
             }
             if (user.email !== undefined && !checkRegExpEmail(user.email)) {
-                reject({ message: "Incorrect email.", status: 400 });
+                reject({ error: "Incorrect email.", status: 400 });
                 return;
             }
             if (user.username !== undefined && !checkRegExpLogin(user.username)) {
-                reject({ message: "Incorrect login.", status: 400 });
+                reject({ error: "Incorrect login.", status: 400 });
                 return;
             }
 
@@ -76,14 +76,6 @@ function UserDataServise (userRepository, libraryRepository) {
             .then(result => resolve(result))
             .catch(err => reject(err));
         });
-    }
-
-    self.upadtePhoto = (pathToPhoto, username) => {
-        return new Promise((resolve, reject) => {
-            userRepository.updatePhoto(pathToPhoto, username)
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-        });	
     }
 
     self.delete = userData => {

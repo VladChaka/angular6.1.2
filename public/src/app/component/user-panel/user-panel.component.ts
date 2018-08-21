@@ -1,6 +1,7 @@
 import {Component, OnInit, Input, ChangeDetectionStrategy} from '@angular/core';
 import {Users} from "../../model/users";
 import {UserService} from "../../service/user.service";
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'user-panel',
@@ -8,7 +9,7 @@ import {UserService} from "../../service/user.service";
     // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserPanelComponent implements OnInit{
-
+    router: string;
     users: Users[];
     countUsers: number;
     token: string = localStorage['token'] || sessionStorage['token'];
@@ -23,7 +24,8 @@ export class UserPanelComponent implements OnInit{
     // @Input() filterByDate: string;
     // @Input() filterByRating: string;
 
-    constructor(private userService: UserService) {
+    constructor(private userService: UserService, private _router: Router) {
+        this.router = _router.url;
     }
 
     ngOnInit() {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Location} from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { FormService } from '../../service/form.service';
+import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'user-profile',
@@ -9,24 +9,28 @@ import { FormService } from '../../service/form.service';
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
-  userProfileBtnText  = "Edit";
-   userProfile = {
-     username: "Vladislav",
-       email:"vlad4402@mail.com",
-       fullname: "Vladislav Chaka",
-       password: "vlad44478",
-       phone: "5125113563",
-       post:"odmen"
-}
+  userProfileBtnText:string = "Edit";
+    profileIsEdit:boolean = false;
+    token: string = localStorage['token'] || sessionStorage['token'];
+    userProfile: any;
   constructor(private formService: FormService,
               private route: ActivatedRoute,
-              private location: Location) {
+              private userService: UserService) {
 
    }
 
     ngOnInit(): void {
-        console.log(this.location);
-        console.log(this.route.params);
+        this.getOneUser();
+    }
+    getOneUser(): void {
+        this.userService.getOne(this.route.params.value.id, this.token)
+            .subscribe(
+                userProfile => {
+                    this.userProfile = userProfile;
+                    console.log(this.userProfile);
+                },
+                err => console.log("err",err)
+            );
     }
     // goBack(): void {
     //     this.location.go('dashboard/users');
@@ -34,5 +38,16 @@ export class UserProfileComponent implements OnInit {
   closeUserProfile(): void {
     this.formService.closeUserProfile();
 }
+    editProfile() {
+        console.log(this.profileIsEdit);
+        this.profileIsEdit = !this.profileIsEdit;
+        console.log(this.profileIsEdit);
+        if (this.profileIsEdit = true) {
+            this.userProfileBtnText = 'Submit'
+        } else {
+            this.profileIsEdit = !this.profileIsEdit;
+            this.userProfileBtnText = 'Edit'
+        }
+    }
 
 }

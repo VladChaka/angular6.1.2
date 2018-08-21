@@ -2,6 +2,7 @@ let express = require('express'),
     Core = require("../util/dataCore"),
     userDataServise = Core.userDataServise,
     libraryDataService = Core.libraryDataService,
+    photoDataService = Core.photoDataService,
     router = express.Router(),
     token__module = require('../util/token/token'),
     path = require('path');
@@ -45,7 +46,7 @@ router.post('/users', (req, res) => {
         fullname: Zone.current.data.fullname,
         rating: '0',
         regDate: Date.now(),
-        photo: path.join(__dirname, '..', 'tmp', 'users', 'standart.png')
+        photo: 'standart.png'
     };
     
     userDataServise.add(userData)
@@ -130,12 +131,12 @@ router.post('/books', (req, res) => {
         rating: 0,
         author: req.body.author,
         released: req.body.released,
-        photo: path.join(__dirname, '..', 'tmp', 'books', 'standart.png')
+        photo: 'standart.jpg'
     };
     
     libraryDataService.add(bookData)
     .then(result => res.status(200).json(result))
-    .catch(err => {console.log(err.message); res.status(err.status).json({ error: err.message })});
+    .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
 router.put('/books/:bookId', (req, res) => {
@@ -152,52 +153,50 @@ router.put('/books/:bookId', (req, res) => {
  * Photo
  */
 
-router.put('/users/:userId/photo', (req, res) => {
-    let path = req.body.path;
-
-    res.status(200).sendFile(path);
-});
-
-router.post('/users/:userId/photo', (req, res) => {
-    if (!req.files) return res.status(400).json({ error: 'No files uploaded.' });
-    let username = Zone.current.data.username,
-        photo = req.files.image,
-        pathToPhoto = path.join(__dirname, '..', 'tmp', 'users', `${username}.${photo.name}`);
-
-    photo.mv(pathToPhoto)
-    .then(() => {
-        userDataServise.upadtePhoto(pathToPhoto, username)
-        .then(() => res.status(200).json(result))
-        .catch(err => res.status(err.status).json({ error: err.message }));
-    })
-    .catch(err => res.status(500).json({ error: err.message }));
-});
-
-router.put('/books/:bookId/photo', (req, res) => {
-    let id = req.params.bookId,
-        path = req.body.path;
-
-    libraryDataService.upadtePhoto(pathToPhoto, id)
-    .then(() => {
-        res.status(200).sendFile(path);
-        // res.status(200).json(result);
-    })
+router.get('/users/:userId/photo', (req, res) => {
+    let data = {
+        id: req.params.userId,
+        user: true
+    };
+    photoDataService.getPhoto(data)
+    .then(result => res.status(200).sendFile(`${result}`))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
-router.post('/books/:bookId/photo', (req, res) => {
+router.put('/users/:userId/photo', (req, res) => {
     if (!req.files) return res.status(400).json({ error: 'No files uploaded.' });
-    let id = req.params.bookId,
-        photo = req.files.image,
-        pathToPhoto = path.join(__dirname, '..', 'tmp', 'books', `${id}.${photo.name}`);
+    let data = {
+        name: Zone.current.data.username,
+        login: Zone.current.data.login,
+        photo: req.files.image,
+        user: true
+    };
+    photoDataService.upadtePhoto(data)
+    .then(result => res.status(200).json(result))
+    .catch(err => res.status(err.status).json({ error: err.message }));
+});
 
-    photo.mv(pathToPhoto)
-    .then(() => {
-        libraryDataService.upadtePhoto(pathToPhoto, id)
-        .then(() => res.status(200).json(result))
-        .catch(err => res.status(err.status).json({ error: err.message }));
-    })
-    .catch(err => res.status(500).json({ error: err.message }));
+router.get('/books/:bookId/photo', (req, res) => {
+    let data = {
+        id: req.params.bookId,
+        user: false
+    };
+    photoDataService.getPhoto(data)
+    .then(result => res.status(200).sendFile(`${result}`))
+    .catch(err => res.status(err.status).json({ error: err.message }));
+});
+
+router.put('/books/:bookId/photo', (req, res) => {
+    if (!req.files) return res.status(400).json({ error: 'No files uploaded.' });
+    let data = {
+        name: req.body.bookname,
+        photo: req.files.image,
+        user: false,
+        login: Zone.current.data.login
+    };
+    photoDataService.upadtePhoto(data)
+    .then(result => res.status(200).json(result))
+    .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
 module.exports.router = router;
