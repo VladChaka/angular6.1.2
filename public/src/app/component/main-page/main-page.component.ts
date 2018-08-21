@@ -16,6 +16,7 @@ import { TokenService } from '../../service/token.service';
 })
 export class MainPageComponent implements OnInit {
 
+    router: string;
     users: Users[];
     countUsers: number;
     token: string = localStorage['token'] || sessionStorage['token'];
@@ -33,8 +34,10 @@ export class MainPageComponent implements OnInit {
         private formService: FormService,
         protected remoteService: RemoteService,
         protected authenticationService: AuthenticationService,
-        protected router: Router
-    ) { }
+        private _router: Router
+    ) {
+        this.router = _router.url;
+    }
 
     ngOnInit() {
         this.getUsers();
@@ -44,12 +47,8 @@ export class MainPageComponent implements OnInit {
         this.userService.getAll(this.token)
         .subscribe(
             users => {
-
-                console.log(this.token);
-                console.log(users);
                 this.users = users;
-                this.convertDate(this.users);
-
+                // this.convertDate(this.users);
                 this.countUsers = users.length;
                 this.numberOfPages = Math.ceil(users.length / this.pageSize);
             },
@@ -57,17 +56,17 @@ export class MainPageComponent implements OnInit {
         );
     }
 
-    convertDate(users: Users[]): void {
-        users.map((element: any) => {
-            let date: number = element.regDate * 1,
-                newDate = new Date(date),
-                day = newDate.getDate(),
-                month = newDate.getMonth() + 1,
-                year = newDate.getFullYear();
-
-            element.regDate = day + '.' + month + '.' + year;
-        });
-    }
+    // convertDate(users: Users[]): void {
+    //     users.map((element: any) => {
+    //         let date: number = element.regDate * 1,
+    //             newDate = new Date(date),
+    //             day = newDate.getDate(),
+    //             month = newDate.getMonth() + 1,
+    //             year = newDate.getFullYear();
+    //
+    //         element.regDate = day + '.' + month + '.' + year;
+    //     });
+    // }
 
     openAddForm(): void {
         this.formService.openAddForm();
