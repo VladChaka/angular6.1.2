@@ -1,13 +1,5 @@
     <div class="list-book-buttons">
-        <div class="filters-pages">
-            <button [disabled]="currentPage == 1" (click)="currentPage = currentPage - 1">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            {{currentPage}}/{{numberOfPages}}
-            <button [disabled] ="currentPage >=  countUsers / pageSize" (click)="currentPage = currentPage + 1">
-                <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
+        <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
         <div class="list-search">
             <input placeholder="Search Book">
             <i class="fab fa-searchengin"></i>

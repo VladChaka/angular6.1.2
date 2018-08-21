@@ -4,22 +4,21 @@ import {UserService} from "../../service/user.service";
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'user-panel',
-    templateUrl: './user-panel.component.html',
+    selector: 'users-menu',
+    templateUrl: './users-menu.component.html',
     // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserPanelComponent implements OnInit{
+export class UsersMenuComponent implements OnInit{
     router: string;
     users: Users[];
-    countUsers: number;
     token: string = localStorage['token'] || sessionStorage['token'];
     filterByDate: boolean = true;
     filterByRating: boolean = false;
     showUserProfile: boolean;
-    currentPage: number = 1;
-    numberOfPages: number = 1;
-    pageSize: number = 18;
 
+    currentPage: number = 1;
+    numberOfPages: number = 0;
+    pageSize: number = 20;
     // @Input() user: string;
     // @Input() filterByDate: string;
     // @Input() filterByRating: string;
@@ -31,13 +30,13 @@ export class UserPanelComponent implements OnInit{
     ngOnInit() {
         this.getUsers();
     }
+
     getUsers(): void {
         this.userService.getAll(this.token)
             .subscribe(
                 users => {
                     this.users = users;
                     this.convertDate(this.users);
-                    this.countUsers = users.length;
                     this.numberOfPages = Math.ceil(users.length / this.pageSize);
                 },
                 err => console.log("err",err)

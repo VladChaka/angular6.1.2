@@ -21,9 +21,6 @@ export class MainPageComponent implements OnInit {
     countUsers: number;
     token: string = localStorage['token'] || sessionStorage['token'];
 
-    filterByDate: boolean = true;
-    showUserProfile: boolean;
-
 
     currentPage: number = 1;
     numberOfPages: number = 1;

@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { MainPageComponent } from '../component/main-page/main-page.component';
 import { AuthenticationFormComponent } from "../component/authentication-form/authentication-form.component";
-import { UserPanelComponent } from "../component/user-panel/user-panel.component";
+import { UsersMenuComponent } from '../component/users-menu/users-menu.component';
+import { UsersPanelComponent } from '../component/users-panel/users-panel.component';
 import {BookListComponent} from "../component/book-list/book-list.component";
 import {UserProfileComponent} from "../component/user-profile/user-profile.component";
 import {LibraryCardComponent} from "../component/library-card/library-card.component";
@@ -26,14 +27,23 @@ const usersRoutes: Routes = [
         path: ':id',
         component: UserProfileComponent,
         children: userRoutes
-    }
+    },
+    {
+        path: '',
+        component: UsersPanelComponent
+    },
 ];
 
 const dashboardRoutes: Routes = [
     {
         path: 'users',
-        component: UserPanelComponent,
+        component: UsersMenuComponent,
         children: usersRoutes
+    },
+    {
+        path: 'myprofile',
+        component: UserProfileComponent,
+        children: userRoutes
     },
     {
         path: 'books',

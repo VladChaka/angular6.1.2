@@ -1,0 +1,27 @@
+
+<!--<div class="filters-pages">-->
+  <!--<button [disabled]="currentPage == 1" (click)="currentPage = currentPage - 1">-->
+    <!--<i class="fas fa-arrow-left"></i>-->
+  <!--</button>-->
+  <!--{{currentPage}}/{{numberOfPages}}-->
+  <!--<button [disabled] ="currentPage >=  countUsers / pageSize" (click)="currentPage = currentPage + 1">-->
+    <!--<i class="fas fa-arrow-right"></i>-->
+  <!--</button>-->
+<!--</div>-->
+
+<div class="pagination" *ngIf="numberOfPages > 0">
+  <div class="description">
+    <span class="page-counts">{{ getMin() }} - {{ getMax() }} of {{ numberOfPages }}</span>
+    <span class="page-totals">{{ totalPages() }} pages</span>
+  </div>
+  <div class="numbers">
+    <button class="link" (click)="onPrev()" [disabled]="currentPage === 1 || loading" [ngClass]="{ 'disabled': currentPage === 1 || loading }">&lt; Previous</button>
+
+    <button
+            *ngFor="let pageNum of getPages()"
+            (click)="onPage(pageNum)"
+            [ngClass]="{'active': pageNum === currentPage, 'disabled': loading}">{{ pageNum }}</button>
+
+    <button class="link" (click)="onNext(true)" [disabled]="lastPage() || loading" [ngClass]="{ 'disabled': lastPage() || loading }">Next &gt;</button>
+  </div>
+</div>
