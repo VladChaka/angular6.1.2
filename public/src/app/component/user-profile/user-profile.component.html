@@ -14,8 +14,8 @@
           id="userEdit"
           ng-submit=" editUser()"
           novalidate>
-        <input type="hidden"
-               [(ngModel)]=" userProfile.id">
+        <!--<input type="hidden"-->
+               <!--[(ngModel)]=" userProfile._id">-->
         <div class="user-profile-title">
             <div><img src="/assets/user-default.jpg.png"></div>
             <p>{{userProfile.username}}</p>
@@ -26,7 +26,7 @@
                    name="email"
                    [(ngModel)]=" userProfile.email"
                    type="email"
-                   [disabled]="true"
+                   [disabled]="!profileIsEdit"
                    placeholder="Enter email"></div>
         <div class="edit-email-used"
              ng-show=" emailConflict">
@@ -44,7 +44,7 @@
                    ng-required="true"
                    type="text"
                    name="post"
-                   [disabled]="true"
+                   [disabled]="!profileIsEdit"
                    [(ngModel)]=" userProfile.post"
                    placeholder="User post"></div>
         <p ng-show="userEdit.post.$error.required && userEdit.post.$dirty">
@@ -58,7 +58,7 @@
                    name="phone"
                    type="tel"
                    ng-required="true"
-                   [disabled]="true"
+                   [disabled]="!profileIsEdit"
                    [(ngModel)]=" userProfile.phone"
                    placeholder="Enter phone number"
                    tel-validation></div>
@@ -75,7 +75,7 @@
                    [(ngModel)]=" userProfile.password"
                    ng-minlength="8"
                    type="password"
-                   [disabled]="true"
+                   [disabled]="!profileIsEdit"
                    placeholder="Enter password"
                    pass-validation></div>
         <p class="text-error"
@@ -95,7 +95,7 @@
                    name="fullname"
                    [(ngModel)]=" userProfile.fullname"
                    type="text"
-                   [disabled]="true"
+                   [disabled]="!profileIsEdit"
                    placeholder="Full name of user"
                    name-validation></div>
         <p ng-show="userEdit.fullname.$error.required && userEdit.fullname.$dirty">
@@ -106,8 +106,7 @@
         </p>
         <div class="user-edit-btn">
             <p>All fields are required</p>
-            <button type="submit"
-            ><!-- [disabled]="!userEdit.$valid" -->
+            <button (click)="editProfile()">
                 {{userProfileBtnText}} <i class="fas fa-user-check"></i>
             </button>
         </div>
