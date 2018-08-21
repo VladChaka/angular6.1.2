@@ -23,7 +23,8 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/users', (req, res) => {
-    userDataServise.findAll()
+    let username = Zone.current.data.login; 
+    userDataServise.findAll(username)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(500).json({ error: err.message }));
 });
@@ -152,15 +153,9 @@ router.put('/books/:bookId', (req, res) => {
  */
 
 router.put('/users/:userId/photo', (req, res) => {
-    let id = req.params.bookId,
-        path = req.body.path;
+    let path = req.body.path;
 
-    libraryDataService.upadtePhoto(pathToPhoto, id)
-    .then(() => {
-        res.status(200).sendFile(path);
-        // res.status(200).json(result);
-    })
-    .catch(err => res.status(err.status).json({ error: err.message }));
+    res.status(200).sendFile(path);
 });
 
 router.post('/users/:userId/photo', (req, res) => {

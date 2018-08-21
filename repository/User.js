@@ -84,9 +84,9 @@ function UserRepository() {
         });
     }
 
-    self.getAll = () => {
+    self.getAll = (username) => {
         return new Promise((resolve, reject) => {
-            findOne({ username: userData.login })
+            findOne({ username: username })
             .then(user => {
                 if (user.post !== 'Administrator') {
                     reject({ message: 'No access.', status: 403 });

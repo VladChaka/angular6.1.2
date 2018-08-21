@@ -14,9 +14,9 @@ function UserDataServise (userRepository, libraryRepository) {
         });
     }
 
-    self.findAll = () => {
+    self.findAll = username => {
         return new Promise((resolve, reject) => {
-            userRepository.getAll()
+            userRepository.getAll(username)
             .then(result => { resolve(result) })
             .catch(err => { reject(err); });
         });
