@@ -23,31 +23,36 @@ export class UserProfileComponent implements OnInit {
         this.getOneUser();
     }
     getOneUser(): void {
-        this.userService.getOne(this.route.params.value.id, this.token)
-            .subscribe(
-                userProfile => {
-                    this.userProfile = userProfile;
-                    console.log(this.userProfile);
-                },
-                err => console.log("err",err)
-            );
+        this.route.params
+            .subscribe(params => {
+                this.userService.getOne(params.id, this.token)
+                    .subscribe(
+                        userProfile => {
+                            console.log(userProfile);
+
+                            this.userProfile = userProfile;
+                            console.log(this.userProfile);
+                        },
+                        err => console.log("err",err)
+                    );
+            });
     }
     // goBack(): void {
     //     this.location.go('dashboard/users');
     // }
-  closeUserProfile(): void {
-    this.formService.closeUserProfile();
-}
-    editProfile() {
-        console.log(this.profileIsEdit);
-        this.profileIsEdit = !this.profileIsEdit;
-        console.log(this.profileIsEdit);
-        if (this.profileIsEdit = true) {
-            this.userProfileBtnText = 'Submit'
-        } else {
-            this.profileIsEdit = !this.profileIsEdit;
-            this.userProfileBtnText = 'Edit'
-        }
-    }
+//   closeUserProfile(): void {
+//     this.formService.closeUserProfile();
+// }
+    // editProfile() {
+    //     console.log(this.profileIsEdit);
+    //     this.profileIsEdit = !this.profileIsEdit;
+    //     console.log(this.profileIsEdit);
+    //     if (this.profileIsEdit = true) {
+    //         this.userProfileBtnText = 'Submit'
+    //     } else {
+    //         this.profileIsEdit = !this.profileIsEdit;
+    //         this.userProfileBtnText = 'Edit'
+    //     }
+    // }
 
 }
