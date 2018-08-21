@@ -19,7 +19,6 @@
     </div>
 </div>
 <div class="list-books-container">
-    {{userBooks}}
 <div *ngFor="let book of userBooks" class="list-book-block">
 <div><img src="../../../assets/fightclub.jpg"></div>
 <div><p>Book Title:</p> {{ book.bookname}}</div>
@@ -27,44 +26,9 @@
 <div><p>Description:</p> {{book.description}}</div>
 <div><p>Release Date:</p> {{book.released}}</div>
 <div><p>Rating:</p> {{book.rating}}</div>
-<!--<button routerLink="users.id" class="list-user-button">-->
-<!--<span>Open user profile</span>-->
-<!--<i class="fas fa-user"></i>-->
-<!--</button>-->
+    <button class="list-book-button" type="submit"
+            (click)=" passBook()">
+        Pass a book
+    </button>
 </div>
 </div>
-    
-    <!-- <form class="library-card"
-          name="libraryCard"
-          id="libraryCard">
-        <div class="user-profile-title">
-            <p>Library Card</p>
-        </div>
-        <br>
-        <input type="hidden"
-               [(ngModel)]=" libraryCard.id">
-        <div>
-            <span>Book</span>
-            <input [(ngModel)]=" libraryCard.title"
-                   name="title"
-                   type="text"></div>
-        <div>
-            <span>Date of receiving</span>
-            <input [(ngModel)]=" libraryCard.date"
-                   name="date"
-                   type="text"></div>
-        <div class="library-card-btns">
-            <button type="submit"
-                    (click)=" takeBook()" 
-            >-->
-            <!-- [disabled]="!userEdit.$valid" -->
-                <!-- Take a book
-            </button>
-            <button type="submit"
-                    (click)=" passBook()" 
-            >-->
-            <!-- [disabled]="!userEdit.$valid" -->
-                <!-- Pass a book
-            </button>
-        </div>
-    </form> -->

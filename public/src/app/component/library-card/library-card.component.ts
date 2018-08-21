@@ -32,7 +32,7 @@ export class LibraryCardComponent implements OnInit {
         this.getUserBooks()
     }
 
-    getUserBooks(): void {     
+    getUserBooks(): void {
         this.route.parent.params
         .subscribe(
             params => {

@@ -27,9 +27,9 @@
     <div><p>Description:</p> {{book.description}}</div>
     <div><p>Release Date:</p> {{book.released}}</div>
     <div><p>Rating:</p> {{book.rating}}</div>
-<!--<button routerLink="users.id" class="list-user-button">-->
-<!--<span>Open user profile</span>-->
-<!--<i class="fas fa-user"></i>-->
-<!--</button>-->
+    <button class="list-book-button" type="submit"
+            (click)="takeBook()">
+        Take a book
+    </button>
 </div>
 </div>
