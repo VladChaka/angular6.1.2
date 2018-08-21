@@ -152,7 +152,7 @@ router.put('/books/:bookId', (req, res) => {
  * Photo
  */
 
-router.put('/users/:userId/photo', (req, res) => {
+router.put('/photo', (req, res) => {
     let path = req.body.path;
 
     res.status(200).sendFile(path);
@@ -171,18 +171,6 @@ router.post('/users/:userId/photo', (req, res) => {
         .catch(err => res.status(err.status).json({ error: err.message }));
     })
     .catch(err => res.status(500).json({ error: err.message }));
-});
-
-router.put('/books/:bookId/photo', (req, res) => {
-    let id = req.params.bookId,
-        path = req.body.path;
-
-    libraryDataService.upadtePhoto(pathToPhoto, id)
-    .then(() => {
-        res.status(200).sendFile(path);
-        // res.status(200).json(result);
-    })
-    .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
 router.post('/books/:bookId/photo', (req, res) => {
