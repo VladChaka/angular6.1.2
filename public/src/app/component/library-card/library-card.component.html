@@ -1,4 +1,40 @@
-    <form class="library-card"
+<div class="list-book-buttons">
+    <div class="filters-pages">
+        <button [disabled]="currentPage == 1" (click)="currentPage = currentPage - 1">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        {{currentPage}}/{{numberOfPages}}
+        <button [disabled] ="currentPage >=  countUsers / pageSize" (click)="currentPage = currentPage + 1">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+    <div class="list-search">
+        <input placeholder="Search Book">
+        <i class="fab fa-searchengin"></i>
+    </div>
+    <div>
+        <button (click)="this.formService.showFormAddUser = true">
+            <i class="fas fa-book">+</i>
+        </button>
+    </div>
+</div>
+<div class="list-books-container">
+    {{userBooks}}
+<div *ngFor="let book of userBooks" class="list-book-block">
+<div><img src="../../../assets/fightclub.jpg"></div>
+<div><p>Book Title:</p> {{ book.bookname}}</div>
+<div><p>Author</p> {{book.author}}</div>
+<div><p>Description:</p> {{book.description}}</div>
+<div><p>Release Date:</p> {{book.released}}</div>
+<div><p>Rating:</p> {{book.rating}}</div>
+<!--<button routerLink="users.id" class="list-user-button">-->
+<!--<span>Open user profile</span>-->
+<!--<i class="fas fa-user"></i>-->
+<!--</button>-->
+</div>
+</div>
+    
+    <!-- <form class="library-card"
           name="libraryCard"
           id="libraryCard">
         <div class="user-profile-title">
@@ -19,14 +55,16 @@
                    type="text"></div>
         <div class="library-card-btns">
             <button type="submit"
-                    (click)=" takeBook()"
-            ><!-- [disabled]="!userEdit.$valid" -->
-                Take a book
+                    (click)=" takeBook()" 
+            >-->
+            <!-- [disabled]="!userEdit.$valid" -->
+                <!-- Take a book
             </button>
             <button type="submit"
-                    (click)=" passBook()"
-            ><!-- [disabled]="!userEdit.$valid" -->
-                Pass a book
+                    (click)=" passBook()" 
+            >-->
+            <!-- [disabled]="!userEdit.$valid" -->
+                <!-- Pass a book
             </button>
         </div>
-    </form>
+    </form> -->

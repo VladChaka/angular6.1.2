@@ -44,7 +44,19 @@ export class UserProfileComponent implements OnInit {
         } else {
             this.userProfileBtnText = 'Edit'
         }
-        this.userService.edit(this.userProfile, this.userProfile._id, this.token);
+        console.log(this.userProfile);
+        
+        this.userService.edit(this.userProfile, this.userProfile._id, this.token)
+        .subscribe(
+            user => {
+                console.log(user);
+                
+            },
+            err => {
+                console.log('Error',err);
+                
+            }
+        );
     }
 //   closeUserProfile(): void {
 //     this.formService.closeUserProfile();

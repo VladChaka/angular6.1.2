@@ -25,7 +25,7 @@ export class UserService {
         return this.remoteService.create(user, token);
     };
 
-    edit(user: object, id: string, token: string): Observable<any> {
+    edit(user: object, id: string, token: string): Observable<any> {        
         return this.remoteService.update(user, id, token);
     };
 

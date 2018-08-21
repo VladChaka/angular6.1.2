@@ -61,11 +61,11 @@ function Library() {
         return new Promise((resolve, reject) => {
             findOne({ username: bookData.login })
             .then(user => {
-                if (user.post !== 'Administrator') {
+                if (!user || user.post !== 'Administrator') {
                     reject({ error: 'No access.', status: 403 });
                     return;
                 }
-
+                                
                 const new_book = new self.SchemaModel(bookData);
 
                 new_book.save()
@@ -119,7 +119,7 @@ function Library() {
     self.take = id => {
         return new Promise((resolve, reject) => {
             findOne({ _id: id })
-            .then(book => {                
+            .then(book => {
                 if (book.count === 0 || book.count < 1) {
                     reject({ error: 'Not available.', status: 400 })
                 } else {

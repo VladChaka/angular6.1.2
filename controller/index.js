@@ -87,7 +87,7 @@ router.get('/users/:userId/books', (req, res) => {
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
-router.post('/users/:userId/books/:bookId', (req, res) => {
+router.put('/users/:userId/books/:bookId', (req, res) => {
     let userData = {
         userId: req.params.userId,
         bookId: req.params.bookId
@@ -97,7 +97,7 @@ router.post('/users/:userId/books/:bookId', (req, res) => {
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
-router.put('/users/:userId/books/:bookId', (req, res) => {
+router.delete('/users/:userId/books/:bookId', (req, res) => {
     let userData = {
         userId: req.params.userId,
         bookId: req.params.bookId

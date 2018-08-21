@@ -233,7 +233,7 @@ function UserRepository() {
         });
     }
 
-    self.getBooks = (id) => {
+    self.getBooks = id => {
         return new Promise((resolve, reject) => {
             findOne({
                 _id: id,
@@ -243,11 +243,11 @@ function UserRepository() {
                     }
                 }
             })
-            .then((user) => {
+            .then((user) => {                
                 if (!user) {
                     reject({ message: 'User don\'t have books.', status: 204 });
-                } else {
-                    resolve({ books: user.books });
+                } else {                    
+                    resolve(user.books);
                 }
             })
             .catch((err) => reject({ error: err.message, status: 500 }));

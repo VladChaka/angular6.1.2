@@ -47,8 +47,8 @@ export class RemoteService {
     updateBook(id: string, data: object, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/books/${id}`, token, data, 'put');
     }
-    getBooksUser(token: string): Observable<any> {
-        return this.checkToken(`http://localhost:4000/users/:id/books`, token, null, 'get');
+    getUserBooks(id: string, token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/users/${id}/books`, token, null, 'get');
     }
     takeBook(data: string, userId: string, bookId:string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/${userId}/books/${bookId}`, token, data, 'post');
@@ -79,7 +79,7 @@ export class RemoteService {
         } else if (method === 'get'){
             result = this.http.get(url, { params: { token: token } });
         } else if (method === 'put') {
-            result = this.http.put(url, { params: { token: token } });
+            result = this.http.put(url, data, { params: { token: token } });
         } else if (method === 'delete') {
             result = this.http.delete(url, { params: { token: token } });
         }

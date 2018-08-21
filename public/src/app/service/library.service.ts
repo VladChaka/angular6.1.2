@@ -22,6 +22,10 @@ export class LibraryService {
         return this.remoteService.getBooks(token);
     }
 
+    getUserBooks(id: string, token: string): Observable<any> {
+        return this.remoteService.getUserBooks(id, token);
+    }
+
     getImageBook(id, path, token): Observable<any> {
         return this.remoteService.getImageBook(id, path, token);
     }
