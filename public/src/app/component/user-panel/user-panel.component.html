@@ -33,15 +33,18 @@
     </div>
   </div>
 </div>
-<div *ngFor="let user of users | slice:0:pageSize" routerLinkActive="active" class="list-user-block">
+<div>
+<div *ngFor="let user of users | slice:0:pageSize" class="list-user-block">
   <div>{{user.fullname}}</div>
   <div>{{user.username}}</div>
   <div [hidden]="!filterByDate">{{user.regDate}}</div>
   <div [hidden]="!filterByRating">{{user.rating}}</div>
   <div> </div>
-  <button routerLink="user.id" class="list-user-button">
+  <button [routerLink]="user._id" class="list-user-button">
     <span>Open user profile</span>
     <i class="fas fa-user"></i>
   </button>
 </div>
+</div>
+<!--!router.urlTree.contains(router.createUrlTree(['/login']))?-->
 <router-outlet></router-outlet>
