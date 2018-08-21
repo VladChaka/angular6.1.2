@@ -90,14 +90,15 @@
         </p>
         <div>
             <span>Full name</span>
-            <input ng-class="{ 'invalid' : userEdit.fullname.$invalid && userEdit.fullname.$dirty}"
+            <input [disabled]="!profileIsEdit"
+                   ng-class="{ 'invalid' : userEdit.fullname.$invalid && userEdit.fullname.$dirty}"
                    ng-required="true"
                    name="fullname"
                    [(ngModel)]=" userProfile.fullname"
                    type="text"
-                   [disabled]="!profileIsEdit"
                    placeholder="Full name of user"
-                   name-validation></div>
+                   name-validation>
+        </div>
         <p ng-show="userEdit.fullname.$error.required && userEdit.fullname.$dirty">
             Enter full name.
         </p>
@@ -106,8 +107,8 @@
         </p>
         <div class="user-edit-btn">
             <p>All fields are required</p>
-            <button (click)="editProfile()">
-                {{userProfileBtnText}} <i class="fas fa-user-check"></i>
+            <button (click)="editUser()">
+                {{userProfileBtnText}} <i *ngIf="!this.profileIsEdit" class="fas fa-users-cog"></i><i *ngIf="this.profileIsEdit" class="fas fa-user-check"></i>
             </button>
         </div>
     </form>

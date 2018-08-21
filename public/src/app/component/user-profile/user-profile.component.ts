@@ -9,7 +9,7 @@ import { UserService } from '../../service/user.service';
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
-  userProfileBtnText:string = "Edit";
+    userProfileBtnText:string = 'Edit';
     profileIsEdit:boolean = false;
     token: string = localStorage['token'] || sessionStorage['token'];
     userProfile: any;
@@ -37,22 +37,16 @@ export class UserProfileComponent implements OnInit {
                     );
             });
     }
-    // goBack(): void {
-    //     this.location.go('dashboard/users');
-    // }
+    editUser(): void {
+        this.profileIsEdit = !this.profileIsEdit;
+        if (this.profileIsEdit == true) {
+            this.userProfileBtnText = 'Submit'
+        } else {
+            this.userProfileBtnText = 'Edit'
+        }
+        this.userService.edit(this.userProfile, this.userProfile._id, this.token);
+    }
 //   closeUserProfile(): void {
 //     this.formService.closeUserProfile();
 // }
-    // editProfile() {
-    //     console.log(this.profileIsEdit);
-    //     this.profileIsEdit = !this.profileIsEdit;
-    //     console.log(this.profileIsEdit);
-    //     if (this.profileIsEdit = true) {
-    //         this.userProfileBtnText = 'Submit'
-    //     } else {
-    //         this.profileIsEdit = !this.profileIsEdit;
-    //         this.userProfileBtnText = 'Edit'
-    //     }
-    // }
-
 }
