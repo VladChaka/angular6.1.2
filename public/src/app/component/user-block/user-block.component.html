@@ -1,0 +1,12 @@
+
+    <div class="list-user-block">
+            <div>{{user.fullname}}</div>
+            <div>{{user.username}}</div>
+            <div [hidden]="!filterByDate">{{user.regDate}}</div>
+            <div [hidden]="!filterByRating">{{user.rating}}</div>
+            <div> </div>
+            <button [routerLink]="user._id" class="list-user-button">
+              <span>Open user profile</span>
+              <i class="fas fa-user"></i>
+            </button>
+          </div>

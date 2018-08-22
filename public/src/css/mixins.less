@@ -26,7 +26,7 @@ body {
 .list-books-container{
   flex-wrap: wrap;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 .list-book-block {
   position: relative;
@@ -67,6 +67,37 @@ body {
   background: @color3;
   padding: 2px 0;
   align-items: center;
+  //PAGINATION START
+  .ngx-pagination {
+    margin-bottom:0;
+  }
+  .ngx-pagination .current {
+    background: @color2;
+    color: @color3;
+  }
+  .ngx-pagination a, .ngx-pagination button, .ngx-pagination .current {
+    padding: 2px 4px;
+  }
+  .ngx-pagination .disabled {
+    padding: 2px 4px;
+    color: #cacaca;
+    cursor: not-allowed;
+  }
+  .ngx-pagination .pagination-next a::after, .ngx-pagination .pagination-next.disabled::after {
+    font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f0a9";
+    margin-left: 0;
+  }
+  .ngx-pagination .pagination-previous a::before, .ngx-pagination .pagination-previous.disabled::before {
+    font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f0a8";
+    margin-right: 0;
+  }
+  .ngx-pagination a, .ngx-pagination button {
+    color: @color2;
+  }
+  .ngx-pagination a:hover, .ngx-pagination button:hover {
+    background:@color1 ;
+  }
+  //PAGINATION ENDS
   button {
     padding: 2px 0;
     margin: 0 5px;

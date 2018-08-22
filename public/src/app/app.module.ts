@@ -13,9 +13,11 @@ import { ProfileControlPanelComponent } from './component/profile-control-panel/
 import { LibraryCardComponent } from './component/library-card/library-card.component';
 import { UsersMenuComponent } from './component/users-menu/users-menu.component';
 import { UsersPanelComponent } from './component/users-panel/users-panel.component';
+import { AddUserComponent } from './component/add-user/add-user.component';
 
 import { LoginValidationDirective } from './directive/login-validation.directive';
 import { BookListComponent } from './component/book-list/book-list.component';
+import { UserBlockComponent } from './component/user-block/user-block.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { BookListComponent } from './component/book-list/book-list.component';
     LibraryCardComponent,
       UsersMenuComponent,
     BookListComponent,
-      UsersPanelComponent
+      UsersPanelComponent,
+      AddUserComponent,
+      UserBlockComponent
   ],
   imports: [
     BrowserModule,

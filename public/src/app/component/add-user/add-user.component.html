@@ -1,0 +1,112 @@
+<div class="title-3">Add new user</div>
+<div class="user-form">
+    <form class="user-add"
+          name="userAdd"
+          id="add"
+          novalidate>
+        <div>
+            <span>Username</span>
+            <input [ngClass]="{ 'invalid' : userAdd.username.$invalid && userAdd.username.$dirty }"
+                   name="username"
+                   type="text"
+                   placeholder="Enter username"
+                   [(ngModel)]="formAddUser.username">
+        </div>
+        <p ng-show="userAdd.username.$invalid && userAdd.username.$dirty || userAdd.username.$error.correctLogin">
+            Enter a valid username.
+        </p>
+        <p ng-show="userAdd.username.$dirty && userAdd.username.$error.required">
+            Username is required
+        </p>
+        <p ng-show="userAdd.username.$error.minlength">
+            Username is too short.
+        </p>
+        <p ng-show="userAdd.username.$error.maxlength">
+            Username is too long.
+        </p>
+        <div class="add-login-used"
+             ng-show="loginConflict">
+            This login already used.
+        </div>
+
+
+        <div>
+            <span>E-mail</span>
+            <input [ngClass]="{ 'invalid' : userAdd.email.$invalid && userAdd.email.$dirty }"
+                   name="email"
+                   [(ngModel)]="formAddUser.email"
+                   type="email" 
+                   placeholder="Enter email"></div>
+
+
+        <div class="add-email-used"
+             ng-show="emailConflict">
+            This email already used.
+        </div>
+        <p ng-show="userAdd.email.$invalid && userAdd.email.$dirty">
+            Enter a valid email.
+        </p>
+        <p ng-show="userAdd.email.$dirty && userAdd.email.$error.required">
+            Email is required
+        </p>
+        <div>
+            <span>Post</span>
+            <input [ngClass]="{ 'invalid' : userAdd.post.$error.required && userAdd.post.$dirty }"
+                   type="text"
+                   name="post"
+                   [(ngModel)]="formAddUser.post"
+                   placeholder="User post"></div>
+        <p ng-show="userAdd.post.$error.required && userAdd.post.$dirty">
+            Enter a user post.
+        </p>
+        <div>
+            <span>Phone</span>
+            <input [ngClass]="{ 'invalid' : userAdd.phone.$invalid && userAdd.phone.$dirty }"
+                   name="phone"
+                   type="tel"
+                   [(ngModel)]="formAddUser.phone"
+                   placeholder="Enter phone number"></div>
+        <p ng-show="userAdd.phone.$error.required && userAdd.phone.$dirty">
+            Phone number is required.
+        </p>
+        <p ng-show="userAdd.phone.$error.minlength || userAdd.phone.$error.maxlength || userAdd.phone.$error.correctNumber">
+            Enter a correct phone.
+        </p>
+        <div>
+            <span>Password</span>
+            <input [ngClass]="{ 'invalid' : userAdd.password.$invalid && userAdd.password.$dirty }"
+                   name="password"
+                   [(ngModel)]="formAddUser.password"
+                   type="password"
+                   placeholder="Enter password"> </div>
+        <p class="text-error"
+           ng-show="userAdd.password.$error.strongPass">
+            Your password should contain digit and non-digit symbol
+        </p>
+        <p ng-show="userAdd.password.$error.required && userAdd.password.$dirty">
+            Password is required.
+        </p>
+        <p ng-show="userAdd.password.$error.minlength">
+            Password is too short.
+        </p>
+        <div>
+            <span>Full name</span>
+            <input [ngClass]="{ 'invalid' : userAdd.fullname.$invalid && userAdd.fullname.$dirty}"
+                   name="fullname"
+                   [(ngModel)]="formAddUser.fullname"
+                   type="text"
+                   placeholder="Full name of user"></div>
+        <p ng-show="userAdd.fullname.$error.required && userAdd.fullname.$dirty">
+            Enter full name.
+        </p>
+        <p ng-show="userAdd.fullname.$error.realName && userAdd.fullname.$dirty">
+            Enter real name.
+        </p>
+        <div class="user-add-btn">
+            <p>All fields are required</p>
+            <button (click)="addUser()">
+                Add user
+            </button>
+        </div>
+    </form>
+</div>

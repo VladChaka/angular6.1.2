@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormService } from '../../service/form.service';
 import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'user-profile',
-  templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.css']
+  templateUrl: './user-profile.component.html'
 })
 export class UserProfileComponent implements OnInit {
     userProfileBtnText:string = 'Edit';
+    router: any;
     profileIsEdit:boolean = false;
     token: string = localStorage['token'] || sessionStorage['token'];
     userProfile: any;
-  constructor(private formService: FormService,
-              private route: ActivatedRoute,
+
+  constructor(private route: ActivatedRoute,
               private userService: UserService) {
 
    }
@@ -55,7 +54,4 @@ export class UserProfileComponent implements OnInit {
             }
         );
     }
-//   closeUserProfile(): void {
-//     this.formService.closeUserProfile();
-// }
 }

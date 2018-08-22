@@ -1,4 +1,5 @@
 @import "mixins";
+@import "userAdd";
 @import "less/fontawesome";
 @import "less/solid";
 @import "less/brands";
@@ -69,64 +70,8 @@ body {
   justify-content: center;
 }
 
-.user-add > div {
-  margin-bottom: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-}
-
-div.user-add-btn {
-  margin-top: 15px;
-  margin-bottom: 0;
-  display: flex;
-  justify-content: space-between;
-}
-
-.user-add > div > span {
-  padding-right: 10px;
-  flex-basis: 35%;
-}
-
-.user-add > div > input {
-  flex-basis: 65%;
-}
-
 input:focus, textarea:focus, select:focus {
   outline-offset: 0;
-}
-
-.user-add input {
-  font-size: 1rem;
-  background: @color2;
-  color: @color1;
-  outline: 2px solid @color1;
-  border: 2px solid @grey;
-  padding: 2px 5px;
-}
-
-.user-add input.invalid {
-  border-color: @red;
-}
-
-.user-add button {
-  cursor: pointer;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: @color1;
-  border: 2px solid @grey;
-  padding: 4px 5px 2px 5px;
-  background: @color2;
-  transition: 0.2s ease;
-}
-
-.user-add button:disabled:hover {
-  cursor: not-allowed;
-}
-
-.user-add button:not(:disabled):hover {
-  color: @color3;
 }
 
 /* USER ADD FORM ENDS */
@@ -160,8 +105,7 @@ input:focus, textarea:focus, select:focus {
     margin: 0 10px;
   }
   button {
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin: 4px;
     background: transparent;
     cursor: pointer;
     font-size: 1rem;
@@ -173,15 +117,11 @@ input:focus, textarea:focus, select:focus {
     border: 2px solid @color2;
     transition: 0.2s ease;
   }
-  button:hover {
+  button:hover, button.active {
     border-color: @color3;
     color: @color3;
   }
 }
-.logout{
-  margin-left: 10px;
-}
-
 .dashboard-title {
   height: 40px;
   display: flex;
@@ -385,7 +325,7 @@ authorization-form * {
   background: @color3;
 }
 
-.users-list {
+.list-container {
   background: @color2;
   width: 100%
 }

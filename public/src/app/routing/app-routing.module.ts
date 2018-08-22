@@ -8,6 +8,7 @@ import { UsersPanelComponent } from '../component/users-panel/users-panel.compon
 import {BookListComponent} from "../component/book-list/book-list.component";
 import {UserProfileComponent} from "../component/user-profile/user-profile.component";
 import {LibraryCardComponent} from "../component/library-card/library-card.component";
+import {AddUserComponent} from "../component/add-user/add-user.component";
 
 import { AuthenticationGuard } from "../service/authentication-guard.service";
 
@@ -31,7 +32,7 @@ const usersRoutes: Routes = [
     {
         path: '',
         component: UsersPanelComponent
-    },
+    }
 ];
 
 const dashboardRoutes: Routes = [
@@ -41,9 +42,13 @@ const dashboardRoutes: Routes = [
         children: usersRoutes
     },
     {
-        path: 'myprofile',
+        path: 'user/:id',
         component: UserProfileComponent,
         children: userRoutes
+    },
+    {
+        path: 'add',
+        component: AddUserComponent
     },
     {
         path: 'books',

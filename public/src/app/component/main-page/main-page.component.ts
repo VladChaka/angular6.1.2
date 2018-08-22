@@ -1,13 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { Users } from '../../model/users';
-
-import { UserService } from '../../service/user.service';
+import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../service/authentication.service';
-import { FormService } from '../../service/form.service';
-import { RemoteService } from '../../service/remote.service';
-import { TokenService } from '../../service/token.service';
 
 @Component({
   selector: 'main-page',
@@ -15,69 +8,26 @@ import { TokenService } from '../../service/token.service';
   styleUrls: ['./main-page.component.less']
 })
 export class MainPageComponent implements OnInit {
-
-    router: string;
-    users: Users[];
-    countUsers: number;
+    router: any;
+    myId: string;
     token: string = localStorage['token'] || sessionStorage['token'];
 
-
-    currentPage: number = 1;
-    numberOfPages: number = 1;
-    pageSize: number = 18;
-
     constructor(
-        protected userService: UserService,
-        private formService: FormService,
-        protected remoteService: RemoteService,
         protected authenticationService: AuthenticationService,
-        private _router: Router
+        private route: ActivatedRoute
     ) {
-        this.router = _router.url;
     }
 
     ngOnInit() {
-        this.getUsers();
-    }
-
-    getUsers(): void {
-        this.userService.getAll(this.token)
-        .subscribe(
-            users => {
-                this.users = users;
-                // this.convertDate(this.users);
-                this.countUsers = users.length;
-                this.numberOfPages = Math.ceil(users.length / this.pageSize);
-            },
-            err => console.log("err",err)
-        );
-    }
-
-    // convertDate(users: Users[]): void {
-    //     users.map((element: any) => {
-    //         let date: number = element.regDate * 1,
-    //             newDate = new Date(date),
-    //             day = newDate.getDate(),
-    //             month = newDate.getMonth() + 1,
-    //             year = newDate.getFullYear();
-    //
-    //         element.regDate = day + '.' + month + '.' + year;
-    //     });
-    // }
-
-    openAddForm(): void {
-        this.formService.openAddForm();
+        this.router = this.route.queryParams.subscribe(params =>{
+            this.myId = params.myId;
+            console.log(this.myId)
+        });
     }
 
     logout(): void {
-        this.users = undefined;
         this.authenticationService.logout();
     }
-
-    deleteUser(test): void {
-        console.log(test);
-    }
-
     
 
 //

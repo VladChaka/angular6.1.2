@@ -1,0 +1,81 @@
+.title-3{
+    text-transform: capitalize;
+    font-weight: bold;
+    padding: 5px;
+    color:@color3;
+    font-size: 1.5rem;
+}
+
+.user-add > p{
+    display: none;//DELETE THIS
+  }
+  .user-add > div {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    justify-content: space-between;
+  }
+  
+  div.user-add-btn {
+    margin-top: 15px;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .user-add-btn button {
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    color: @color2;
+    text-transform: uppercase;
+    border: 2px solid @grey;
+    padding: 6px 10px 4px 10px;
+    transition: 0.2s ease;
+    border-radius: 5px;
+    background: @color1;
+  }
+  
+  .user-add-btn button:not(:disabled):hover {
+    color: @color3;
+    border-color: @color3;
+  }
+  
+  .user-add-btn button:disabled:hover {
+    cursor: not-allowed;
+  }
+  
+  .user-add > div > span {
+    padding-right: 10px;
+    flex-basis: 35%;
+  }
+  
+  .user-add > div > input {
+    flex-basis: 65%;
+  }
+  .user-add{
+    input::-webkit-input-placeholder { color: @color2; }
+    input:-ms-input-placeholder { color: @color2; }
+    input::-ms-input-placeholder { color: @color2; }
+    input::placeholder { color: @color2; }
+  }
+  .user-add input {
+    font-size: 1rem;
+    text-align: right;
+    background: @color1;
+    color: @color2;
+    .border-radius(2px);
+    border: 2px solid @color1;
+    padding: 2px 5px;
+  }
+  .user-add input:disabled {
+    background: transparent;
+    color: @color1;
+    .border-radius(2px);
+    border-color: transparent;
+  }
+  .user-add input.invalid {
+    border-color: @red;
+  }
+  
