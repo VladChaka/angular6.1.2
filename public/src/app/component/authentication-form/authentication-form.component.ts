@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 
 import { AuthenticationService } from '../../service/authentication.service';
-import * as myGlobals from '../../model/globals';
 
 @Component({
   selector: 'authentication-form',
@@ -24,12 +23,13 @@ export class AuthenticationFormComponent {
         })
         .subscribe(
             data => {
+                console.log(data);
                 this.authenticationService.userAuthentication = true;
                 if (checked) {
-                    // myGlobals.role = data.admin;
+                    localStorage.setItem('role', data.role);
                     localStorage.setItem('token', data.token);
                 } else {
-                    sessionStorage.setItem('role', data.admin);
+                    sessionStorage.setItem('role', data.role);
                     sessionStorage.setItem('token', data.token);
                 }
                 // let navigationExtras: NavigationExtras = {

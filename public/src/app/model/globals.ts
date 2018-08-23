@@ -1,4 +1,4 @@
 'use strict';
 
-export let role: any;
-export const token: string = localStorage['token'] || sessionStorage['token'];
+export let role: string = localStorage['role'] || sessionStorage['role'];
+export let token: string = localStorage['token'] || sessionStorage['token'];
