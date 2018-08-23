@@ -40,14 +40,14 @@ function UserRepository() {
         });
     }
 
-    self.findAll = username => {
+    self.findAll = login => {
         return new Promise((resolve, reject) => {
-            // findOne({ username: username })
-            // .then(user => {                
-            //     if (user.post !== 'Administrator') {
-            //         reject({ message: 'No access.', status: 403 });
-            //         return;
-            //     }
+            findOne({ login: login })
+            .then(user => {                
+                if (user.post !== 'Administrator') {
+                    reject({ message: 'No access.', status: 403 });
+                    return;
+                }
                 self.UserSchemaModel.find({})
                 .then(users => {
                     let data = rebuildUserData(
@@ -66,8 +66,8 @@ function UserRepository() {
                     resolve(data);
                 })
                 .catch(err => reject({ message: err.message }));
-            // })
-            // .catch(err => reject({ message: err.message, status: 500 }));
+            })
+            .catch(err => reject({ message: err.message, status: 500 }));
         });
     }
 
@@ -98,10 +98,10 @@ function UserRepository() {
         return new Promise((resolve, reject) => {
             findOne({ username: data.login })
             .then(user => {
-                // if (user.post !== 'Administrator') {
-                //     reject({ message: 'No access.', status: 403 });
-                //     return;
-                // }
+                if (user.post !== 'Administrator') {
+                    reject({ message: 'No access.', status: 403 });
+                    return;
+                }
 
                 const new_user = new self.UserSchemaModel(data);
 
@@ -142,7 +142,7 @@ function UserRepository() {
 
                 self.createHashPassword(data)
                 .then(user => {                    
-                    findOneAndUpdate({ email: user.email }, user)
+                    findOneAndUpdate({ _id: user.id }, user)
                     .then(() => resolve({ message: 'Ok' }))
                     .catch(err => reject({ message: err.message, status: 400 }));
                 })

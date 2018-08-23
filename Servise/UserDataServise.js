@@ -14,9 +14,9 @@ function UserDataServise (userRepository, libraryRepository) {
         });
     }
 
-    self.findAll = username => {        
+    self.findAll = login => {        
         return new Promise((resolve, reject) => {
-            userRepository.findAll(username)
+            userRepository.findAll(login)
             .then(result => { resolve(result) })
             .catch(err => { reject(err); });
         });

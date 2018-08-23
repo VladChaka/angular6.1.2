@@ -10,39 +10,37 @@ export class RemoteService {
 
     constructor(private http: HttpClient) { }
 
-    tokenValid(token: string): Observable<any>{
-        return this.http.get('http://localhost:4000/token', { params: { token: token } });
-        // return this.checkToken('http://localhost:4000/token', token, null, 'get');
-    }
+    // tokenValid(token: string): Observable<any>{
+    //     return this.http.get('http://localhost:4000/token', { params: { token: token } });
+    //     // return this.checkToken('http://localhost:4000/token', token, null, 'get');
+    // }
     authentication(authInfo: object): Observable<any>{
         return this.http.post('http://localhost:4000/login', authInfo);
     }
     getAll(token: string): Observable<any> {
         return this.checkToken('http://localhost:4000/users', token, null, 'get'); 
     }
-    create(data: object, token: string): Observable<any> {
-        return this.checkToken('http://localhost:4000/users', token, data, 'post');
-    }
-    delete(id: string, token: string): Observable<any> {
-        return this.checkToken(`http://localhost:4000/users/${id}`, token, null, 'delete');
-    }
     getById(id: string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/${id}`, token, null, 'get');
+    }
+    create(data: object, token: string): Observable<any> {
+        return this.checkToken('http://localhost:4000/users', token, data, 'post');
     }
     update(data: object, id: string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/${id}`, token, data, 'put');
     }
-    addBook(data: object, token: string): Observable<any> {
-        return this.checkToken(`http://localhost:4000/books`, token, data, 'post');
+    delete(id: string, token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/users/${id}`, token, null, 'delete');
     }
+
     getBooks(token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/books`, token, null, 'get');
     }
-    getImageBook(id: string, path:string, token: string): Observable<any> {
-        return this.checkToken(`http://localhost:4000/books/${id}/photo`, token, path, 'post');
-    }
     getOneBook(id: string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/books/${id}`, token, null, 'get');
+    }
+    addBook(data: object, token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/books`, token, data, 'post');
     }
     updateBook(id: string, data: object, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/books/${id}`, token, data, 'put');
@@ -50,12 +48,25 @@ export class RemoteService {
     getUserBooks(id: string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/${id}/books`, token, null, 'get');
     }
-    takeBook(data: string, userId: string, bookId:string, token: string): Observable<any> {
-        return this.checkToken(`http://localhost:4000/users/${userId}/books/${bookId}`, token, data, 'post');
+    takeBook(userId: string, bookId:string, token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/users/${userId}/books/${bookId}`, token, null, 'put');
     }
-    passBook( data: string, userId: string, bookId:string, token: string): Observable<any> {
-        return this.checkToken(`http://localhost:4000/users/${userId}/books/${bookId}`, token, data, 'put');
+    passBook(userId: string, bookId:string, token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/users/${userId}/books/${bookId}`, token, null, 'delete');
     }
+
+    getUserPhoto(id: string, token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/users/${id}/photo`, token, null, 'get');
+    }
+    // updateUserPhoto(id: string, token: string): Observable<any> {
+    //     return this.checkToken(`http://localhost:4000/users/${id}/photo`, token, null, 'get');
+    // }
+    getBookPhoto(id: string, token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/books/${id}/photo`, token, null, 'get');
+    }
+    // updateBookPhoto(id: string, token: string): Observable<any> {
+    //     return this.checkToken(`http://localhost:4000/users/${id}/photo`, token, null, 'get');
+    // }
 
     checkToken(url: string, token: string, data: any, method: string): Observable<any> {
         return defer(() => {

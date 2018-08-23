@@ -53,8 +53,9 @@ function Library(userRepository) {
                     return;
                 }
                 update(
-                    { bookname: data.bookname },
-                    data
+                    { _id: data.bookid },
+                    data,
+                    'BookSchemaModel'
                 )
                 .then(book => resolve(book))
                 .catch(err => reject({ message: err.message, status: 400 }));
