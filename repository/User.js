@@ -73,9 +73,9 @@ function UserRepository() {
                             reject(error);
                             return;
                         }
-
+                        let admin = user.post === 'Administrator' ? true : false;
                         const token = jwt.sign({ username: userData.username }, 'yqawv8nqi5');
-                        resolve({ id: user._id, token: token });
+                        resolve({ id: user._id, token: token, admin: admin });
                     },
                     user.password
                 );

@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
 
@@ -18,11 +19,6 @@ export class AuthenticationGuard {
         
                 
         if (!this.authenticationService.isLogged()) {
-            if (path !== '/login') {
-
-                console.log("path",path)
-                // this.router.navigate([path]);
-            };
             return false;
         }
         this.router.navigate(['dashboard']);

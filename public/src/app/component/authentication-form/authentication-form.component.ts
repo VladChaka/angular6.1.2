@@ -25,8 +25,10 @@ export class AuthenticationFormComponent {
             data => {
                 this.authenticationService.userAuthentication = true;
                 if (checked) {
+                    localStorage.setItem('role', data.admin);
                     localStorage.setItem('token', data.token);
                 } else {
+                    sessionStorage.setItem('role', data.admin);
                     sessionStorage.setItem('token', data.token);
                 }
                 let navigationExtras: NavigationExtras = {
