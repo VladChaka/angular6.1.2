@@ -21,8 +21,6 @@ function UserRepository() {
                     return;
                 }
                 
-                let admin = user.post === 'Administrator' ? true : false;
-
                 self.UserSchema.methods.verifyPassword(
                     data.password,
                     (err, success) => {
@@ -33,7 +31,7 @@ function UserRepository() {
 
                         const token = jwt.sign({ username: data.username }, 'yqawv8nqi5');
 
-                        resolve({ id: user._id, token: token, admin: admin });
+                        resolve({ id: user._id, token: token, role: user.post });
                     },
                     user.password
                 );

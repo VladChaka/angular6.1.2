@@ -9,6 +9,7 @@ import { RemoteService } from './remote.service';
 })
 export class AuthenticationService {
     token: any = localStorage['token'] || sessionStorage['token'];
+    role: string = localStorage['token'] || sessionStorage['token'];
     userAuthentication: any = this.token === undefined ? false : true;
     loginError: boolean = false;
 

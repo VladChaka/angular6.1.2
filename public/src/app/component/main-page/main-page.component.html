@@ -22,12 +22,12 @@
          class="users-block">
         <ul class="users-menu">
             <li class="dashboard-title">
-                <p  *ngIf="role">Users <i class="fas fa-users"></i></p>
+                <p routerLink="users" *ngIf="role == true" routerLinkActive="active">Users <i class="fas fa-users"></i></p>
                 <span></span>
                 <p routerLink="books" routerLinkActive="active">Books <i class="fas fa-book"></i></p>
             </li>
             <li class="dashboard-btns">
-                        <button routerLink="add" routerLinkActive="active">
+                        <button *ngIf="role == true" routerLink="add" routerLinkActive="active">
                                       <i class="fas fa-user-plus"></i>
                         </button>
                                 <button [routerLink]="['user', myId]">
