@@ -59,19 +59,17 @@ const routes: Routes = [
     {
         path: 'dashboard',
         component: MainPageComponent,
-        children: dashboardRoutes
-        // canActivate: [AuthenticationGuard]
+        children: dashboardRoutes,
+        canActivate: [AuthenticationGuard]
     },
     {
         path: 'login',
-        component: AuthenticationFormComponent,
-        canActivate: [AuthenticationGuard]
+        component: AuthenticationFormComponent
     },
     {
         path: '',
         redirectTo: '/dashboard',
-        pathMatch: 'full',
-        // canActivate: [AuthenticationGuard]
+        pathMatch: 'full'
     },
 ];
 

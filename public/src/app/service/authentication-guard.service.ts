@@ -15,13 +15,10 @@ export class AuthenticationGuard {
     ) { }
 
     canActivate(route, state) {
-        let path = state.url;
-        
-                
         if (!this.authenticationService.isLogged()) {
+            this.router.navigate(['login']);
             return false;
         }
-        this.router.navigate(['dashboard']);
         return true;
     }
 }
