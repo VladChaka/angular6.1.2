@@ -9,6 +9,7 @@ import {Users} from "../../model/users";
 })
 export class BookListComponent implements OnInit {
     token: string = localStorage['token'] || sessionStorage['token'];
+    role: boolean = localStorage['role'] || sessionStorage['role'];
     books: any;
     showUserProfile: boolean;
     currentPage: number = 1;

@@ -11,6 +11,7 @@ export class UserProfileComponent implements OnInit {
     router: any;
     profileIsEdit:boolean = false;
     token: string = localStorage['token'] || sessionStorage['token'];
+    role: boolean = localStorage['role'] || sessionStorage['role'];
     userProfile: any;
 
   constructor(private route: ActivatedRoute,
