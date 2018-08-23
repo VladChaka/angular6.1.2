@@ -75,7 +75,8 @@ function Library(userRepository) {
 
                 update(
                     { _id: data.id },
-                    { photo: data.photo.name }
+                    { photo: data.photo.name },
+                    'BookSchemaModel'
                 )
                 .then(() => resolve({ message: 'Ok' }))
                 .catch(err => reject({ message: err.message, status: 500 }));

@@ -13,7 +13,7 @@ function UserRepository() {
 
     self.login = data => {
         return new Promise((resolve, reject) => {
-            findOne({ username: data.username })
+            find('findOne', { username: data.username }, 'UserSchemaModel')
             .then(user => {
                 let error = { message: 'Authentication failed. Login or password wrong.' };
                 if (!user) {
@@ -42,7 +42,7 @@ function UserRepository() {
 
     self.findAll = login => {
         return new Promise((resolve, reject) => {
-            findOne({ login: login })
+            find('findOne', { username: login }, 'UserSchemaModel')
             .then(user => {                
                 if (user.post !== 'Administrator') {
                     reject({ message: 'No access.', status: 403 });
@@ -236,6 +236,39 @@ function UserRepository() {
             .catch(err => reject({ message: err.message, status: 400 }));
         });
     }
+
+
+
+
+
+
+
+    function find(findAllOrOne, query, SchemaModel) {
+        return new Promise((resolve, reject) => {
+            if (query.options !== undefined) {
+                self[SchemaModel][findAllOrOne](query.data, query.options)
+                .then(result => resolve(result))
+                .catch(err => reject({ message: err.message, status: 400 }));
+            } else {
+                self[SchemaModel][findAllOrOne](query)
+                .then(result => resolve(result))
+                .catch(err => reject({ message: err.message, status: 400 }));
+            }
+        });
+    }
+    function update(query, data, SchemaModel) {
+        return new Promise((resolve, reject) => {
+            self[SchemaModel].findOneAndUpdate(query, data)
+            .then(result => resolve(result))
+            .catch(err => reject({ message: err.message, status: 500 }));
+        });
+    }
+
+
+
+
+
+
 
     function findOneAndUpdate(query, data) {
         return new Promise((resolve, reject) => {
