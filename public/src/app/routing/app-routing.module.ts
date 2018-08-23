@@ -79,15 +79,15 @@ const routes: Routes = [
         path: 'login',
         component: AuthenticationFormComponent
     },
-     {
-       path: '**',         
-       redirectTo: '/dashboard/404'
-    },
     {
         path: '',
         redirectTo: '/dashboard',
         pathMatch: 'full'
     },
+    {
+       path: '**',
+       redirectTo: '/dashboard/404'
+    }
 ];
 
 @NgModule({

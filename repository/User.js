@@ -12,68 +12,55 @@ function UserRepository() {
     self.UserSchemaModel = user.UserSchemaModel;
 
     self.login = data => {
-        return new Promise((resolve, reject) => {
-            find('findOne', { username: data.username }, 'UserSchemaModel')
+        return find('findOne', { username: data.username }, 'UserSchemaModel')
             .then(user => {
                 let error = { message: 'Authentication failed. Login or password wrong.' };
                 if (!user) {
                     reject(error);                    
                     return;
                 }
-                
-                self.UserSchema.methods.verifyPassword(
-                    data.password,
-                    (err, success) => {
-                        if (err || !success) {
-                            reject(error);
-                            return;
+
+                return verifyPassword(data.password, user.password)
+                    .then(success => {
+                        if (!success) {
+                            return error;
                         }
 
                         const token = jwt.sign({ username: data.username }, 'yqawv8nqi5');
 
-                        resolve({ id: user._id, token: token, role: user.post });
-                    },
-                    user.password
-                );
+                        return { id: user._id, token: token, role: user.post };
+                    });
             })
-            .catch(() => reject({ message: 'Authentication failed. Login or password wrong.' }));
-        });
+            .catch(err => {console.log(err); reject({ message: 'Authentication failed. Login or password wrong.' })});
     }
 
     self.findAll = login => {
-        return new Promise((resolve, reject) => {
-            find('findOne', { username: login }, 'UserSchemaModel')
+        return find('findOne', { username: login }, 'UserSchemaModel')
             .then(user => {                
-                if (user.post !== 'Administrator') {
-                    reject({ message: 'No access.', status: 403 });
-                    return;
-                }
-                self.UserSchemaModel.find({})
-                .then(users => {
-                    let data = rebuildUserData(
-                        users,
-                        [
-                            '_id',
-                            'username',
-                            'email',
-                            'fullname',
-                            'phone',
-                            'post',
-                            'rating',
-                            'regDate'
-                        ]
-                    );
-                    resolve(data);
-                })
-                .catch(err => reject({ message: err.message }));
+                if (user.post !== 'Administrator')
+                    return { message: 'No access.', status: 403 };
+
+                return self.UserSchemaModel.find({})
+                    .then(users => {
+                        return rebuildUserData(users, [
+                                '_id',
+                                'username',
+                                'email',
+                                'fullname',
+                                'phone',
+                                'post',
+                                'rating',
+                                'regDate'
+                            ]);
+                    })
+                    .catch(err => { return { message: err.message } });
             })
-            .catch(err => reject({ message: err.message, status: 500 }));
-        });
+            .catch(err => { return { message: err.message, status: 500 } });
     }
 
-    self.getOne = (key, data) => {
+    self.getOne = id => {
         return new Promise((resolve, reject) => {
-            find('findOne', { [key]: data }, 'UserSchemaModel')
+            find('findOne', { _id: id }, 'UserSchemaModel')
             .then(user => {                
                 let data = rebuildUserData(user, [
                             '_id',
@@ -189,15 +176,39 @@ function UserRepository() {
         });
     }
 
-    self.UserSchema.methods.verifyPassword = (password, cb, _thisPassword) => {
-        bcrypt.compare(password, _thisPassword, (err, isMatch) => {			
-            if (err) {
-                cb(err);
-                return;
-            }
-            cb(null, isMatch);
+    // function verifyPassword(password, _thisPassword) {
+    //     return bcrypt.compare(password, _thisPassword)
+    //         .then(isMatch => {
+    //             console.log('isMatch',isMatch);
+                
+    //             return isMatch;
+    //         })
+    //         .cathe(err => {
+    //             console.log('err',err);
+    //             return err;
+    //         });
+    // }
+
+    function verifyPassword(password, _thisPassword) {
+        return new Promise((resolve, reject) => {
+            bcrypt.compare(password, _thisPassword, (err, isMatch) => {			
+                if (err) 
+                    reject({ message: err.message, status: 500 });
+
+                resolve(isMatch);
+            });
         });
-    };
+    }
+
+    // self.UserSchema.methods.verifyPassword = (password, cb, _thisPassword) => {
+    //     bcrypt.compare(password, _thisPassword, (err, isMatch) => {			
+    //         if (err) {
+    //             cb(err);
+    //             return;
+    //         }
+    //         cb(null, isMatch);
+    //     });
+    // };
 
     self.createHashPassword = data => {
         return new Promise((resolve, reject) => {
@@ -229,11 +240,9 @@ function UserRepository() {
     };
 
     function find(findAllOrOne, query, SchemaModel) {
-        return new Promise((resolve, reject) => {
-            self[SchemaModel][findAllOrOne](query)
-            .then(result => resolve(result))
-            .catch(err => reject({ message: err.message, status: 400 }));
-        });
+        return self[SchemaModel][findAllOrOne](query)
+            .then(result => { return result })
+            .catch(err => { return { message: err.message, status: 400 } });
     }
     function update(query, data, SchemaModel) {
         return new Promise((resolve, reject) => {

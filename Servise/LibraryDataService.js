@@ -7,58 +7,30 @@ function LibraryDataService (libraryRepository) {
     let self = this;
 
     self.getAll = () => {
-        return new Promise((resolve, reject) => {
-            libraryRepository.getAll()
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-        });
+        return libraryRepository.getAll();
     }
 
     self.getOne = id => {
-        return new Promise((resolve, reject) => {
-            libraryRepository.getOne(id)
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-        });
+        return libraryRepository.getOne(id);
     }
 
     self.add = data => {
-        return new Promise((resolve, reject) => {
-            libraryRepository.add(data)
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-        });
+        return libraryRepository.add(data);
     }
 
     self.update = data => {
-        return new Promise((resolve, reject) => {
-            libraryRepository.update(data)
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-        });
+        return libraryRepository.update(data);
     }
 
     self.getUserBooks = id => {
-        return new Promise((resolve, reject) => {            
-            libraryRepository.getUserBooks(id)
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-        });
+        return libraryRepository.getUserBooks(id);
     }
 
     self.takeBook = data => {
-        return new Promise((resolve, reject) => {
-            libraryRepository.takeBook(data)
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-        });	
+        return libraryRepository.takeBook(data);	
     }
 
     self.returnBook = data => {
-        return new Promise((resolve, reject) => {
-            libraryRepository.returnBook(data)
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-        });	
+        return libraryRepository.returnBook(data);	
     }
 }

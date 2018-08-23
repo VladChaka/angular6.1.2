@@ -20,8 +20,11 @@ export class AuthenticationGuard {
             this.router.navigate(['login']);
             return false;
         }
-        
+        let a = state.url;
+        console.log(a.split('/')[3]);
+
         if (state.url === '/dashboard/users' && role !== 'Administrator') {
+            // if ((state.url === '/dashboard/users' || state.url !== '/dashboard/users/') && role !== 'Administrator') {
             this.router.navigate(['404']);
         }
 

@@ -7,123 +7,76 @@ function UserDataServise (userRepository, libraryRepository) {
     let self = this;
 
     self.login = data => {
-        return new Promise((resolve, reject) => {
-            userRepository.login(data)
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-        });
+        return userRepository.login(data);
     }
 
-    self.findAll = login => {        
-        return new Promise((resolve, reject) => {
-            userRepository.findAll(login)
-            .then(result => { resolve(result) })
-            .catch(err => { reject(err); });
-        });
+    self.findAll = login => {
+        return userRepository.findAll(login);
     }
 
     self.findOne = id => {
-        return new Promise((resolve, reject) => {
-            userRepository.getOne('_id', id)
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-        });	
+        return userRepository.getOne(id);	
     }
 
     self.add = data => {
-        return new Promise((resolve, reject) => {
-            if (checkEmptyField(data)) {
-                reject({ message: "Fields empty.", status: 400 });
-                return;
-            }
-            if (!checkRegExpEmail(data.email)) {
-                reject({ message: "Incorrect email.", status: 400 });
-                return;
-            }
-            if (!checkRegExpLogin(data.username)) {
-                reject({ message: "Incorrect login.", status: 400 });
-                return;
-            }
-            if (!checkRegExpPassword(data.password)) {
-                resolve({ message: "Incorrect password.", status: 400 });
-                return;
-            }
+        if (checkEmptyField(data)) {
+            reject({ message: "Fields empty.", status: 400 });
+            return;
+        }
+        if (!checkRegExpEmail(data.email)) {
+            reject({ message: "Incorrect email.", status: 400 });
+            return;
+        }
+        if (!checkRegExpLogin(data.username)) {
+            reject({ message: "Incorrect login.", status: 400 });
+            return;
+        }
+        if (!checkRegExpPassword(data.password)) {
+            resolve({ message: "Incorrect password.", status: 400 });
+            return;
+        }
 
-            userRepository.add(data)
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-        });
+        return userRepository.add(data);
     }
 
     self.update = data => {
-        return new Promise((resolve, reject) => {
-            let user = delEmptyFieldForUpdate(data);
+        let user = delEmptyFieldForUpdate(data);
 
-            if (user.password !== undefined && !checkRegExpPassword(user.password)) {
-                reject({ message: "Incorrect password.", status: 400 });
-                return;
-            }
-            if (user.email !== undefined && !checkRegExpEmail(user.email)) {
-                reject({ message: "Incorrect email.", status: 400 });
-                return;
-            }
-            if (user.username !== undefined && !checkRegExpLogin(user.username)) {
-                reject({ message: "Incorrect login.", status: 400 });
-                return;
-            }
+        if (user.password !== undefined && !checkRegExpPassword(user.password)) {
+            reject({ message: "Incorrect password.", status: 400 });
+            return;
+        }
+        if (user.email !== undefined && !checkRegExpEmail(user.email)) {
+            reject({ message: "Incorrect email.", status: 400 });
+            return;
+        }
+        if (user.username !== undefined && !checkRegExpLogin(user.username)) {
+            reject({ message: "Incorrect login.", status: 400 });
+            return;
+        }
 
-            userRepository.update(user)
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-        });
+        return userRepository.update(user);
     }
 
     self.delete = data => {
-        return new Promise((resolve, reject) => {
-            userRepository.delete(data)
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-        });	
+        return userRepository.delete(data);	
     }
 
     self.getBooks = id => {
-        return new Promise((resolve, reject) => {
-            userRepository.getBooks(id)
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-        });
+        return userRepository.getBooks(id);
+    }
+
+    self.test = () => {
+        return userRepository.test();
     }
 
     self.takeBook = id => {
-        return new Promise((resolve, reject) => {
-            libraryRepository.getOne(id.bookId)
-            .then(book => {
-                userRepository.takeBook(id, book)
-                .then(result => {
-                    libraryRepository.take(id.bookId)
-                    .then(() => resolve(result))
-                    .catch(err => reject(err));
-                })
-                .catch(err => reject(err));
-            })
-            .catch(err => reject(err));
-        });	
-    }
-
-    self.returnBook = data => {
-        return new Promise((resolve, reject) => {
-            libraryRepository.getOne(data.bookId)
-            .then(book => {
-                userRepository.returnBook(data, book)
-                .then(result => {
-                    libraryRepository.return(data.bookId)
-                    .then(() => resolve(result))
-                    .catch(err => reject(err));
-                })
-                .catch(err => reject(err));
-            })
-            .catch(err => reject(err));
-        });	
+        return libraryRepository.getOne(id.bookId)
+            .then(book => userRepository.takeBook(id, book))
+            .then(result => {
+                return libraryRepository.take(id.bookId)
+                    .then(() => result);
+            });
     }
 
     function checkEmptyField(data) {

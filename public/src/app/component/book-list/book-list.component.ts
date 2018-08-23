@@ -9,7 +9,6 @@ import {Users} from "../../model/users";
 })
 export class BookListComponent implements OnInit {
     token: string = localStorage['token'] || sessionStorage['token'];
-    role: boolean = localStorage['role'] || sessionStorage['role'];
     books: any;
     showUserProfile: boolean;
     currentPage: number = 1;
@@ -18,22 +17,47 @@ export class BookListComponent implements OnInit {
 
     constructor(private libraryService: LibraryService) { }
 
-  ngOnInit() {
-    this.getBooks();
-      // this.getImageBook();
-  }
-  // getImageBook():void{
-  //       this.libraryService.getImageBook(this.books.id, this.books.path, this.token)
-  // }
+    ngOnInit() {
+        this.getBooks();
+        // this.getImageBook();
+    }
+    
+    // getImageBook():void{
+    //     this.libraryService.getImageBook(this.books.id, this.books.path, this.token)
+    // }
+
+    getImageBook():void{
+        this.libraryService.getImageBook(this.books.id, this.books.path, this.token)
+    }
+
+    takeBook(bookId): void {
+        this.route.parent.params
+        .subscribe(
+            params => {
+                this.libraryService.takeBook(bookId, this.token)
+                .subscribe(
+                    books => {
+                        this.books = books;
+                        console.log(books);
+                        // this.numberOfPages = Math.ceil(books.length / this.pageSize);
+                    },
+                    err => console.log("err",err)
+                );
+            }
+        );
+
+        
+    }
+
     getBooks(): void {
         this.libraryService.getBooks(this.token)
-            .subscribe(
-                books => {
-                    this.books = books;
-                    console.log(books);
-                    // this.numberOfPages = Math.ceil(books.length / this.pageSize);
-                },
-                err => console.log("err",err)
-            );
+        .subscribe(
+            books => {
+                this.books = books;
+                console.log(books);
+                // this.numberOfPages = Math.ceil(books.length / this.pageSize);
+            },
+            err => console.log("err",err)
+        );
     }
 }

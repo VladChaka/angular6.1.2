@@ -12,15 +12,16 @@
     </div>
 <div class="list-books-container">
 <div *ngFor="let book of books | paginate: { itemsPerPage: pageSize, currentPage: currentPage}" class="list-book-block">
+    <input type="text" #id value="{{_id}}">
     <div><img src="../../../assets/fightclub.jpg"></div>
-<div><p>Book Title:</p> {{ book.bookname}}</div>
-<div *ngIf="role === 'Administrator'"><p>Count</p> {{book.count}}</div>
+    <div><p>Book Title:</p> {{ book.bookname}}</div>
+    <div *ngIf="role === 'Administrator'"><p>Count</p> {{book.count}}</div>
     <div><p>Author</p> {{book.author}}</div>
     <div><p>Description:</p> {{book.description}}</div>
     <div><p>Release Date:</p> {{book.released}}</div>
     <div><p>Rating:</p> {{book.rating}}</div>
     <button class="list-book-button" type="submit"
-            (click)="takeBook()">
+            (click)="takeBook(id.value)">
         Take a book
     </button>
     <button *ngIf="role === 'Administrator'" class="list-book-button" type="submit"

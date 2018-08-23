@@ -4,8 +4,7 @@ let express = require('express'),
     libraryDataService = Core.libraryDataService,
     photoDataService = Core.photoDataService,
     router = express.Router(),
-    token__module = require('../util/token/token'),
-    path = require('path');
+    token__module = require('../util/token/token');
 
 router.get('/token', token__module, (req, res) => res.status(200).json({ status: 'ok' }));
 
@@ -19,8 +18,8 @@ router.post('/login', (req, res) => {
         password: Zone.current.data.password
     };
     userDataServise.login(data)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(400).json({ error: err.message }));
+    .then(result => {console.log(result); res.status(200).json(result)})
+    .catch(err => {console.log(err); res.status(400).json({ error: err.message })});
 });
 
 router.get('/users', (req, res) => {
@@ -201,6 +200,15 @@ router.put('/books/:bookId/photo', (req, res) => {
     photoDataService.upadtePhoto(data)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
+});
+
+
+
+
+router.get('/test', (req, res) => {
+    userDataServise.test()
+    .then(result => {console.log(result); res.status(200).json(result)})
+    .catch(err => {console.log(err); res.status(err.status).json({ error: err.message })});
 });
 
 module.exports.router = router;

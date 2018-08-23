@@ -10,8 +10,8 @@ export class LibraryService {
 
     constructor(protected remoteService: RemoteService) { }
 
-    takeBook(data: string, userId: string, bookId:string, token: string): Observable<any> {
-        return this.remoteService.takeBook(data, userId, bookId, token);
+    takeBook(userId: string, bookId:string, token: string): Observable<any> {
+        return this.remoteService.takeBook(userId, bookId, token);
     }
 
     passBook(data: string, userId: string, bookId:string, token: string): Observable<any> {
