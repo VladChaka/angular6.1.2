@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../service/authentication.service';
-import * as myGlobals from '../../model/globals';
+// import * as myGlobals from '../../model/globals';
 @Component({
   selector: 'main-page',
   templateUrl: './main-page.component.html',
@@ -10,16 +10,20 @@ import * as myGlobals from '../../model/globals';
 export class MainPageComponent implements OnInit {
     router: any;
     myId: string;
+    token: string = localStorage['token'] || sessionStorage['token'];
+    role: boolean = localStorage['role'] || sessionStorage['role'];
     constructor(
         protected authenticationService: AuthenticationService,
         private route: ActivatedRoute
     ) {
     }
     whoAmI(){
-        console.log(myGlobals.role);
-        console.log(myGlobals.token);    
+        console.log(this.role);
+        console.log(this.token);
+        // console.log(myGlobals.token);    
     }
     ngOnInit() {
+        console.log(this.role);
         this.router = this.route.queryParams.subscribe(params =>{
             this.myId = params.myId;
             console.log(this.myId)

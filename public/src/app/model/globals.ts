@@ -1,4 +1,4 @@
 'use strict';
 
-export const role: string = localStorage['admin'] || sessionStorage['admin'];
+export const role: boolean = localStorage['role'] || sessionStorage['role'];
 export const token: string = localStorage['token'] || sessionStorage['token'];

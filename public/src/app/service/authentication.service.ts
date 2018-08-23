@@ -28,6 +28,8 @@ export class AuthenticationService {
     logout(): void {
         sessionStorage.clear();
         localStorage.clear();
+        console.log(sessionStorage);
+        console.log(localStorage);
         this.userAuthentication = false;
         this.router.navigate(['/login']);
     }
