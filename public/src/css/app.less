@@ -600,7 +600,7 @@ authorization-form * {
   border: 1px solid @color1;
 }
 
-.user-add-btn > p, .user-edit-btn > p{
+.user-add-btn > p{
   text-align: center;
   font-size: 0.7rem;
   background: @color2;
@@ -629,6 +629,8 @@ authorization-form * {
   padding: 15px 30px;
 }
   .user-profile-title{
+      padding: 5px 0;
+      background: @color1;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -701,6 +703,10 @@ div.library-card-btns {
   padding: 2px 5px;
 }
 //Library ends
+.user-edit{
+    border: 2px solid @color1;
+    border-radius: 0 0 5px 5px;
+}
 .user-edit > p{
   display: none;//DELETE THIS
 }
@@ -711,14 +717,14 @@ div.library-card-btns {
   justify-content: space-between;
 }
 
-div.user-edit-btn {
+div.user-edit-btns {
   margin-top: 15px;
   margin-bottom: 0;
   display: flex;
   justify-content: space-between;
 }
 
-.user-edit-btn button {
+.user-edit-btns button {
   cursor: pointer;
   font-size: 1rem;
   font-weight: bold;
@@ -731,12 +737,12 @@ div.user-edit-btn {
   background: @color1;
 }
 
-.user-edit-btn button:not(:disabled):hover {
+.user-edit-btns button:not(:disabled):hover {
   color: @color3;
   border-color: @color3;
 }
 
-.user-edit-btn button:disabled:hover {
+.user-edit-btns button:disabled:hover {
   cursor: not-allowed;
 }
 
@@ -761,13 +767,14 @@ div.user-edit-btn {
   color: @color2;
   .border-radius(2px);
   border: 2px solid @color1;
-  padding: 2px 5px;
+  padding: 2px 5px 2px 0;
 }
 .user-edit input:disabled {
   background: transparent;
   color: @color1;
   .border-radius(2px);
   border-color: transparent;
+  padding: 2px 0 2px 5px;
 }
 .user-edit input.invalid {
   border-color: @red;

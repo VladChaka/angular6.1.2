@@ -54,4 +54,8 @@ export class UserProfileComponent implements OnInit {
             }
         );
     }
+    deleteUser(): void {
+        this.userService.delete(this.userProfile._id, this.token);
+        console.log('deleted');
+    }
 }
