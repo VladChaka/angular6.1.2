@@ -15,11 +15,13 @@ import { AuthenticationGuard } from "../service/authentication-guard.service";
 const userRoutes: Routes = [
     {
         path: 'books',
-        component: BookListComponent
+        component: BookListComponent,
+        canActivate: [AuthenticationGuard]
     },
     {
         path: 'librarycard',
-        component: LibraryCardComponent
+        component: LibraryCardComponent,
+        canActivate: [AuthenticationGuard]
     }
 ];
 
@@ -27,11 +29,13 @@ const usersRoutes: Routes = [
     {
         path: ':id',
         component: UserProfileComponent,
-        children: userRoutes
+        children: userRoutes,
+        canActivate: [AuthenticationGuard]
     },
     {
         path: '',
-        component: UsersPanelComponent
+        component: UsersPanelComponent,
+        canActivate: [AuthenticationGuard]
     }
 ];
 
@@ -39,20 +43,24 @@ const dashboardRoutes: Routes = [
     {
         path: 'users',
         component: UsersMenuComponent,
-        children: usersRoutes
+        children: usersRoutes,
+        canActivate: [AuthenticationGuard]
     },
     {
         path: 'user/:id',
         component: UserProfileComponent,
-        children: userRoutes
+        children: userRoutes,
+        canActivate: [AuthenticationGuard]
     },
     {
         path: 'add',
-        component: AddUserComponent
+        component: AddUserComponent,
+        canActivate: [AuthenticationGuard]
     },
     {
         path: 'books',
-        component: BookListComponent
+        component: BookListComponent,
+        canActivate: [AuthenticationGuard]
     },
 ];
 const routes: Routes = [

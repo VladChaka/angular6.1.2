@@ -15,10 +15,16 @@ export class AuthenticationGuard {
     ) { }
 
     canActivate(route, state) {
+        let role = localStorage['role'] || sessionStorage['role'];
         if (!this.authenticationService.isLogged()) {
             this.router.navigate(['login']);
             return false;
         }
+        
+        if (state.url === '/dashboard/users' && role !== 'Administrator') {
+            this.router.navigate(['dashboard']);
+        }
+
         return true;
     }
 }
