@@ -6,17 +6,17 @@ Core.module('app').service('app.userDataServise', UserDataServise);
 function UserDataServise (userRepository, libraryRepository) {
     let self = this;
 
-    self.login = userData => {
+    self.login = data => {
         return new Promise((resolve, reject) => {
-            userRepository.login(userData)
+            userRepository.login(data)
             .then(result => resolve(result))
             .catch(err => reject(err));
         });
     }
 
-    self.findAll = username => {
+    self.findAll = username => {        
         return new Promise((resolve, reject) => {
-            userRepository.getAll(username)
+            userRepository.findAll(username)
             .then(result => { resolve(result) })
             .catch(err => { reject(err); });
         });
@@ -30,45 +30,45 @@ function UserDataServise (userRepository, libraryRepository) {
         });	
     }
 
-    self.add = userData => {
+    self.add = data => {
         return new Promise((resolve, reject) => {
-            if (checkEmptyField(userData)) {
-                reject({ error: "Fields empty.", status: 400 });
+            if (checkEmptyField(data)) {
+                reject({ message: "Fields empty.", status: 400 });
                 return;
             }
-            if (!checkRegExpEmail(userData.email)) {
-                reject({ error: "Incorrect email.", status: 400 });
+            if (!checkRegExpEmail(data.email)) {
+                reject({ message: "Incorrect email.", status: 400 });
                 return;
             }
-            if (!checkRegExpLogin(userData.username)) {
-                reject({ error: "Incorrect login.", status: 400 });
+            if (!checkRegExpLogin(data.username)) {
+                reject({ message: "Incorrect login.", status: 400 });
                 return;
             }
-            if (!checkRegExpPassword(userData.password)) {
-                resolve({ error: "Incorrect password.", status: 400 });
+            if (!checkRegExpPassword(data.password)) {
+                resolve({ message: "Incorrect password.", status: 400 });
                 return;
             }
 
-            userRepository.add(userData)
+            userRepository.add(data)
             .then(result => resolve(result))
             .catch(err => reject(err));
         });
     }
 
-    self.update = userData => {
+    self.update = data => {
         return new Promise((resolve, reject) => {
-            let user = delEmptyFieldForUpdate(userData);
+            let user = delEmptyFieldForUpdate(data);
 
             if (user.password !== undefined && !checkRegExpPassword(user.password)) {
-                reject({ error: "Incorrect password.", status: 400 });
+                reject({ message: "Incorrect password.", status: 400 });
                 return;
             }
             if (user.email !== undefined && !checkRegExpEmail(user.email)) {
-                reject({ error: "Incorrect email.", status: 400 });
+                reject({ message: "Incorrect email.", status: 400 });
                 return;
             }
             if (user.username !== undefined && !checkRegExpLogin(user.username)) {
-                reject({ error: "Incorrect login.", status: 400 });
+                reject({ message: "Incorrect login.", status: 400 });
                 return;
             }
 
@@ -78,9 +78,9 @@ function UserDataServise (userRepository, libraryRepository) {
         });
     }
 
-    self.delete = userData => {
+    self.delete = data => {
         return new Promise((resolve, reject) => {
-            userRepository.delete(userData)
+            userRepository.delete(data)
             .then(result => resolve(result))
             .catch(err => reject(err));
         });	
@@ -110,13 +110,13 @@ function UserDataServise (userRepository, libraryRepository) {
         });	
     }
 
-    self.returnBook = userData => {
+    self.returnBook = data => {
         return new Promise((resolve, reject) => {
-            libraryRepository.getOne(userData.bookId)
+            libraryRepository.getOne(data.bookId)
             .then(book => {
-                userRepository.returnBook(userData, book)
+                userRepository.returnBook(data, book)
                 .then(result => {
-                    libraryRepository.return(userData.bookId)
+                    libraryRepository.return(data.bookId)
                     .then(() => resolve(result))
                     .catch(err => reject(err));
                 })
@@ -126,11 +126,11 @@ function UserDataServise (userRepository, libraryRepository) {
         });	
     }
 
-    function checkEmptyField(userData) {
+    function checkEmptyField(data) {
         let result = false;
 
-        for (let index in userData) {
-            let field = userData[index] + '';   
+        for (let index in data) {
+            let field = data[index] + '';   
             field = field.replace(/\s*/g, '');
 
             if (field === "") {
@@ -142,8 +142,8 @@ function UserDataServise (userRepository, libraryRepository) {
         return result;
     }
 
-    function delEmptyFieldForUpdate(userData) {
-        let result = userData;
+    function delEmptyFieldForUpdate(data) {
+        let result = data;
 
         for (let index in result) {
             let field = result[index] + ''; 
@@ -156,5 +156,5 @@ function UserDataServise (userRepository, libraryRepository) {
     }
     function checkRegExpLogin(login) { return /^[a-zA-Z1-9].{4,16}$/.test(login); }
     function checkRegExpPassword(pass) { return /^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/.test(pass) && pass.length > 7; }
-    function checkRegExpEmail(email) { return /(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/.test(email); }	
+    function checkRegExpEmail(email) { return /(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/.test(email); }
 }

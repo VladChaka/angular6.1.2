@@ -9,7 +9,7 @@ let express = require("express"),
     dbMlabTest = "mongodb://admin:vlad12345@ds121088.mlab.com:21088/unittest",
     jwt = require('jsonwebtoken'),
     token__module = require('./util/token/token'),
-    test = require('express-fileupload'),
+    upload = require('express-fileupload'),
     db = getParam("local", dbMlab);
 
 mongoose.connect(db, { useNewUrlParser: true }, err => {
@@ -23,7 +23,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(test());
+app.use(upload());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(express.static(__dirname));
@@ -36,10 +36,10 @@ app.use(express.static(__dirname + '/public_chameleon47'));
 //     }
 // });
 
-app.use((req, res, next) => {
+app.use((req, res, next) => {    
     const token = req.body.token || req.query.token || req.headers['x-access-token'],
-          decoded = jwt.decode(token) || '';          
-    
+          decoded = jwt.decode(token) || '';
+
     Zone.current.fork({}).run(() => {
         Zone.current.data = {
             username: req.body.username || '',

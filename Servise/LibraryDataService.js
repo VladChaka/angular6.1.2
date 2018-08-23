@@ -9,32 +9,56 @@ function LibraryDataService (libraryRepository) {
     self.getAll = () => {
         return new Promise((resolve, reject) => {
             libraryRepository.getAll()
-            .then((result) => resolve(result))
-            .catch((err) => reject(err));
+            .then(result => resolve(result))
+            .catch(err => reject(err));
         });
     }
 
-    self.getOne = (book) => {
+    self.getOne = id => {
         return new Promise((resolve, reject) => {
-            libraryRepository.getOne(book)
-            .then((result) => resolve(result))
-            .catch((err) => reject(err));
+            libraryRepository.getOne(id)
+            .then(result => resolve(result))
+            .catch(err => reject(err));
         });
     }
 
-    self.add = (bookData) => {
+    self.add = data => {
         return new Promise((resolve, reject) => {
-            libraryRepository.add(bookData)
-            .then((result) => resolve(result))
-            .catch((err) => reject(err));
+            libraryRepository.add(data)
+            .then(result => resolve(result))
+            .catch(err => reject(err));
         });
     }
 
-    self.update = (bookData) => {
+    self.update = data => {
         return new Promise((resolve, reject) => {
-            libraryRepository.update(bookData)
-            .then((result) => resolve(result))
-            .catch((err) => reject(err));
+            libraryRepository.update(data)
+            .then(result => resolve(result))
+            .catch(err => reject(err));
         });
+    }
+
+    self.getUserBooks = id => {
+        return new Promise((resolve, reject) => {            
+            libraryRepository.getUserBooks(id)
+            .then(result => resolve(result))
+            .catch(err => reject(err));
+        });
+    }
+
+    self.takeBook = data => {
+        return new Promise((resolve, reject) => {
+            libraryRepository.takeBook(data)
+            .then(result => resolve(result))
+            .catch(err => reject(err));
+        });	
+    }
+
+    self.returnBook = data => {
+        return new Promise((resolve, reject) => {
+            libraryRepository.returnBook(data)
+            .then(result => resolve(result))
+            .catch(err => reject(err));
+        });	
     }
 }

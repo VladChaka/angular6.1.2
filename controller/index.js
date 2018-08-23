@@ -14,11 +14,11 @@ router.get('/token', token__module, (req, res) => res.status(200).json({ status:
  */
 
 router.post('/login', (req, res) => {
-    const userData = {
+    const data = {
         username: Zone.current.data.username,
         password: Zone.current.data.password
     };
-    userDataServise.login(userData)
+    userDataServise.login(data)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(400).json({ error: err.message }));
 });
@@ -37,7 +37,7 @@ router.get('/users/:userId', (req, res) => {
 });
 
 router.post('/users', (req, res) => {
-    let userData = {
+    let data = {
         username: Zone.current.data.username,
         email: Zone.current.data.email,
         post: Zone.current.data.post,
@@ -49,13 +49,13 @@ router.post('/users', (req, res) => {
         photo: 'standart.png'
     };
     
-    userDataServise.add(userData)
+    userDataServise.add(data)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
 router.put('/users/:userId', (req, res) => {
-    let userData = {
+    let data = {
         login: Zone.current.data.login,
         username: Zone.current.data.username,
         email: Zone.current.data.email,
@@ -66,43 +66,17 @@ router.put('/users/:userId', (req, res) => {
         rating: Zone.current.data.rating
     };
     
-    userDataServise.update(userData)
+    userDataServise.update(data)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
 router.delete('/users/:userId', (req, res) => {
-    let userData = {
+    let data = {
         id: req.params.userId,
         login: Zone.current.data.login
     };    
-    userDataServise.delete(userData)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
-});
-
-router.get('/users/:userId/books', (req, res) => {
-    userDataServise.getBooks(req.params.userId)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
-});
-
-router.put('/users/:userId/books/:bookId', (req, res) => {
-    let userData = {
-        userId: req.params.userId,
-        bookId: req.params.bookId
-    };    
-    userDataServise.takeBook(userData)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
-});
-
-router.delete('/users/:userId/books/:bookId', (req, res) => {
-    let userData = {
-        userId: req.params.userId,
-        bookId: req.params.bookId
-    };
-    userDataServise.returnBook(userData)
+    userDataServise.delete(data)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
@@ -111,6 +85,34 @@ router.delete('/users/:userId/books/:bookId', (req, res) => {
  * Library
  */
 
+router.get('/users/:userId/books', (req, res) => {
+    libraryDataService.getUserBooks(req.params.userId)
+    .then(result => res.status(200).json(result))
+    .catch(err => res.status(err.status).json({ error: err.message }));
+});
+
+router.put('/users/:userId/books/:bookId', (req, res) => {
+    let data = {
+        login: Zone.current.data.login,
+        userId: req.params.userId,
+        bookId: req.params.bookId
+    };    
+    libraryDataService.takeBook(data)
+    .then(result => res.status(200).json(result))
+    .catch(err => res.status(err.status).json({ error: err.message }));
+});
+
+router.delete('/users/:userId/books/:bookId', (req, res) => {
+    let data = {
+        login: Zone.current.data.login,
+        userId: req.params.userId,
+        bookId: req.params.bookId
+    };    
+    libraryDataService.returnBook(data)
+    .then(result => res.status(200).json(result))
+    .catch(err => res.status(err.status).json({ error: err.message }));
+});
+
 router.get('/books', (req, res) => {
     libraryDataService.getAll()
     .then(result => res.status(200).json(result))
@@ -118,13 +120,14 @@ router.get('/books', (req, res) => {
 });
 
 router.get('/books/:bookId', (req, res) => {
-    libraryDataService.getOne(req.body.bookname)
+    libraryDataService.getOne(req.params.bookId)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
 router.post('/books', (req, res) => {
-    let bookData = {
+    let data = {
+        login: Zone.current.data.login,
         bookname: req.body.bookname,
         count: req.body.count,
         description: req.body.description,
@@ -134,17 +137,17 @@ router.post('/books', (req, res) => {
         photo: 'standart.jpg'
     };
     
-    libraryDataService.add(bookData)
+    libraryDataService.add(data)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
 router.put('/books/:bookId', (req, res) => {
-    let bookData = {
+    let data = {
         bookname: req.body.bookname,
         count: req.body.count
     };    
-    libraryDataService.update(bookData)
+    libraryDataService.update(data)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
