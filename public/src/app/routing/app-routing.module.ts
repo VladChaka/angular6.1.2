@@ -65,8 +65,7 @@ const dashboardRoutes: Routes = [
     },
     {
         path: '404',
-        component: Error404Component,
-        canActivate: [AuthenticationGuard]
+        component: Error404Component
     },
 ];
 const routes: Routes = [

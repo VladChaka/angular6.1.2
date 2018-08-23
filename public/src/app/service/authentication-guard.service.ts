@@ -22,7 +22,7 @@ export class AuthenticationGuard {
         }
         
         if (state.url === '/dashboard/users' && role !== 'Administrator') {
-            this.router.navigate(['dashboard']);
+            this.router.navigate(['404']);
         }
 
         return true;
