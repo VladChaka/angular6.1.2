@@ -11,6 +11,7 @@ import {LibraryCardComponent} from "../component/library-card/library-card.compo
 import {AddUserComponent} from "../component/add-user/add-user.component";
 
 import { AuthenticationGuard } from "../service/authentication-guard.service";
+import { Error404Component } from '../component/error404/error404.component';
 
 const userRoutes: Routes = [
     {
@@ -62,6 +63,11 @@ const dashboardRoutes: Routes = [
         component: BookListComponent,
         canActivate: [AuthenticationGuard]
     },
+    {
+        path: '404',
+        component: Error404Component,
+        canActivate: [AuthenticationGuard]
+    },
 ];
 const routes: Routes = [
     {
@@ -73,6 +79,10 @@ const routes: Routes = [
     {
         path: 'login',
         component: AuthenticationFormComponent
+    },
+     {
+       path: '**',         
+       redirectTo: '/dashboard/404'
     },
     {
         path: '',

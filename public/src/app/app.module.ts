@@ -18,6 +18,7 @@ import { AddUserComponent } from './component/add-user/add-user.component';
 import { LoginValidationDirective } from './directive/login-validation.directive';
 import { BookListComponent } from './component/book-list/book-list.component';
 import { UserBlockComponent } from './component/user-block/user-block.component';
+import { Error404Component } from './component/error404/error404.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { UserBlockComponent } from './component/user-block/user-block.component'
     BookListComponent,
       UsersPanelComponent,
       AddUserComponent,
-      UserBlockComponent
+      UserBlockComponent,
+      Error404Component
   ],
   imports: [
     BrowserModule,
