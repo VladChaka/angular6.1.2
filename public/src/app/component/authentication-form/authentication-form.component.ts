@@ -24,6 +24,7 @@ export class AuthenticationFormComponent {
         .subscribe(
             data => {
                 console.log(data);
+                this.authenticationService.myId = data.id;
                 this.authenticationService.userAuthentication = true;
                 if (checked) {
                     localStorage.setItem('role', data.role);
@@ -37,7 +38,11 @@ export class AuthenticationFormComponent {
                 //         myId: ''
                 //     }
                 // };
-                this.router.navigate(['dashboard']);
+                if(data.role == 'Administrator'){
+                    this.router.navigate(['admin']);
+                } else{
+                    this.router.navigate(['dashboard']);
+                }
             },
             err => {
                 this.authenticationService.loginError = true;

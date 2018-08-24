@@ -12,7 +12,14 @@ export class UserProfileComponent implements OnInit {
     profileIsEdit:boolean = false;
     token: string = localStorage['token'] || sessionStorage['token'];
     role: boolean = localStorage['role'] || sessionStorage['role'];
-    userProfile: any;
+    userProfile: any = {
+        email: "",
+        username: "",
+        fullname: "",
+        password: "",
+        post: "",
+        phone: "",
+    }
 
   constructor(private route: ActivatedRoute,
               private userService: UserService) {

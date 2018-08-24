@@ -9,6 +9,14 @@ import { FormService } from '../../service/form.service';
 })
 export class FormAddUserComponent implements OnInit {
 
+    userAdd: any = {
+        email: "",
+        username: "",
+        fullname: "",
+        password: "",
+        post: "",
+        phone: "",
+    }
     constructor(protected formService: FormService,) { }
 
     ngOnInit() {

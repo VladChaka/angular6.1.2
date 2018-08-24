@@ -36,10 +36,11 @@ export class LibraryCardComponent implements OnInit {
         this.route.parent.params
         .subscribe(
             params => {
-                this.libraryService.getUserBooks(params.id, this.token)
+                this.libraryService.getUserBooks('5b7bde9a9aec5521c7d0a32d', this.token)//params.id
                 .subscribe(
                     books => {
                         this.userBooks = books;
+                        console.log(this.userBooks);
                     },
                     err => console.log("err",err)
                 );

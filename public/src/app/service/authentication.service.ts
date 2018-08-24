@@ -12,6 +12,7 @@ export class AuthenticationService {
     role: string = localStorage['token'] || sessionStorage['token'];
     userAuthentication: any = this.token === undefined ? false : true;
     loginError: boolean = false;
+    myId: string;
 
     constructor(
         protected remoteService: RemoteService,
@@ -20,6 +21,10 @@ export class AuthenticationService {
 
     authentication(authenticationInfo): Observable<any> {
         return this.remoteService.authentication(authenticationInfo);
+    }
+
+    getMyId(): any {
+        return this.myId;
     }
 
     isLogged(): Observable<any> {
