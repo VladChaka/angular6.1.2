@@ -10,17 +10,17 @@ function PhotoDataService (userRepository, libraryRepository) {
     self.getPhoto = data => {
         let pathToPhoto,
             repository = data.user ? userRepository : libraryRepository,
-            test = data.user ? 'users' : 'books';
+            userOrBook = data.user ? 'users' : 'books';
            
         return repository.getOne(data.id)
-            .then(result => pathToPhoto = path.join(__dirname, '..', 'uploads', test, result.photo));
+            .then(result => pathToPhoto = path.join(__dirname, '..', 'uploads', userOrBook, result.photo));
     }
 
     self.upadtePhoto = data => {
-        let userOfBook = data.user ? 'users' : 'books' ,
+        let userOrBook = data.user ? 'users' : 'books',
             repository = data.user ? userRepository : libraryRepository,
             photoName = `${data.id}.${data.photo.name}`,
-            pathToPhoto = path.join(__dirname, '..', 'uploads', userOfBook, photoName);
+            pathToPhoto = path.join(__dirname, '..', 'uploads', userOrBook, photoName);
         
         return data.photo.mv(pathToPhoto)
             .then(() => { return repository.updatePhoto(data.id, photoName) });

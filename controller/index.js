@@ -117,8 +117,8 @@ router.put('/books/:bookId', (req, res) => {
     };    
 
     libraryDataService.update(data)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
+        .then(result => res.status(200).json(result))
+        .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
 router.get('/users/:userId/books', (req, res) => {
@@ -159,8 +159,8 @@ router.get('/users/:userId/photo', (req, res) => {
         user: true
     };
     photoDataService.getPhoto(data)
-    .then(result => res.status(200).sendFile(`${result}`))
-    .catch(err => res.status(err.status).json({ error: err.message }));
+        .then(result => res.status(200).sendFile(`${result}`))
+        .catch(err => {console.log(err); res.status(err.status).json({ error: err.message })});
 });
 
 router.put('/users/:userId/photo', (req, res) => {
