@@ -18,8 +18,8 @@ router.post('/login', (req, res) => {
         password: Zone.current.data.password
     };
     userDataServise.login(data)
-    .then(result => {console.log(result); res.status(200).json(result)})
-    .catch(err => {console.log(err); res.status(400).json({ error: err.message })});
+    .then(result => res.status(200).json(result))
+    .catch(err => res.status(400).json({ error: err.message }));
 });
 
 router.get('/users', (req, res) => {
@@ -42,7 +42,7 @@ router.post('/users', (req, res) => {
         phone: Zone.current.data.phone,
         password: Zone.current.data.password,
         fullname: Zone.current.data.fullname,
-        rating: '0',
+        rating: 0,
         regDate: Date.now(),
         photo: 'standart.png'
     };
@@ -207,8 +207,8 @@ router.put('/books/:bookId/photo', (req, res) => {
 
 router.get('/test', (req, res) => {
     userDataServise.test()
-    .then(result => {console.log(result); res.status(200).json(result)})
-    .catch(err => {console.log(err); res.status(err.status).json({ error: err.message })});
+    .then(result => res.status(200).json(result))
+    .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
 module.exports.router = router;

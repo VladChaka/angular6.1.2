@@ -22,16 +22,15 @@ function UserRepository() {
 
                 return verifyPassword(data.password, user.password)
                     .then(success => {
-                        if (!success) {
+                        if (!success)
                             return error;
-                        }
 
                         const token = jwt.sign({ username: data.username }, 'yqawv8nqi5');
 
                         return { id: user._id, token: token, role: user.post };
                     });
             })
-            .catch(err => {console.log(err); reject({ message: 'Authentication failed. Login or password wrong.' })});
+            .catch(err => reject({ message: 'Authentication failed. Login or password wrong.' }));
     }
 
     self.findAll = login => {
@@ -59,10 +58,9 @@ function UserRepository() {
     }
 
     self.getOne = id => {
-        return new Promise((resolve, reject) => {
-            find('findOne', { _id: id }, 'UserSchemaModel')
+        return find('findOne', { _id: id }, 'UserSchemaModel')
             .then(user => {                
-                let data = rebuildUserData(user, [
+                return rebuildUserData(user, [
                             '_id',
                             'username',
                             'email',
@@ -74,11 +72,9 @@ function UserRepository() {
                             'regDate',
                             'photo'
                         ]
-                    );                    
-                resolve(data);
+                    );
             })
-            .catch(err => reject({ message: err.message, status: 400 }));
-        });
+            .catch(err => { return { message: err.message, status: 400 } });
     }
 
     self.add = data => {
@@ -176,19 +172,6 @@ function UserRepository() {
         });
     }
 
-    // function verifyPassword(password, _thisPassword) {
-    //     return bcrypt.compare(password, _thisPassword)
-    //         .then(isMatch => {
-    //             console.log('isMatch',isMatch);
-                
-    //             return isMatch;
-    //         })
-    //         .cathe(err => {
-    //             console.log('err',err);
-    //             return err;
-    //         });
-    // }
-
     function verifyPassword(password, _thisPassword) {
         return new Promise((resolve, reject) => {
             bcrypt.compare(password, _thisPassword, (err, isMatch) => {			
@@ -199,16 +182,6 @@ function UserRepository() {
             });
         });
     }
-
-    // self.UserSchema.methods.verifyPassword = (password, cb, _thisPassword) => {
-    //     bcrypt.compare(password, _thisPassword, (err, isMatch) => {			
-    //         if (err) {
-    //             cb(err);
-    //             return;
-    //         }
-    //         cb(null, isMatch);
-    //     });
-    // };
 
     self.createHashPassword = data => {
         return new Promise((resolve, reject) => {
