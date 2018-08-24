@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { LibraryService } from '../../service/library.service';
-import {Users} from "../../model/users";
 
 @Component({
-  selector: 'book-list',
-  templateUrl: './book-list.component.html'
+  selector: 'books',
+  templateUrl: './books.component.html'
 })
-export class BookListComponent implements OnInit {
+export class BooksComponent implements OnInit {
     token: string = localStorage['token'] || sessionStorage['token'];
     role: boolean = localStorage['role'] || sessionStorage['role'];
     books: any;

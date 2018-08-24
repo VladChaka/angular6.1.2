@@ -4,9 +4,7 @@
         <input placeholder="Search Book">
         <i class="fab fa-searchengin"></i>
     </div>
-    <div>
-        <button *ngIf="role === 'Administrator'" (click)="this.formService.showFormAddUser = true">
-            <i class="fas fa-book">+</i>
-        </button>
-    </div>
+</div>
+<div class="list-books-container">
+<admin-book-block [book]="book" [showTakeBtn]="true" [hideNotAvailable]="true" *ngFor="let book of books | paginate: { itemsPerPage: pageSize, currentPage: currentPage}"></admin-book-block>
 </div>

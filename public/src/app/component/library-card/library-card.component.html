@@ -1,34 +1,9 @@
 <div class="list-book-buttons">
-    <div class="filters-pages">
-        <button [disabled]="currentPage == 1" (click)="currentPage = currentPage - 1">
-            <i class="fas fa-arrow-left"></i>
-        </button>
-        {{currentPage}}/{{numberOfPages}}
-        <button [disabled] ="currentPage >=  countUsers / pageSize" (click)="currentPage = currentPage + 1">
-            <i class="fas fa-arrow-right"></i>
-        </button>
-    </div>
     <div class="list-search">
         <input placeholder="Search Book">
         <i class="fab fa-searchengin"></i>
     </div>
-    <div>
-        <button (click)="this.formService.showFormAddUser = true">
-            <i class="fas fa-book">+</i>
-        </button>
-    </div>
 </div>
 <div class="list-books-container">
-<div *ngFor="let book of userBooks" class="list-book-block">
-<div><img src="../../../assets/fightclub.jpg"></div>
-<div><p>Book Title:</p> {{ book.bookname}}</div>
-<div><p>Author</p> {{book.author}}</div>
-<div><p>Description:</p> {{book.description}}</div>
-<div><p>Release Date:</p> {{book.released}}</div>
-<div><p>Rating:</p> {{book.rating}}</div>
-    <button class="list-book-button" type="submit"
-            (click)=" passBook()">
-        Pass a book
-    </button>
-</div>
+<book-block [book]="book" [showPassBtn]="true" *ngFor="let book of userBooks | paginate: { itemsPerPage: pageSize, currentPage: currentPage}"></book-block>
 </div>

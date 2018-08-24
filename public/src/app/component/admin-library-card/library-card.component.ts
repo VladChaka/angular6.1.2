@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormService } from '../../service/form.service';
 import { ActivatedRoute } from '@angular/router';
 import { LibraryService } from '../../service/library.service';
 
@@ -18,21 +19,27 @@ export class LibraryCardComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private libraryService: LibraryService
+        protected formService: FormService,
+        protected libraryService: LibraryService
     ) { }
 
+    closeLibraryCard = function(){
+        this.formService.showLibraryCard = false;
+    };
+
     ngOnInit() {
-        this.getUserBooks();
+        this.getUserBooks()
     }
 
     getUserBooks(): void {
         this.route.parent.params
         .subscribe(
             params => {
-                this.libraryService.getUserBooks(params.id, this.token)
+                this.libraryService.getUserBooks('5b7bde9a9aec5521c7d0a32d', this.token)//params.id
                 .subscribe(
                     books => {
                         this.userBooks = books;
+                        console.log(this.userBooks);
                     },
                     err => console.log("err",err)
                 );

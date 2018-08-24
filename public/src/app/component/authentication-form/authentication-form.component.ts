@@ -23,7 +23,6 @@ export class AuthenticationFormComponent {
         })
         .subscribe(
             data => {
-                console.log(data);
                 this.authenticationService.myId = data.id;
                 this.authenticationService.userAuthentication = true;
                 if (checked) {
@@ -33,15 +32,10 @@ export class AuthenticationFormComponent {
                     sessionStorage.setItem('role', data.role);
                     sessionStorage.setItem('token', data.token);
                 }
-                // let navigationExtras: NavigationExtras = {
-                //     queryParams: {
-                //         myId: ''
-                //     }
-                // };
                 if(data.role == 'Administrator'){
                     this.router.navigate(['admin']);
                 } else{
-                    this.router.navigate(['dashboard']);
+                    this.router.navigate(['dashboard/books']);
                 }
             },
             err => {

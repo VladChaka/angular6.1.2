@@ -1,14 +1,14 @@
-<div *ngIf="this.authenticationService.userAuthentication !== false" class="users-container">
+<div class="users-container">
     <div class="users-block">
         <ul class="users-menu">
             <li class="dashboard-title">
                 <p routerLink="books" routerLinkActive="active">Books <i class="fas fa-book"></i></p>
             </li>
             <li class="dashboard-btns">
-                <button [routerLink]="['user', myId]">
+                <button routerLink="myprofile" routerLinkActive="active">
                     <i class="fas fa-user-tie"></i>
                 </button>
-                <button ng-show=" userAuthentication"  (click)=" logout()">
+                <button ng-show="userAuthentication"  (click)=" logout()">
                     <i class="fas fa-sign-out-alt"></i>
                 </button>
             </li>

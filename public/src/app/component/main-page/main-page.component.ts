@@ -17,7 +17,6 @@ export class MainPageComponent implements OnInit {
     ) {
     }
     ngOnInit() {
-        console.log(this.role);
         this.router = this.route.queryParams.subscribe(params =>{
             // this.myId = params.myId;
             // console.log(this.myId)

@@ -3,10 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../service/user.service';
 
 @Component({
-  selector: 'user-profile',
-  templateUrl: './user-profile.component.html'
+  selector: 'admin-user-profile',
+  templateUrl: './admin-user-profile.component.html'
 })
-export class UserProfileComponent implements OnInit {
+export class AdminUserProfileComponent implements OnInit {
     userProfileBtnText:string = 'Edit';
     router: any;
     profileIsEdit:boolean = false;
@@ -46,7 +46,12 @@ export class UserProfileComponent implements OnInit {
             this.userProfileBtnText = 'Submit'
         } else {
             this.userProfileBtnText = 'Edit'
-        }        
+        }
+        console.log(this.userProfile);
+        
         this.userService.edit(this.userProfile, this.userProfile._id, this.token)
+    }
+    deleteUser(): void {
+        this.userService.delete(this.userProfile._id, this.token);
     }
 }

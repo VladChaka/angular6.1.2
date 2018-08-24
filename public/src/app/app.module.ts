@@ -15,14 +15,17 @@ import { UsersMenuComponent } from './component/users-menu/users-menu.component'
 import { UsersPanelComponent } from './component/users-panel/users-panel.component';
 import { AddUserComponent } from './component/add-user/add-user.component';
 
+import {BooksComponent} from './component/books/books.component'
 import { LoginValidationDirective } from './directive/login-validation.directive';
-import { BookListComponent } from './component/book-list/book-list.component';
+import { BookBlockComponent } from './component/book-block/book-block.component';
 import { UserBlockComponent } from './component/user-block/user-block.component';
 import { Error404Component } from './component/error404/error404.component';
 import { AdminMainPageComponent } from './component/admin-main-page/admin-main-page.component';
-import { AdminBookMenuComponent } from './component/admin-book-menu/admin-book-menu.component';
-import { AdminBookListComponent } from './component/admin-book-list/admin-book-list.component';
+import { AddBookComponent } from './component/add-book/add-book.component';
+import { AdminBookBlockComponent } from './component/admin-book-block/admin-book-block.component';
 import { AdminBooksComponent } from './component/admin-books/admin-books.component';
+import { AdminUserProfileComponent } from './component/admin-user-profile/admin-user-profile.component';
+import { ProfileBooklistComponent } from './component/profile-booklist/profile-booklist.component';
 
 @NgModule({
   declarations: [
@@ -34,15 +37,18 @@ import { AdminBooksComponent } from './component/admin-books/admin-books.compone
     ProfileControlPanelComponent,
     LibraryCardComponent,
       UsersMenuComponent,
-    BookListComponent,
+    BookBlockComponent,
+    BooksComponent,
       UsersPanelComponent,
       AddUserComponent,
       UserBlockComponent,
       Error404Component,
       AdminMainPageComponent,
-      AdminBookMenuComponent,
-      AdminBookListComponent,
-      AdminBooksComponent
+      AddBookComponent,
+      AdminBookBlockComponent,
+      AdminBooksComponent,
+      AdminUserProfileComponent,
+      ProfileBooklistComponent
   ],
   imports: [
     BrowserModule,

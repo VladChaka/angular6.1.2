@@ -1,9 +1,10 @@
 <div class="dashboard-caption">
-                <p class="route">MyProfile<i class="fas fa-angle-right"></i> Jenya <i class="fas fa-angle-right"></i> Modify</p>
+                <p class="route">Users <i class="fas fa-angle-right"></i> Ignat <i class="fas fa-angle-right"></i> Modify</p>
                 <ul>
-                    <li routerLink="librarycard" routerLinkActive="active">My Books <i class="fas fa-bookmark"></i></li>
+                    <li routerLink="booklist" routerLinkActive="active">Book list <i class="fas fa-swatchbook"></i></li>
+                    <li routerLink="librarycard" routerLinkActive="active">Books at user <i class="fas fa-bookmark"></i></li>
                 </ul>
-                <div class="close-button"><i class="fas fa-backspace" routerLink="../books"></i></div>
+                <div class="close-button"><i class="fas fa-backspace" routerLink="../"></i></div>
             </div>
 
 
@@ -103,6 +104,9 @@
             Enter real name.
         </p>
         <div class="user-edit-btns">
+            <button (click)="deleteUser()" routerLink="../">
+                DELETE <i class="fas fa-minus-circle"></i>
+            </button>
             <button (click)="editUser()">
                 {{userProfileBtnText}} <i *ngIf="!this.profileIsEdit" class="fas fa-users-cog"></i><i *ngIf="this.profileIsEdit" class="fas fa-user-check"></i>
             </button>

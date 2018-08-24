@@ -5,25 +5,22 @@ import { MainPageComponent } from '../component/main-page/main-page.component';
 import { AuthenticationFormComponent } from "../component/authentication-form/authentication-form.component";
 import { UsersMenuComponent } from '../component/users-menu/users-menu.component';
 import { UsersPanelComponent } from '../component/users-panel/users-panel.component';
-import {BookListComponent} from "../component/book-list/book-list.component";
-import {UserProfileComponent} from "../component/user-profile/user-profile.component";
+import {BooksComponent} from "../component/books/books.component";
 import {LibraryCardComponent} from "../component/library-card/library-card.component";
 import {AddUserComponent} from "../component/add-user/add-user.component";
 
+import {UserProfileComponent} from "../component/user-profile/user-profile.component";
+import { ProfileBooklistComponent } from '../component/profile-booklist/profile-booklist.component';
+
+import {AdminUserProfileComponent} from "../component/admin-user-profile/admin-user-profile.component";
 import { AdminMainPageComponent } from '../component/admin-main-page/admin-main-page.component';
-import { AdminBookMenuComponent } from '../component/admin-book-menu/admin-book-menu.component';
-import { AdminBookListComponent } from "../component/admin-book-list/admin-book-list.component";
+import { AddBookComponent } from "../component/add-book/add-book.component";
 import { AdminBooksComponent } from "../component/admin-books/admin-books.component";
 
 import { AuthenticationGuard } from "../service/authentication-guard.service";
 import { Error404Component } from '../component/error404/error404.component';
 
-const userRoutes: Routes = [
-    {
-        path: 'books',
-        component: BookListComponent,
-        canActivate: [AuthenticationGuard]
-    },
+const profileRoutes: Routes = [
     {
         path: 'librarycard',
         component: LibraryCardComponent,
@@ -31,42 +28,24 @@ const userRoutes: Routes = [
     }
 ];
 
-const dashboardRoutes: Routes = [
+const adminProfileRoutes: Routes = [
     {
-        path: 'myprofile',
-        component: UserProfileComponent,
-        children: userRoutes,
+        path: 'librarycard',
+        component: LibraryCardComponent,
         canActivate: [AuthenticationGuard]
     },
     {
-        path: 'books',
-        component: BookListComponent,
+        path: 'booklist',
+        component: ProfileBooklistComponent,
         canActivate: [AuthenticationGuard]
-    },
-    {
-        path: '404',
-        component: Error404Component
-    },
+    }
 ];
 
 const usersRoutes: Routes = [
     {
         path: ':id',
-        component: UserProfileComponent,
-        children: userRoutes,
-        canActivate: [AuthenticationGuard]
-    },
-    {
-        path: '',
-        component: UsersPanelComponent,
-        canActivate: [AuthenticationGuard]
-    }
-];
-const adminBookRoutes: Routes = [
-    {
-        path: ':id',
-        component: UserProfileComponent,
-        children: userRoutes,
+        component: AdminUserProfileComponent,
+        children: adminProfileRoutes,
         canActivate: [AuthenticationGuard]
     },
     {
@@ -84,19 +63,41 @@ const adminMainRoutes: Routes = [
     },
     {
         path: 'myprofile',
-        component: UserProfileComponent,
-        children: userRoutes,
+        component: AdminUserProfileComponent,
+        children: adminProfileRoutes,
         canActivate: [AuthenticationGuard]
     },
     {
-        path: 'add',
+        path: 'adduser',
         component: AddUserComponent,
         canActivate: [AuthenticationGuard]
     },
     {
+        path: 'addbook',
+        component: AddBookComponent,
+        canActivate: [AuthenticationGuard]
+    },
+    {
         path: 'books',
-        component: AdminBookMenuComponent,
-        children: adminBookRoutes,
+        component: AdminBooksComponent,
+        canActivate: [AuthenticationGuard]
+    },
+    {
+        path: '404',
+        component: Error404Component
+    },
+];
+
+const dashboardRoutes: Routes = [
+    {
+        path: 'myprofile',
+        component: UserProfileComponent,
+        children: profileRoutes,
+        canActivate: [AuthenticationGuard]
+    },
+    {
+        path: 'books',
+        component: BooksComponent,
         canActivate: [AuthenticationGuard]
     },
     {
@@ -121,10 +122,10 @@ const routes: Routes = [
         path: 'login',
         component: AuthenticationFormComponent
     },
-     {
-       path: '**',         
-       redirectTo: '/dashboard/404'
-    },
+    //  {
+    //    path: '**',         
+    //    redirectTo: '/dashboard/404'
+    // },
     {
         path: '',
         redirectTo: '/dashboard',

@@ -2,10 +2,10 @@ import { Component, OnInit} from '@angular/core';
 import { LibraryService } from '../../service/library.service';
 
 @Component({
-  selector: 'admin-books',
-  templateUrl: './admin-books.component.html'
+  selector: 'profile-booklist',
+  templateUrl: './profile-booklist.component.html'
 })
-export class AdminBooksComponent implements OnInit {
+export class ProfileBooklistComponent implements OnInit {
     token: string = localStorage['token'] || sessionStorage['token'];
     books: any;
     currentPage: number = 1;
