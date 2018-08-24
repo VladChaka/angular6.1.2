@@ -33,9 +33,5 @@ export class ProfileControlPanelComponent {
     }
 
     deleteUser(id: any): void {
-        console.log(id);
-        console.log(this.delUser);
-        
-        // this.userService.delete("123", this.tokenService.getToken());
     }
  }

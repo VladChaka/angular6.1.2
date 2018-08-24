@@ -7,6 +7,7 @@ import { LibraryService } from '../../service/library.service';
 })
 export class AdminBooksComponent implements OnInit {
     token: string = localStorage['token'] || sessionStorage['token'];
+    id: string = localStorage['id'] || sessionStorage['id'];
     books: any;
     currentPage: number = 1;
     pageSize: number = 18;
@@ -16,6 +17,8 @@ export class AdminBooksComponent implements OnInit {
   ngOnInit() {
     this.getBooks();
   }
+
+    
 
   getBooks(): void {
     this.libraryService.getBooks(this.token)

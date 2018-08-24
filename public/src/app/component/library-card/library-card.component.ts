@@ -9,6 +9,7 @@ import { LibraryService } from '../../service/library.service';
 export class LibraryCardComponent implements OnInit { 
 
     token: string = localStorage['token'] || sessionStorage['token'];
+    id: string = localStorage['id'] || sessionStorage['id'];
     userBooks: any;
     showUserProfile: boolean;
     currentPage: number = 1;
@@ -26,18 +27,13 @@ export class LibraryCardComponent implements OnInit {
     }
 
     getUserBooks(): void {
-        this.route.parent.params
-        .subscribe(
-            params => {
-                this.libraryService.getUserBooks(params.id, this.token)
-                .subscribe(
-                    books => {
-                        this.userBooks = books;
-                    },
-                    err => console.log("err",err)
-                );
-            }
-        );
+        this.libraryService.getUserBooks(this.id, this.token)
+            .subscribe(
+                books => {
+                    this.userBooks = books;
+                },
+                err => console.log("err",err)
+            );
     }
 
 }

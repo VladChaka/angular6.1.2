@@ -38,8 +38,8 @@ function UserDataServise (userRepository, libraryRepository) {
         return userRepository.update(user);
     }
 
-    self.delete = data => {
-        return userRepository.delete(data);	
+    self.delete = id => {
+        return userRepository.delete(id);	
     }
 
     self.getBooks = id => {

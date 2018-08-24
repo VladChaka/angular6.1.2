@@ -11,6 +11,7 @@ export class UserProfileComponent implements OnInit {
     router: any;
     profileIsEdit:boolean = false;
     token: string = localStorage['token'] || sessionStorage['token'];
+    id: string = localStorage['id'] || sessionStorage['id'];
     userProfile: any = {
         email: "",
         username: "",
@@ -29,16 +30,13 @@ export class UserProfileComponent implements OnInit {
         this.getOneUser();
     }
     getOneUser(): void {
-        this.route.params
-            .subscribe(params => {
-                this.userService.getOne(params.id, this.token)
-                    .subscribe(
-                        userProfile => {
-                            this.userProfile = userProfile;
-                        },
-                        err => console.log("err",err)
-                    );
-            });
+        this.userService.getOne(this.id, this.token)
+            .subscribe(
+                userProfile => {
+                    this.userProfile = userProfile;
+                },
+                err => console.log("err",err)
+            );
     }
     editUser(): void {
         this.profileIsEdit = !this.profileIsEdit;

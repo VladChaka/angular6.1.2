@@ -8,6 +8,7 @@ import { LibraryService } from '../../service/library.service';
 })
 export class BookBlockComponent implements OnInit {
     token: string = localStorage['token'] || sessionStorage['token'];
+    id: string = localStorage['id'] || sessionStorage['id'];
     @Input() book: any;
     @Input() showPassBtn: boolean;
     @Input() showTakeBtn: boolean;
@@ -17,15 +18,16 @@ export class BookBlockComponent implements OnInit {
      }
 
   ngOnInit() {
-      // this.getImageBook();
   }
-  // getImageBook():void{
-  //       this.libraryService.getImageBook(this.books.id, this.books.path, this.token)
-  // }
     takeBook():void {
-
+        
+        this.libraryService.takeBook(this.id, this.book._id, this.token)
+        .subscribe(data => console.log(data))
     }
     passBook():void {
-
+        console.log(this.id, this.book._id);
+        
+        this.libraryService.passBook(this.id, this.book._id, this.token)
+        .subscribe(data => console.log(data))
     }
 }

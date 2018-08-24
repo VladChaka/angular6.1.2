@@ -8,6 +8,7 @@ import { LibraryService } from '../../service/library.service';
 })
 export class AdminBookBlockComponent implements OnInit {
     token: string = localStorage['token'] || sessionStorage['token'];
+    id: string = localStorage['id'] || sessionStorage['id'];
     @Input() book: any;
     @Input() showTakeBtn: boolean;
     @Input() showDeleteBtn: boolean;
@@ -15,15 +16,9 @@ export class AdminBookBlockComponent implements OnInit {
     constructor(private libraryService: LibraryService) { }
 
   ngOnInit() {
-      // this.getImageBook();
   }
-  takeBook():void{
-      
-  }
-  deleteBook():void{
-      
-  }
-  // getImageBook():void{
-  //       this.libraryService.getImageBook(this.books.id, this.books.path, this.token)
-  // }
+  takeBook():void {
+    this.libraryService.takeBook(this.id, this.book._id, this.token)
+    .subscribe(data => console.log(data))
+}
 }

@@ -11,6 +11,7 @@ export class AdminUserProfileComponent implements OnInit {
     router: any;
     profileIsEdit:boolean = false;
     token: string = localStorage['token'] || sessionStorage['token'];
+    id: string = localStorage['id'] || sessionStorage['id'];
     userProfile: any = {
         email: "",
         username: "",

@@ -34,8 +34,5 @@ export class FormService {
 
     closeFormAddUser(): void {
         this.showFormAddUser = false;
-        // this.emailConflict = false;
-        // this.loginConflict = false;
-        // this.formAddUser = {};
     }
 }

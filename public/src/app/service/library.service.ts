@@ -29,7 +29,4 @@ export class LibraryService {
     getImageBook(id, token): Observable<any> {
         return this.remoteService.getBookPhoto(id, token);
     }
-    // getOneBook(data: object, id:string, token: string) {
-    //     this.remoteService.getBookById(data, id, token);
-    // };
 }

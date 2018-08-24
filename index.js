@@ -26,15 +26,14 @@ app.use((req, res, next) => {
 app.use(upload());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(__dirname));
-// app.use(express.static(__dirname + '/public_chameleon47'));
-// app.use((req, res, next) => {
-//     if (req.path !== '/login') {
-//         token__module(req, res, next);
-//     } else {
-//         next();
-//     }
-// });
+app.use(express.static(__dirname + '/public_chameleon47'));
+app.use((req, res, next) => {
+    if (req.path !== '/login') {
+        token__module(req, res, next);
+    } else {
+        next();
+    }
+});
 
 app.use((req, res, next) => {    
     const token = req.body.token || req.query.token || req.headers['x-access-token'],

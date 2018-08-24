@@ -78,6 +78,11 @@ function Library(userRepository) {
             });
     }
 
+    self.delete = id => {
+        return self.BookSchemaModel.findOneAndRemove({ _id: id })
+            .then(() => { return { message: 'ok' } });
+    }
+
     self.takeBook = data => {  
         return find('findOne', { userid: data.userId }, 'TakenBookSchemaModel')
             .then(user => {
@@ -93,7 +98,7 @@ function Library(userRepository) {
 
                     return take(data.bookId)
                         .then(() => {
-                            return add(newData, 'TakenBookSchemaModel', true)
+                            return add(newData, 'TakenBookSchemaModel', false)
                                 .then(book => {
                                     if (!book) throw { message: 'Unknown error.', status: 500 };
                                     return { message: 'Ok' }
@@ -135,9 +140,7 @@ function Library(userRepository) {
                     options: 'books.dateReceived'
                 }, 
                 'TakenBookSchemaModel'
-            ).then(user => {
-                console.log(user);
-                
+            ).then(user => {                
                 if (!user) throw { message: 'Incorrect ID.', status: 400 }
 
                 return checkBook(data, { message: 'User have this book.', status: 204 }, false)
@@ -157,7 +160,7 @@ function Library(userRepository) {
                                     
                                     return returned(data.bookId)
                                         .then(() => {
-                                            return add(newData, 'ReturnedBookSchemaModel', true)
+                                            return add(newData, 'ReturnedBookSchemaModel', false)
                                                 .then(result => {
                                                     if (!result) throw { message: 'Unknown error.', status: 500 };
                                                     return update(
@@ -284,7 +287,7 @@ function Library(userRepository) {
             });
     }
 
-    function checkBook(data, error, take) {
+    function checkBook(data, error, takeBook) {
         return find('findOne',{
                     userid: data.userId,
                     books: {
@@ -295,7 +298,7 @@ function Library(userRepository) {
                 },
                 'TakenBookSchemaModel'
             ).then(user => {
-                if (take) {
+                if (takeBook) {
                     if (user) throw error;
                 } else {
                     if (!user) throw error;

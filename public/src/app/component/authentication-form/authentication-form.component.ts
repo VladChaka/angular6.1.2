@@ -28,9 +28,11 @@ export class AuthenticationFormComponent {
                 if (checked) {
                     localStorage.setItem('role', data.role);
                     localStorage.setItem('token', data.token);
+                    localStorage.setItem('id', data.id);
                 } else {
                     sessionStorage.setItem('role', data.role);
                     sessionStorage.setItem('token', data.token);
+                    sessionStorage.setItem('id', data.id);
                 }
                 if(data.role == 'Administrator'){
                     this.router.navigate(['admin']);

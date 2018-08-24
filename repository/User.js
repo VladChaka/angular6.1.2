@@ -108,8 +108,8 @@ function UserRepository() {
             });
     }
 
-    self.delete = data => {
-        return self.UserSchemaModel.findOneAndRemove({ _id: data.id })
+    self.delete = id => {
+        return self.UserSchemaModel.findOneAndRemove({ _id: id })
             .then(() => { return { message: 'ok' } });
     }
 

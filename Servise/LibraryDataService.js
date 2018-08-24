@@ -22,6 +22,10 @@ function LibraryDataService (libraryRepository) {
         return libraryRepository.update(data);
     }
 
+    self.delete = id => {
+        return libraryRepository.delete(id);
+    }
+
     self.getUserBooks = id => {
         return libraryRepository.getUserBooks(id);
     }

@@ -17,11 +17,7 @@ export class BooksComponent implements OnInit {
 
   ngOnInit() {
     this.getBooks();
-      // this.getImageBook();
   }
-  // getImageBook():void{
-  //       this.libraryService.getImageBook(this.books.id, this.books.path, this.token)
-  // }
     getBooks(): void {
         this.libraryService.getBooks(this.token)
             .subscribe(
