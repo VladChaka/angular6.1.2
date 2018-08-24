@@ -135,7 +135,7 @@ router.put('/users/:userId/books/:bookId', (req, res) => {
     };    
     libraryDataService.takeBook(data)
         .then(result => res.status(200).json(result))
-        .catch(err => {console.log(err); res.status(err.status).json({ error: err.message })});
+        .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
 router.delete('/users/:userId/books/:bookId', (req, res) => {
@@ -145,8 +145,8 @@ router.delete('/users/:userId/books/:bookId', (req, res) => {
         bookId: req.params.bookId
     };    
     libraryDataService.returnBook(data)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
+        .then(result => res.status(200).json(result))
+        .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
 /**
@@ -173,7 +173,7 @@ router.put('/users/:userId/photo', (req, res) => {
 
     photoDataService.upadtePhoto(data)
         .then(result => res.status(200).json(result))
-        .catch(err => {console.log("err",err); res.status(err.status || 500).json({ error: err.message })});
+        .catch(err => res.status(err.status || 500).json({ error: err.message }));
 });
 
 router.get('/books/:bookId/photo', (req, res) => {

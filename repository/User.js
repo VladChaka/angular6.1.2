@@ -177,8 +177,7 @@ function UserRepository() {
         return self.UserSchemaModel.findOne(query)
             .then(user => {
                 let admin = true;
-                if(!user) throw { message: "Incorrect ID.", status: 400 };
-                if (user.post !== 'Administrator') admin = false;
+                if (!user || user.post !== 'Administrator') admin = false;
                 return admin;
             });
     }
