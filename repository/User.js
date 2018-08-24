@@ -12,35 +12,32 @@ function UserRepository() {
     self.UserSchemaModel = user.UserSchemaModel;
 
     self.login = data => {
+        let error = { message: 'Authentication failed. Login or password wrong.', status: 400 };
+
         return find('findOne', { username: data.username }, 'UserSchemaModel')
-            .then(user => {
-                let error = { message: 'Authentication failed. Login or password wrong.' };
-                if (!user) {
-                    reject(error);                    
-                    return;
-                }
+            .then(user => {                    
+                if (!user) throw error;
 
                 return verifyPassword(data.password, user.password)
                     .then(success => {
-                        if (!success)
-                            return error;
+                        if (!success) throw error;
 
                         const token = jwt.sign({ username: data.username }, 'yqawv8nqi5');
 
                         return { id: user._id, token: token, role: user.post };
                     });
-            })
-            .catch(err => reject({ message: 'Authentication failed. Login or password wrong.' }));
+            });
     }
 
     self.findAll = login => {
-        return find('findOne', { username: login }, 'UserSchemaModel')
-            .then(user => {                
-                if (user.post !== 'Administrator')
-                    return { message: 'No access.', status: 403 };
+        return checkAdmin({ username: login })
+            .then(admin => {
+                if (!admin) throw { message: 'No access.', status: 403 };
 
-                return self.UserSchemaModel.find({})
+                return find('find', {}, 'UserSchemaModel')
                     .then(users => {
+                        if (!users) throw { message: 'Unknown error.', status: 500 };
+
                         return rebuildUserData(users, [
                                 '_id',
                                 'username',
@@ -51,15 +48,15 @@ function UserRepository() {
                                 'rating',
                                 'regDate'
                             ]);
-                    })
-                    .catch(err => { return { message: err.message } });
-            })
-            .catch(err => { return { message: err.message, status: 500 } });
+                    });
+            });
     }
 
     self.getOne = id => {
         return find('findOne', { _id: id }, 'UserSchemaModel')
-            .then(user => {                
+            .then(user => {
+                if (!user) throw { message: 'Incorrect ID.', status: 400 };
+                                
                 return rebuildUserData(user, [
                             '_id',
                             'username',
@@ -73,26 +70,19 @@ function UserRepository() {
                             'photo'
                         ]
                     );
-            })
-            .catch(err => { return { message: err.message, status: 400 } });
+            });
     }
 
     self.add = data => {
-        return new Promise((resolve, reject) => {
-            find('findOne', { username: data.login }, 'UserSchemaModel')
-            .then(user => {
-                if (user.post !== 'Administrator') {
-                    reject({ message: 'No access.', status: 403 });
-                    return;
-                }
+        const new_user = new self.UserSchemaModel(data);
 
-                const new_user = new self.UserSchemaModel(data);
-
-                self.createHashPassword(new_user)
-                .then(user => {
-                    user.save()
+        return createHashPassword(new_user)
+            .then(user => {                        
+                return user.save()
                     .then(user => {
-                        let data = rebuildUserData(user, [
+                        if (!user) throw { message: 'Unknown error.', status: 500 };
+
+                        return rebuildUserData(user, [
                                 '_id',
                                 'username',
                                 'email',
@@ -102,74 +92,36 @@ function UserRepository() {
                                 'rating',
                                 'regDate',
                                 'books'
-                            ]
-                        );					
-                        resolve(data);
-                    })
-                    .catch(err => reject({ message: err.message, status: 500 }));
-                })
-                .catch(err => reject({ message: err.message, status: 500 }));
-            })
-            .catch(err => reject({ message: err.message, status: 500 }));  
-        });
+                            ]);
+                    });
+            });
     }
 
     self.update = data => {
-        return new Promise((resolve, reject) => {
-            find('findOne', { username: data.login }, 'UserSchemaModel')
+        return createHashPassword(data)
             .then(user => {
-                if (user.post !== 'Administrator') {
-                    reject({ message: 'No access.', status: 403 });
-                    return;
-                }
-
-                self.createHashPassword(data)
-                .then(user => {                    
-                    update({ _id: user.id }, user, 'UserSchemaModel')
-                    .then(() => resolve({ message: 'Ok' }))
-                    .catch(err => reject({ message: err.message, status: 400 }));
-                })
-                .catch(err => reject({ message: err.message, status: 500 }));
-            })
-            .catch(err => reject({ message: err.message, status: 500 }));
-        });
-    }
-
-    self.updatePhoto = data => {
-        return new Promise((resolve, reject) => {
-            find('findOne', { username: data.login }, 'UserSchemaModel')
-            .then(user => {
-                if (user.post !== 'Administrator') {
-                    reject({ message: 'No access.', status: 403 });
-                    return;
-                }
-
-                update(
-                    { username: data.name },
-                    { photo: data.photo.name },
-                    'UserSchemaModel'
-                )
-                .then(() => resolve({ message: 'Ok' }))
-                .catch(err => reject({ message: err.message, status: 500 }));
-            })
-            .catch(err => reject({ message: err.message, status: 500 }));
-        });
+                return update({ _id: data.id }, user, 'UserSchemaModel')
+                    .then(user => {
+                        if (!user) throw { message: 'Incorrect ID.', status: 400 };
+                        return { message: 'Ok' }
+                    });
+            });
     }
 
     self.delete = data => {
-        return new Promise((resolve, reject) => {   
-            find('findOne', { username: data.login }, 'UserSchemaModel')
-            .then(user => {
-                if (user.post !== 'Administrator') {
-                    reject({ message: 'No access.', status: 403 });
-                    return;
-                }                
-                self.UserSchemaModel.findOneAndRemove({ _id: data.id })
-                .then(() => resolve({ message: 'ok' }))
-                .catch(err => reject({ message: err.message, status: 500 }));
-            })
-            .catch(err => reject({ message: err.message, status: 500 }));
-        });
+        return self.UserSchemaModel.findOneAndRemove({ _id: data.id })
+            .then(() => { return { message: 'ok' } });
+    }
+
+    self.updatePhoto = (id, photoName) => {
+        return update(
+                { _id: id },
+                { photo: photoName },
+                'UserSchemaModel'
+            ).then(user => {
+                if (!user) throw { message: 'Incorrect ID.', status: 400 };                
+                return { message: 'Ok' }
+            });
     }
 
     function verifyPassword(password, _thisPassword) {
@@ -183,25 +135,28 @@ function UserRepository() {
         });
     }
 
-    self.createHashPassword = data => {
+    function createHashPassword(data) {
         return new Promise((resolve, reject) => {
-            const user = data;
+            let user = data;
+            
             if (data.password !== undefined && data.password.length !== 0) {
                 if (!checkRegExpPassword(data.password)) {
                     reject({ message: "Incorrect password" }, 400);
                     return;
                 }
+
                 bcrypt.genSalt(5, (err, salt) => {
                     if (err) {
-                        reject({ message: err.message, status: 500 });
+                        reject(err);
                         return;
                     }
 
                     bcrypt.hash(user.password, salt, null, (err, hash) => {
                         if (err) {
-                            reject({ message: err.message, status: 500 });
+                            reject(err);
                             return;
                         }
+
                         user.password = hash;
                         resolve(user);
                     });
@@ -213,16 +168,19 @@ function UserRepository() {
     };
 
     function find(findAllOrOne, query, SchemaModel) {
-        return self[SchemaModel][findAllOrOne](query)
-            .then(result => { return result })
-            .catch(err => { return { message: err.message, status: 400 } });
+        return self[SchemaModel][findAllOrOne](query);
     }
     function update(query, data, SchemaModel) {
-        return new Promise((resolve, reject) => {
-            self[SchemaModel].findOneAndUpdate(query, data)
-            .then(result => resolve(result))
-            .catch(err => reject({ message: err.message, status: 500 }));
-        });
+        return self[SchemaModel].findOneAndUpdate(query, data);
+    }
+    function checkAdmin(query) {
+        return self.UserSchemaModel.findOne(query)
+            .then(user => {
+                let admin = true;
+                if(!user) throw { message: "Incorrect ID.", status: 400 };
+                if (user.post !== 'Administrator') admin = false;
+                return admin;
+            });
     }
 
     function rebuildUserData(data, addField) {

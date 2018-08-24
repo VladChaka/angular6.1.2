@@ -18,20 +18,20 @@ router.post('/login', (req, res) => {
         password: Zone.current.data.password
     };
     userDataServise.login(data)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(400).json({ error: err.message }));
+        .then(result => res.status(200).json(result))
+        .catch(err => res.status(err.status || 500).json({ error: err.message }));
 });
 
 router.get('/users', (req, res) => {
     userDataServise.findAll(Zone.current.data.login)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(500).json({ error: err.message }));
+        .then(result => res.status(200).json(result))
+        .catch(err => res.status(err.status || 500).json({ error: err.message }));
 });
 
 router.get('/users/:userId', (req, res) => {
     userDataServise.findOne(req.params.userId)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
+        .then(result => res.status(200).json(result))
+        .catch(err => res.status(err.status || 500).json({ error: err.message }));
 });
 
 router.post('/users', (req, res) => {
@@ -48,13 +48,13 @@ router.post('/users', (req, res) => {
     };
     
     userDataServise.add(data)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
+        .then(result => res.status(200).json(result))
+        .catch(err => res.status(err.status || 500).json({ error: err.message }));
 });
 
 router.put('/users/:userId', (req, res) => {
     let data = {
-        id: id,
+        id: req.params.userId,
         login: Zone.current.data.login,
         username: Zone.current.data.username,
         email: Zone.current.data.email,
@@ -66,18 +66,14 @@ router.put('/users/:userId', (req, res) => {
     };
     
     userDataServise.update(data)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
+        .then(result => res.status(200).json(result))
+        .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
 router.delete('/users/:userId', (req, res) => {
-    let data = {
-        id: req.params.userId,
-        login: Zone.current.data.login
-    };    
-    userDataServise.delete(data)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
+    userDataServise.delete(req.params.userId)
+        .then(result => res.status(200).json(result))
+        .catch(err => res.status(err.status || 500).json({ error: err.message }));
 });
 
 /**
@@ -86,14 +82,14 @@ router.delete('/users/:userId', (req, res) => {
 
 router.get('/books', (req, res) => {
     libraryDataService.getAll()
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(500).json({ error: err.message }));
+        .then(result => res.status(200).json(result))
+        .catch(err => res.status(err.status || 500).json({ error: err.message }));
 });
 
 router.get('/books/:bookId', (req, res) => {
     libraryDataService.getOne(req.params.bookId)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
+        .then(result => res.status(200).json(result))
+        .catch(err => res.status(err.status || 500).json({ error: err.message }));
 });
 
 router.post('/books', (req, res) => {
@@ -109,8 +105,8 @@ router.post('/books', (req, res) => {
     };
     
     libraryDataService.add(data)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
+        .then(result => res.status(200).json(result))
+        .catch(err => res.status(err.status || 500).json({ error: err.message }));
 });
 
 router.put('/books/:bookId', (req, res) => {
@@ -119,6 +115,7 @@ router.put('/books/:bookId', (req, res) => {
         bookname: req.body.bookname,
         count: req.body.count
     };    
+
     libraryDataService.update(data)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(err.status).json({ error: err.message }));
@@ -126,8 +123,8 @@ router.put('/books/:bookId', (req, res) => {
 
 router.get('/users/:userId/books', (req, res) => {
     libraryDataService.getUserBooks(req.params.userId)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
+        .then(result => res.status(200).json(result))
+        .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
 router.put('/users/:userId/books/:bookId', (req, res) => {
@@ -137,8 +134,8 @@ router.put('/users/:userId/books/:bookId', (req, res) => {
         bookId: req.params.bookId
     };    
     libraryDataService.takeBook(data)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
+        .then(result => res.status(200).json(result))
+        .catch(err => {console.log(err); res.status(err.status).json({ error: err.message })});
 });
 
 router.delete('/users/:userId/books/:bookId', (req, res) => {
@@ -169,14 +166,14 @@ router.get('/users/:userId/photo', (req, res) => {
 router.put('/users/:userId/photo', (req, res) => {
     if (!req.files) return res.status(400).json({ error: 'No files uploaded.' });
     let data = {
-        name: Zone.current.data.username,
-        login: Zone.current.data.login,
+        id: req.params.userId,
         photo: req.files.image,
         user: true
     };
+
     photoDataService.upadtePhoto(data)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
+        .then(result => res.status(200).json(result))
+        .catch(err => {console.log("err",err); res.status(err.status || 500).json({ error: err.message })});
 });
 
 router.get('/books/:bookId/photo', (req, res) => {
@@ -189,26 +186,17 @@ router.get('/books/:bookId/photo', (req, res) => {
     .catch(err => res.status(err.status).json({ error: err.message }));
 });
 
-router.put('/books/:bookId/photo', (req, res) => {
+router.post('/books/:bookId/photo', (req, res) => {
     if (!req.files) return res.status(400).json({ error: 'No files uploaded.' });
     let data = {
-        name: req.body.bookname,
+        id: req.params.bookId,
         photo: req.files.image,
         user: false,
         login: Zone.current.data.login
     };
     photoDataService.upadtePhoto(data)
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
-});
-
-
-
-
-router.get('/test', (req, res) => {
-    userDataServise.test()
-    .then(result => res.status(200).json(result))
-    .catch(err => res.status(err.status).json({ error: err.message }));
+        .then(result => res.status(200).json(result))
+        .catch(err => res.status(err.status || 500).json({ error: err.message }));
 });
 
 module.exports.router = router;

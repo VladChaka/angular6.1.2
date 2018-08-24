@@ -17,14 +17,12 @@ function PhotoDataService (userRepository, libraryRepository) {
     }
 
     self.upadtePhoto = data => {
-        let pathToPhoto = path.join(__dirname, '..', 'tmp', data.who, `${data.name}.${data.photo.name}`),
-            repository = data.user ? userRepository : libraryRepository;
-
-        data.photo.mv(pathToPhoto)
-            .then(() => {
-                return repository.updatePhoto(data.id)
-                    .then(user => pathToPhoto = path.join(__dirname, '..', 'uploads', 'users', user.photo));
-            }
-        );
+        let userOfBook = data.user ? 'users' : 'books' ,
+            repository = data.user ? userRepository : libraryRepository,
+            photoName = `${data.id}.${data.photo.name}`,
+            pathToPhoto = path.join(__dirname, '..', 'uploads', userOfBook, photoName);
+        
+        return data.photo.mv(pathToPhoto)
+            .then(() => { return repository.updatePhoto(data.id, photoName) });
     }
 }

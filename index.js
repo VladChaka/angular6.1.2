@@ -26,8 +26,8 @@ app.use((req, res, next) => {
 app.use(upload());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(express.static(__dirname));
-app.use(express.static(__dirname + '/public_chameleon47'));
+app.use(express.static(__dirname));
+// app.use(express.static(__dirname + '/public_chameleon47'));
 // app.use((req, res, next) => {
 //     if (req.path !== '/login') {
 //         token__module(req, res, next);

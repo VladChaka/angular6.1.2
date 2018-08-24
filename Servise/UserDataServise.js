@@ -19,22 +19,10 @@ function UserDataServise (userRepository, libraryRepository) {
     }
 
     self.add = data => {
-        if (checkEmptyField(data)) {
-            reject({ message: "Fields empty.", status: 400 });
-            return;
-        }
-        if (!checkRegExpEmail(data.email)) {
-            reject({ message: "Incorrect email.", status: 400 });
-            return;
-        }
-        if (!checkRegExpLogin(data.username)) {
-            reject({ message: "Incorrect login.", status: 400 });
-            return;
-        }
-        if (!checkRegExpPassword(data.password)) {
-            resolve({ message: "Incorrect password.", status: 400 });
-            return;
-        }
+        if (checkEmptyField(data))               return { message: "Fields empty.", status: 400 };
+        if (!checkRegExpEmail(data.email))       return { message: "Incorrect email.", status: 400 };
+        if (!checkRegExpLogin(data.username))    return { message: "Incorrect login.", status: 400 };
+        if (!checkRegExpPassword(data.password)) return { message: "Incorrect password.", status: 400 };
 
         return userRepository.add(data);
     }
@@ -42,18 +30,10 @@ function UserDataServise (userRepository, libraryRepository) {
     self.update = data => {
         let user = delEmptyFieldForUpdate(data);
 
-        if (user.password !== undefined && !checkRegExpPassword(user.password)) {
-            reject({ message: "Incorrect password.", status: 400 });
-            return;
-        }
-        if (user.email !== undefined && !checkRegExpEmail(user.email)) {
-            reject({ message: "Incorrect email.", status: 400 });
-            return;
-        }
-        if (user.username !== undefined && !checkRegExpLogin(user.username)) {
-            reject({ message: "Incorrect login.", status: 400 });
-            return;
-        }
+        if (checkEmptyField(data)) return { message: "Fields empty.", status: 400 };
+        if (user.email    !== undefined && !checkRegExpEmail(user.email))       return { message: "Incorrect email.", status: 400 };
+        if (user.username !== undefined && !checkRegExpLogin(user.username))    return { message: "Incorrect login.", status: 400 };
+        if (user.password !== undefined && !checkRegExpPassword(user.password)) return { message: "Incorrect password.", status: 400 };
 
         return userRepository.update(user);
     }
@@ -68,15 +48,6 @@ function UserDataServise (userRepository, libraryRepository) {
 
     self.test = () => {
         return userRepository.test();
-    }
-
-    self.takeBook = id => {
-        return libraryRepository.getOne(id.bookId)
-            .then(book => userRepository.takeBook(id, book))
-            .then(result => {
-                return libraryRepository.take(id.bookId)
-                    .then(() => result);
-            });
     }
 
     function checkEmptyField(data) {
