@@ -21,6 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(upload());
 
+app.use(middleware.cors);
 app.use(middleware.token);
 app.use(middleware.zone);
 

@@ -3,6 +3,13 @@ const jwt = require('jsonwebtoken');
 function Middleware () {
     const self = this;
 
+    self.cors = (req, res, next) => {
+        res.header('Access-Control-Allow-Origin', "*");
+        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+        next();
+    }
+
     self.token = (req, res, next) => {
         if (req.path === '/login') {
             next();
