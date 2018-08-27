@@ -62,7 +62,7 @@ function Library(userRepository) {
         return checkAdmin({ username: data.login })
             .then(result => {
                 let id = data.id;
-                if (!result.admin) { id = result.id; }
+                if (result.admin) { id = result.id; }
 
                 return update({ _id: id }, { photo: photoName }, 'BookSchemaModel'
                     ).then(book => {
@@ -76,7 +76,7 @@ function Library(userRepository) {
         return checkAdmin({ username: data.username })
             .then(result => {
                 let id = data.id;
-                if (!result.admin) { id = result.id; }
+                if (result.admin) { id = result.id; }
 
                 return find('findOne', { userid: id }, 'TakenBookSchemaModel')
                     .then(user => {                        

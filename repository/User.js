@@ -32,7 +32,7 @@ function UserRepository() {
     self.getAll = login => {
         return checkAdmin({ username: login })
             .then(result => {
-                if (!result.admin) throw { message: 'No access.', status: 403 };
+                if (result.admin) throw { message: 'No access.', status: 403 };
 
                 return find('find', {}, 'UserSchemaModel')
                     .then(users => {
@@ -113,7 +113,7 @@ function UserRepository() {
                 return checkAdmin({ username: data.login })
                     .then(result => {
                         let id = data.id;
-                        if (!result.admin) { id = result.id; }
+                        if (result.admin) { id = result.id; }
 
                         return update({ _id: id }, user, 'UserSchemaModel')
                             .then(user => {
@@ -128,7 +128,7 @@ function UserRepository() {
         return checkAdmin({ username: data.login })
             .then(result => {
                 let id = data.id;
-                if (!result.admin) { id = result.id; }
+                if (result.admin) { id = result.id; }
 
                 return self.UserSchemaModel.findOneAndRemove({ _id: id })
                     .then(() => { return { message: 'ok' } });
@@ -139,7 +139,7 @@ function UserRepository() {
         return checkAdmin({ username: data.login })
             .then(result => {
                 let id = data.id;
-                if (!result.admin) { id = result.id; }
+                if (result.admin) { id = result.id; }
 
                 return update(
                         { _id: id },
