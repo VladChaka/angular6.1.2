@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../service/user.service';
 
 @Component({
@@ -11,7 +10,7 @@ export class UserProfileComponent implements OnInit {
     router: any;
     profileIsEdit:boolean = false;
     token: string = localStorage['token'] || sessionStorage['token'];
-    id: string = localStorage['id'] || sessionStorage['id'];
+    id: string;
     userProfile: any = {
         email: "",
         username: "",
@@ -21,8 +20,7 @@ export class UserProfileComponent implements OnInit {
         phone: "",
     }
 
-  constructor(private route: ActivatedRoute,
-              private userService: UserService) {
+  constructor(private userService: UserService) {
 
    }
 
@@ -30,13 +28,17 @@ export class UserProfileComponent implements OnInit {
         this.getOneUser();
     }
     getOneUser(): void {
-        this.userService.getOne(this.id, this.token)
-            .subscribe(
-                userProfile => {
-                    this.userProfile = userProfile;
-                },
-                err => console.log("err",err)
-            );
+        this.userService.getMyId(this.token)
+            .subscribe(id => {
+                this.id = id;
+                this.userService.getOne(this.id, this.token)
+                    .subscribe(
+                        userProfile => {
+                            this.userProfile = userProfile;
+                        },
+                        err => console.log("err",err)
+                    );
+            })
     }
     editUser(): void {
         this.profileIsEdit = !this.profileIsEdit;
@@ -46,5 +48,6 @@ export class UserProfileComponent implements OnInit {
             this.userProfileBtnText = 'Edit'
         }        
         this.userService.edit(this.userProfile, this.userProfile._id, this.token)
+        .subscribe()
     }
 }

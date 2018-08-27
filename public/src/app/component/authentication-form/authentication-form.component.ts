@@ -9,7 +9,6 @@ import { AuthenticationService } from '../../service/authentication.service';
 })
 
 export class AuthenticationFormComponent {
-    myId: string;
     constructor(
         private authenticationService: AuthenticationService,
         private router: Router
@@ -23,16 +22,13 @@ export class AuthenticationFormComponent {
         })
         .subscribe(
             data => {
-                this.authenticationService.myId = data.id;
                 this.authenticationService.userAuthentication = true;
                 if (checked) {
                     localStorage.setItem('role', data.role);
                     localStorage.setItem('token', data.token);
-                    localStorage.setItem('id', data.id);
                 } else {
                     sessionStorage.setItem('role', data.role);
                     sessionStorage.setItem('token', data.token);
-                    sessionStorage.setItem('id', data.id);
                 }
                 if(data.role == 'Administrator'){
                     this.router.navigate(['admin']);

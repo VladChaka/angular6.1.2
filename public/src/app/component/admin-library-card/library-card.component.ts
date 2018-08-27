@@ -19,8 +19,8 @@ export class LibraryCardComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        protected formService: FormService,
-        protected libraryService: LibraryService
+        private formService: FormService,
+        private libraryService: LibraryService
     ) { }
 
     closeLibraryCard = function(){

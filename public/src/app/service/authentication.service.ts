@@ -15,8 +15,8 @@ export class AuthenticationService {
     myId: string;
 
     constructor(
-        protected remoteService: RemoteService,
-        protected router: Router
+        private remoteService: RemoteService,
+        private router: Router
     ) { }
 
     authentication(authenticationInfo): Observable<any> {

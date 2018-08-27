@@ -16,9 +16,7 @@ export class AdminBooksComponent implements OnInit {
 
   ngOnInit() {
     this.getBooks();
-  }
-
-    
+  }    
 
   getBooks(): void {
     this.libraryService.getBooks(this.token)

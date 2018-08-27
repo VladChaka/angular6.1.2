@@ -15,20 +15,8 @@ export class AddUserComponent implements OnInit {
   ngOnInit(): void {
 
 }
-addUser(): void {
-    console.log('hi');
-    console.log(this.formAddUser);
-    
+addUser(): void {    
     this.userService.add(this.formAddUser, this.token)
-    .subscribe(
-        user => {
-            console.log(user);
-            
-        },
-        err => {
-            console.log('Error',err);
-            
-        }
-    );
+    .subscribe();
 }
 }

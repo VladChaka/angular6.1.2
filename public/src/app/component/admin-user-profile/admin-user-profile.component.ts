@@ -30,7 +30,6 @@ export class AdminUserProfileComponent implements OnInit {
         this.getOneUser();
     }
     getOneUser(): void {
-        console.log();
         if (this.route.routeConfig.path !='myprofile'){
         this.route.params
             .subscribe(params => {
@@ -56,8 +55,7 @@ export class AdminUserProfileComponent implements OnInit {
             })
         }
     }
-    myId(){
-    }
+    
     editUser(): void {
         this.profileIsEdit = !this.profileIsEdit;
         if (this.profileIsEdit == true) {
@@ -65,7 +63,6 @@ export class AdminUserProfileComponent implements OnInit {
         } else {
             this.userProfileBtnText = 'Edit'
         }
-        // console.log(this.userProfile);
         
         this.userService.edit(this.userProfile, this.userProfile._id, this.token)
         .subscribe();

@@ -1,9 +1,3 @@
-<div class="list-book-buttons">
-    <div class="list-search">
-        <input placeholder="Search Book">
-        <i class="fab fa-searchengin"></i>
-    </div>
-</div>
 <div class="list-books-container">
 <book-block [book]="book" [showPassBtn]="true" *ngFor="let book of userBooks | paginate: { itemsPerPage: pageSize, currentPage: currentPage}"></book-block>
 </div>

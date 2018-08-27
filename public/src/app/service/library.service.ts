@@ -8,7 +8,7 @@ import { RemoteService } from './remote.service';
 })
 export class LibraryService {
 
-    constructor(protected remoteService: RemoteService) { }
+    constructor(private remoteService: RemoteService) { }
 
     takeBook(userId: string, bookId:string, token: string): Observable<any> {
         return this.remoteService.takeBook(userId, bookId, token);
@@ -24,6 +24,10 @@ export class LibraryService {
 
     getUserBooks(id: string, token: string): Observable<any> {
         return this.remoteService.getUserBooks(id, token);
+    }
+
+    getOneBook(id: string, token: string): Observable<any> {
+        return this.remoteService.getOneBook(id, token);
     }
 
     getImageBook(id, token): Observable<any> {

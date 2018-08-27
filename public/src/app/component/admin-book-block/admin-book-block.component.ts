@@ -27,12 +27,8 @@ export class AdminBookBlockComponent implements OnInit {
             this.id = id;
         })
     }
-  takeBook():void {
-      console.log(this.id);
-      console.log(this.book._id);
-      console.log(this.token);
-      
+  takeBook():void {      
     this.libraryService.takeBook(this.id, this.book._id, this.token)
-    .subscribe(data => console.log(data))
+    .subscribe()
 }
 }

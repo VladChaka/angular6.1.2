@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { LibraryService } from '../../service/library.service';
 import { UserService } from '../../service/user.service';
 
@@ -10,15 +9,12 @@ import { UserService } from '../../service/user.service';
 export class LibraryCardComponent implements OnInit { 
     id: string;
     token: string = localStorage['token'] || sessionStorage['token'];
-    userBooks: any;
-    showUserProfile: boolean;
+    userBooks: any = [];
     currentPage: number = 1;
     numberOfPages: number = 1;
     pageSize: number = 18;
 
-
     constructor(
-        private route: ActivatedRoute,
         private libraryService: LibraryService,
         private userService: UserService
     ) { }
@@ -34,11 +30,10 @@ export class LibraryCardComponent implements OnInit {
             this.libraryService.getUserBooks(this.id, this.token)
             .subscribe(
                 books => {
-                    console.log(this.id);
-                    console.log(this.token);
-                    console.log(books);
-                    
-                    this.userBooks = books;
+                    for (let i = 0; i < books.length; i++) {
+                        this.libraryService.getOneBook(books[i].bookid, this.token)
+                        .subscribe(data => this.userBooks.push(data));
+                    }
                 },
                 err => console.log("err",err)
             );

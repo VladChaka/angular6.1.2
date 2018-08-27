@@ -7,7 +7,7 @@ import { AuthenticationService } from '../../service/authentication.service';
 export class MainPageComponent implements OnInit {
     token: string = localStorage['token'] || sessionStorage['token'];
     constructor(
-        protected authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService
     ) {
     }
     ngOnInit() {

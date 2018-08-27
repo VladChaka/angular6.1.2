@@ -29,15 +29,12 @@ getMyId(): void{
         this.id = id;
     })
 }
-    takeBook():void {
-        
+    takeBook():void {        
         this.libraryService.takeBook(this.id, this.book._id, this.token)
-        .subscribe(data => console.log(data))
+        .subscribe()
     }
-    passBook():void {
-        console.log(this.book);
-        
-        this.libraryService.passBook(this.id, this.book.bookid, this.token)
-        .subscribe(data => console.log(data))
+    passBook():void {        
+        this.libraryService.passBook(this.id, this.book._id, this.token)
+        .subscribe()
     }
 }

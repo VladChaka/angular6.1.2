@@ -10,12 +10,14 @@ import { AuthenticationService } from './authentication.service';
 export class AuthenticationGuard {
 
     constructor(
-        protected authenticationService: AuthenticationService,
-        protected router: Router
+        private authenticationService: AuthenticationService,
+        private router: Router
     ) { }
 
     canActivate(route, state) {
-        let role = localStorage['role'] || sessionStorage['role'];
+        let role = localStorage['role'] || sessionStorage['role'],
+            test = state.url.split('admin');
+            
         if (!this.authenticationService.isLogged()) {
             this.router.navigate(['login']);
             return false;
@@ -24,7 +26,8 @@ export class AuthenticationGuard {
             this.router.navigate(['login']);
             return false;
         }
-        if (state.url === '/dashboard/users' && role !== 'Administrator') {
+
+        if (state.url === '/admin' && role !== 'Administrator') {
             this.router.navigate(['404']);
         }
 
