@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LibraryService } from '../../service/library.service';
 import { UserService } from '../../service/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'library-card',
@@ -16,7 +17,8 @@ export class LibraryCardComponent implements OnInit {
 
     constructor(
         private libraryService: LibraryService,
-        private userService: UserService
+        private userService: UserService,
+        private route: ActivatedRoute
     ) { }
 
     ngOnInit() {
@@ -24,20 +26,21 @@ export class LibraryCardComponent implements OnInit {
     }
 
     getUserBooks(): void {
-        this.userService.getMyId(this.token)
-        .subscribe(id => {
-            this.id = id;
-            this.libraryService.getUserBooks(this.id, this.token)
-            .subscribe(
-                books => {
-                    for (let i = 0; i < books.length; i++) {
-                        this.libraryService.getOneBook(books[i].bookid, this.token)
-                        .subscribe(data => this.userBooks.push(data));
-                    }
-                },
-                err => console.log("err",err)
-            );
-        })
+        this.route.parent.params
+            .subscribe(params => {
+                console.log(params.id);
+                
+                this.libraryService.getUserBooks(params.id, this.token)
+                .subscribe(
+                    books => {
+                        for (let i = 0; i < books.length; i++) {
+                            this.libraryService.getOneBook(books[i].bookid, this.token)
+                            .subscribe(data => this.userBooks.push(data));
+                        }
+                    },
+                    err => console.log("err",err)
+                );
+            });
         
     }
 
