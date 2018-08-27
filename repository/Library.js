@@ -10,12 +10,12 @@ Library.$inject = ['app.userRepository'];
 function Library(userRepository) {
     const self = this;
 
-    self.BookSchemaModel = library.BookSchemaModel;
-    self.UserSchemaModel = user.UserSchemaModel;
-    self.TakenBookSchemaModel = takenBook.TakenBookSchemaModel;
+    self.UserSchemaModel         = user.UserSchemaModel;
+    self.BookSchemaModel         = library.BookSchemaModel;
+    self.TakenBookSchemaModel    = takenBook.TakenBookSchemaModel;
     self.ReturnedBookSchemaModel = returnedBook.ReturnedBookSchemaModel;
 
-    self.getAll = login => {
+    self.getAll = () => {
         return find('find', {}, 'BookSchemaModel')
             .then(books => {
                 if (!books) throw { message: 'Unknown error.', status: 500 };
@@ -33,13 +33,18 @@ function Library(userRepository) {
     }
 
     self.add = data => {
-        return add(data, 'BookSchemaModel', true).then(result => { return result });
+        checkAdmin({ username: data.login })
+            .then(result => {
+                if (!result.admin) { throw { message: 'No access.', status: 403 }; }
+
+                return add(data, 'BookSchemaModel', true).then(result => { return result });
+            })
     }
 
     self.update = data => {
         return checkAdmin({ username: data.login })
-            .then(admin => {
-                if (!admin) throw { message: 'No access.', status: 403 };
+            .then(result => {
+                if (!result.admin) throw { message: 'No access.', status: 403 };
 
                 update(
                     { _id: data.bookid },
@@ -53,15 +58,13 @@ function Library(userRepository) {
             });
     }
 
-    self.updatePhoto = (id, photoName) => {
+    self.updatePhoto = (data, photoName) => {
         return checkAdmin({ username: data.login })
-            .then(admin => {
-                if (!admin) throw { message: 'No access.', status: 403 };
+            .then(result => {
+                let id = data.id;
+                if (!result.admin) { id = result.id; }
 
-                return update(
-                        { _id: id },
-                        { photo: photoName },
-                        'BookSchemaModel'
+                return update({ _id: id }, { photo: photoName }, 'BookSchemaModel'
                     ).then(book => {
                         if (!book) throw { message: 'Incorrect ID.', status: 400 };
                         return { message: 'Ok' };
@@ -69,35 +72,46 @@ function Library(userRepository) {
             });
     }
 
-    self.getUserBooks = id => {
-        return find('findOne', { userid: id }, 'TakenBookSchemaModel')
-            .then(user => { 
-                if (!user) throw { message: 'User don\'t have books.', status: 204 };
+    self.getUserBooks = data => {        
+        return checkAdmin({ username: data.username })
+            .then(result => {
+                let id = data.id;
+                if (!result.admin) { id = result.id; }
 
-                return user.books
+                return find('findOne', { userid: id }, 'TakenBookSchemaModel')
+                    .then(user => {                        
+                        if (!user) throw { message: 'User don\'t have books.', status: 204 };
+                        return user.books
+                    });
             });
     }
 
     self.delete = id => {
-        return self.BookSchemaModel.findOneAndRemove({ _id: id })
-            .then(() => { return { message: 'ok' } });
+        return checkAdmin({ username: data.login })
+            .then(result => {
+                if (!result.admin) throw { message: 'No access.', status: 403 };
+
+                return self.BookSchemaModel.findOneAndRemove({ _id: id })
+                    .then(() => { return { message: 'ok' } });
+            });
     }
 
     self.takeBook = data => {  
-        return find('findOne', { userid: data.userId }, 'TakenBookSchemaModel')
+        return find('findOne', { userid: data.userid }, 'TakenBookSchemaModel')
             .then(user => {
                 if (!user) {
                     const newData = { 
                           login: data.login,
-                          userid: data.userId,
+                          userid: data.userid,
                           books: [{
-                              bookid: data.bookId,
+                              bookid: data.bookid,
                               dateReceived: Date.now()
                           }]
                     };
 
-                    return take(data.bookId)
+                    return take(data.bookid)
                         .then(() => {
+                            
                             return add(newData, 'TakenBookSchemaModel', false)
                                 .then(book => {
                                     if (!book) throw { message: 'Unknown error.', status: 500 };
@@ -108,13 +122,13 @@ function Library(userRepository) {
                 } else {
                     return checkBook(data, { message: 'User have this book.', status: 204 }, true)
                     .then(() => {
-                        return take(data.bookId)
-                            .then(() => {                                
+                        return take(data.bookid)
+                            .then(() => {                       
                                 return update(
-                                    { userid: data.userId },
+                                    { userid: data.userid },
                                     { $push: {
                                           books: {
-                                              bookid: data.bookId,
+                                              bookid: data.bookid,
                                               dateReceived: Date.now()
                                           }
                                       }
@@ -130,10 +144,10 @@ function Library(userRepository) {
     self.returnBook = data => {
         return find('findOne', { 
                     data:  { 
-                        userid: data.userId, 
+                        userid: data.userid, 
                         books: {
                             $elemMatch: {
-                                bookid: data.bookId
+                                bookid: data.bookid
                             }
                         }
                     }, 
@@ -141,33 +155,33 @@ function Library(userRepository) {
                 }, 
                 'TakenBookSchemaModel'
             ).then(user => {                
-                if (!user) throw { message: 'Incorrect ID.', status: 400 }
-
+                if (!user) throw { message: 'Incorrect ID.', status: 400 };
+                
                 return checkBook(data, { message: 'User have this book.', status: 204 }, false)
-                    .then(() => {                    
-                        return find('findOne', { userid: data.userId }, 'ReturnedBookSchemaModel')
+                    .then(() => {
+                        return find('findOne', { userid: data.userid }, 'ReturnedBookSchemaModel')
                             .then(succes => {
                                 if (!succes) {
                                     const newData = {
                                           login: data.login,
-                                          userid: data.userId,
+                                          userid: data.userid,
                                           books: [{
-                                              bookid: data.bookId,
+                                              bookid: data.bookid,
                                               dateReceived: user.books[0].dateReceived,
                                               dateReturned: Date.now()
                                           }]
                                     };
                                     
-                                    return returned(data.bookId)
+                                    return returned(data.bookid)
                                         .then(() => {
                                             return add(newData, 'ReturnedBookSchemaModel', false)
                                                 .then(result => {
                                                     if (!result) throw { message: 'Unknown error.', status: 500 };
                                                     return update(
-                                                        { userid: data.userId },
+                                                        { userid: data.userid },
                                                         { $pull: {
                                                             books: {
-                                                                bookid: data.bookId
+                                                                bookid : data.bookid
                                                             }
                                                           } 
                                                         },
@@ -179,13 +193,13 @@ function Library(userRepository) {
                                         });
 
                                 } else {
-                                    return returned(data.bookId)
+                                    return returned(data.bookid)
                                         .then(() => {
                                             return update(
-                                                    { userid: data.userId },
+                                                    { userid: data.userid },
                                                     { $push: {
                                                         books: {
-                                                            bookid: data.bookId,
+                                                            bookid: data.bookid,
                                                             dateReceiving: user.books[0].dateReceived,
                                                             dateReturned: Date.now()
                                                         }
@@ -194,10 +208,10 @@ function Library(userRepository) {
                                                     'ReturnedBookSchemaModel'
                                                 ).then(() => {
                                                     return update(
-                                                        { userid: data.userId },
+                                                        { userid: data.userid },
                                                         { $pull: {
                                                             books: {
-                                                                bookid: data.bookId
+                                                                bookid: data.bookid
                                                             }
                                                         } 
                                                         },
@@ -256,9 +270,12 @@ function Library(userRepository) {
     function checkAdmin(query) {
         return self.UserSchemaModel.findOne(query)
             .then(user => {
-                let admin = true;
-                if (!user || user.post !== 'Administrator') admin = false;
-                return admin;
+                let data = {
+                    admin: true,
+                    id: user._id
+                };
+                if (!user || user.post !== 'Administrator') data.admin = false;
+                return data;
             });
     }
 
@@ -270,8 +287,8 @@ function Library(userRepository) {
         const newData = new self[SchemaModel](data);
         if (isAdmin) {
             return checkAdmin({ username: data.login })
-                .then(admin => {
-                    if (!admin) throw { message: 'No access.', status: 403 };
+                .then(result => {
+                    if (!result.admin) throw { message: 'No access.', status: 403 };
                     return newData.save()
                         .then(book => {                            
                             if (!book) throw { message: 'Unknown error.', status: 500 };
@@ -288,11 +305,11 @@ function Library(userRepository) {
     }
 
     function checkBook(data, error, takeBook) {
-        return find('findOne',{
-                    userid: data.userId,
+        return find('findOne', {
+                    userid: data.userid,
                     books: {
                         $elemMatch: { 
-                            bookid: data.bookId,
+                            bookid: data.bookid,
                         }
                     }
                 },

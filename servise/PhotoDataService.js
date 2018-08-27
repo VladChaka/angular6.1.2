@@ -11,7 +11,7 @@ function PhotoDataService (userRepository, libraryRepository) {
         const userOrBook = data.user ? 'users' : 'books',
               repository = data.user ? userRepository : libraryRepository;
            
-        return repository.getOne(data.id)
+        return repository.getOne(data)
             .then(result => path.join(__dirname, '..', 'uploads', userOrBook, result.photo));
     }
 
@@ -22,6 +22,6 @@ function PhotoDataService (userRepository, libraryRepository) {
               pathToPhoto = path.join(__dirname, '..', 'uploads', userOrBook, photoName);
         
         return data.photo.mv(pathToPhoto)
-            .then(() => { return repository.updatePhoto(data.id, photoName) });
+            .then(() => { return repository.updatePhoto(data, photoName) });
     }
 }

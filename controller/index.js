@@ -12,7 +12,11 @@ const express            = require('express'),
  */
 
 router.get('/token', (req, res) => {
-    userDataServise.findOne('username', Zone.current.data.login)
+    const data = {
+        username: Zone.current.data.login
+    };
+
+    userDataServise.getOne(data)
         .then(user => response(res, user._id, false))
         .catch(err => response(res, err, true));
 });
@@ -33,13 +37,18 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/users', (req, res) => {
-    userDataServise.findAll(Zone.current.data.login)
+    userDataServise.getAll(Zone.current.data.login)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
 });
 
-router.get('/users/:userId', (req, res) => {
-    userDataServise.findOne('_id', req.params.userId)
+router.get('/users/:userid', (req, res) => {
+    let data = {
+        username: Zone.current.data.login,
+        id: req.params.userid  
+    };
+    
+    userDataServise.getOne(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
 });
@@ -62,9 +71,9 @@ router.post('/users', (req, res) => {
         .catch(err => response(res, err, true));
 });
 
-router.put('/users/:userId', (req, res) => {
+router.put('/users/:userid', (req, res) => {
     const data = {
-        id: req.params.userId,
+        id: req.params.userid,
         login: Zone.current.data.login,
         username: Zone.current.data.username,
         email: Zone.current.data.email,
@@ -80,8 +89,12 @@ router.put('/users/:userId', (req, res) => {
         .catch(err => response(res, err, true));
 });
 
-router.delete('/users/:userId', (req, res) => {
-    userDataServise.delete(req.params.userId)
+router.delete('/users/:userid', (req, res) => {
+    const data = {
+        username: Zone.current.data.login,
+        id: req.params.userid
+    };
+    userDataServise.delete(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
 });
@@ -96,14 +109,14 @@ router.get('/books', (req, res) => {
         .catch(err => response(res, err, true));
 });
 
-router.get('/books/:bookId', (req, res) => {
-    libraryDataService.getOne(req.params.bookId)
+router.get('/books/:bookid', (req, res) => {
+    libraryDataService.getOne(req.params.bookid)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
 });
 
-router.delete('/books/:bookId', (req, res) => {
-    libraryDataService.delete(req.params.userId)
+router.delete('/books/:userid', (req, res) => {
+    libraryDataService.delete(req.params.userid)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
 });
@@ -125,9 +138,9 @@ router.post('/books', (req, res) => {
         .catch(err => response(res, err, true));
 });
 
-router.put('/books/:bookId', (req, res) => {
+router.put('/books/:bookid', (req, res) => {
     const data = {
-        bookid: req.params.bookId,
+        bookid: req.params.bookid,
         bookname: req.body.bookname,
         count: req.body.count
     };    
@@ -137,28 +150,33 @@ router.put('/books/:bookId', (req, res) => {
         .catch(err => response(res, err, true));
 });
 
-router.get('/users/:userId/books', (req, res) => {
-    libraryDataService.getUserBooks(req.params.userId)
+router.get('/users/:userid/books', (req, res) => {
+    let data = {
+        username: Zone.current.data.login,
+        id: req.params.userid
+    };
+    
+    libraryDataService.getUserBooks(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
 });
 
-router.put('/users/:userId/books/:bookId', (req, res) => {
+router.put('/users/:userid/books/:bookid', (req, res) => {
     const data = {
         login: Zone.current.data.login,
-        userId: req.params.userId,
-        bookId: req.params.bookId
+        userid: req.params.userid,
+        bookid: req.params.bookid
     };    
     libraryDataService.takeBook(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
 });
 
-router.delete('/users/:userId/books/:bookId', (req, res) => {
+router.delete('/users/:userid/books/:bookid', (req, res) => {
     const data = {
         login: Zone.current.data.login,
-        userId: req.params.userId,
-        bookId: req.params.bookId
+        userid: req.params.userid,
+        bookid: req.params.bookid
     };    
     libraryDataService.returnBook(data)
         .then(result => response(res, result, false))
@@ -169,9 +187,10 @@ router.delete('/users/:userId/books/:bookId', (req, res) => {
  * Photo
  */
 
-router.get('/users/:userId/photo', (req, res) => {
+router.get('/users/:userid/photo', (req, res) => {
     const data = {
-        id: req.params.userId,
+        username: Zone.current.data.login,
+        id: req.params.userid,
         user: true
     };
     photoDataService.getPhoto(data)
@@ -179,7 +198,7 @@ router.get('/users/:userId/photo', (req, res) => {
         .catch(err => response(res, err, true));
 });
 
-router.put('/users/:userId/photo', (req, res) => {
+router.put('/users/:userid/photo', (req, res) => {
     if (!req.files) {
         return response(res, {
                 message: 'No files uploaded.',
@@ -189,7 +208,8 @@ router.put('/users/:userId/photo', (req, res) => {
     }
 
     const data = {
-        id: req.params.userId,
+        username: Zone.current.data.login,
+        id: req.params.userid,
         photo: req.files.image,
         user: true
     };
@@ -199,9 +219,10 @@ router.put('/users/:userId/photo', (req, res) => {
         .catch(err => response(res, err, true));
 });
 
-router.get('/books/:bookId/photo', (req, res) => {
+router.get('/books/:bookid/photo', (req, res) => {
     const data = {
-        id: req.params.bookId,
+        username: Zone.current.data.login,
+        id: req.params.bookid,
         user: false
     };
 
@@ -210,7 +231,7 @@ router.get('/books/:bookId/photo', (req, res) => {
         .catch(err => response(res, err, true));
 });
 
-router.post('/books/:bookId/photo', (req, res) => {
+router.post('/books/:bookid/photo', (req, res) => {
     if (!req.files) {
         return response(res, {
                 message: 'No files uploaded.',
@@ -220,10 +241,10 @@ router.post('/books/:bookId/photo', (req, res) => {
     }
 
     const data = {
-        id: req.params.bookId,
+        username: Zone.current.data.login,
+        id: req.params.bookid,
         photo: req.files.image,
-        user: false,
-        login: Zone.current.data.login
+        user: false
     };
     
     photoDataService.upadtePhoto(data)

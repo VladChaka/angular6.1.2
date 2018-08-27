@@ -29,10 +29,10 @@ function UserRepository() {
             });
     }
 
-    self.findAll = login => {
+    self.getAll = login => {
         return checkAdmin({ username: login })
-            .then(admin => {
-                if (!admin) throw { message: 'No access.', status: 403 };
+            .then(result => {
+                if (!result.admin) throw { message: 'No access.', status: 403 };
 
                 return find('find', {}, 'UserSchemaModel')
                     .then(users => {
@@ -52,24 +52,30 @@ function UserRepository() {
             });
     }
 
-    self.getOne = (key, data) => {
-        return find('findOne', { [key]: data }, 'UserSchemaModel')
-            .then(user => {
-                if (!user) throw { message: 'Incorrect ID.', status: 400 };
-                                
-                return rebuildUserData(user, [
-                            '_id',
-                            'username',
-                            'email',
-                            'fullname',
-                            'phone',
-                            'post',
-                            'books',
-                            'rating',
-                            'regDate',
-                            'photo'
-                        ]
-                    );
+    self.getOne = data => {
+        return checkAdmin({ username: data.username })
+            .then(result => {
+                let id = data.id;
+                if (!result.admin) { id = result.id; }
+
+                return find('findOne', { _id: id }, 'UserSchemaModel')
+                    .then(user => {
+                        if (!user) throw { message: 'Incorrect ID.', status: 400 };
+                                        
+                        return rebuildUserData(user, [
+                                    '_id',
+                                    'username',
+                                    'email',
+                                    'fullname',
+                                    'phone',
+                                    'post',
+                                    'books',
+                                    'rating',
+                                    'regDate',
+                                    'photo'
+                                ]
+                            );
+                    });
             });
     }
 
@@ -100,27 +106,45 @@ function UserRepository() {
     self.update = data => {
         return createHashPassword(data)
             .then(user => {
-                return update({ _id: data.id }, user, 'UserSchemaModel')
-                    .then(user => {
-                        if (!user) throw { message: 'Incorrect ID.', status: 400 };
-                        return { message: 'Ok' }
+                return checkAdmin({ username: data.login })
+                    .then(result => {
+                        let id = data.id;
+                        if (!result.admin) { id = result.id; }
+
+                        return update({ _id: id }, user, 'UserSchemaModel')
+                            .then(user => {
+                                if (!user) throw { message: 'Incorrect ID.', status: 400 };
+                                return { message: 'Ok' }
+                            });
                     });
             });
     }
 
-    self.delete = id => {
-        return self.UserSchemaModel.findOneAndRemove({ _id: id })
-            .then(() => { return { message: 'ok' } });
+    self.delete = data => {
+        return checkAdmin({ username: data.login })
+            .then(result => {
+                let id = data.id;
+                if (!result.admin) { id = result.id; }
+
+                return self.UserSchemaModel.findOneAndRemove({ _id: id })
+                    .then(() => { return { message: 'ok' } });
+            });
     }
 
-    self.updatePhoto = (id, photoName) => {
-        return update(
-                { _id: id },
-                { photo: photoName },
-                'UserSchemaModel'
-            ).then(user => {
-                if (!user) throw { message: 'Incorrect ID.', status: 400 };                
-                return { message: 'Ok' }
+    self.updatePhoto = (data, photoName) => {
+        return checkAdmin({ username: data.login })
+            .then(result => {
+                let id = data.id;
+                if (!result.admin) { id = result.id; }
+
+                return update(
+                        { _id: id },
+                        { photo: photoName },
+                        'UserSchemaModel'
+                    ).then(user => {
+                        if (!user) throw { message: 'Incorrect ID.', status: 400 };                
+                        return { message: 'Ok' }
+                    });
             });
     }
 
@@ -167,18 +191,18 @@ function UserRepository() {
         });
     };
 
-    function find(findAllOrOne, query, SchemaModel) {
-        return self[SchemaModel][findAllOrOne](query);
-    }
-    function update(query, data, SchemaModel) {
-        return self[SchemaModel].findOneAndUpdate(query, data);
-    }
+    function find(findAllOrOne, query, SchemaModel) { return self[SchemaModel][findAllOrOne](query); }
+    function update(query, data, SchemaModel) { return self[SchemaModel].findOneAndUpdate(query, data); }
+
     function checkAdmin(query) {
         return self.UserSchemaModel.findOne(query)
             .then(user => {
-                let admin = true;
-                if (!user || user.post !== 'Administrator') admin = false;
-                return admin;
+                let result = {
+                    admin: true,
+                    id: user._id
+                };
+                if (!user || user.post !== 'Administrator') result.admin = false;
+                return result;
             });
     }
 
@@ -208,7 +232,5 @@ function UserRepository() {
         return user;
     }
 
-    function checkRegExpPassword(pass) {
-        return /^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/.test(pass) && pass.length > 7;
-    }
+    function checkRegExpPassword(pass) { return /^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/.test(pass) && pass.length > 7; }
 }

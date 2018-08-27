@@ -6,76 +6,45 @@ Core.module('app').service('app.userDataServise', UserDataServise);
 function UserDataServise (userRepository) {
     const self = this;
 
-    self.login = data => {
-        return userRepository.login(data);
-    }
-
-    self.findAll = login => {
-        return userRepository.findAll(login);
-    }
-
-    self.findOne = (key, data) => {
-        return userRepository.getOne(key, data);	
-    }
+    self.login   = data  => { return userRepository.login(data); }
+    self.getAll = login => { return userRepository.findAll(login); }
+    self.getOne  = data  => { return userRepository.getOne(data); }
+    self.delete  = data  => { return userRepository.delete(data); }
 
     self.add = data => {
-        if (checkEmptyField(data))               { return { message: "Fields empty.", status: 400 }; }
-        if (!checkRegExpEmail(data.email))       { return { message: "Incorrect email.", status: 400 }; }
-        if (!checkRegExpLogin(data.username))    { return { message: "Incorrect login.", status: 400 }; }
+        if (checkEmptyField(data)) {               return { message: "Fields empty.", status: 400 }; }
+        if (!checkRegExpEmail(data.email)) {       return { message: "Incorrect email.", status: 400 }; }
+        if (!checkRegExpLogin(data.username)) {    return { message: "Incorrect login.", status: 400 }; }
         if (!checkRegExpPassword(data.password)) { return { message: "Incorrect password.", status: 400 }; }
 
         return userRepository.add(data);
     }
 
     self.update = data => {
-        let user = delEmptyFieldForUpdate(data);
+        let user = checkEmptyField(data, true);
 
-        if (checkEmptyField(data)) return { message: "Fields empty.", status: 400 };
-        if (user.email    !== undefined && !checkRegExpEmail(user.email))       { return { message: "Incorrect email.", status: 400 }; }
-        if (user.username !== undefined && !checkRegExpLogin(user.username))    { return { message: "Incorrect login.", status: 400 }; }
+        if (user.email    !== undefined && !checkRegExpEmail(user.email)) {       return { message: "Incorrect email.", status: 400 }; }
+        if (user.username !== undefined && !checkRegExpLogin(user.username)) {    return { message: "Incorrect login.", status: 400 }; }
         if (user.password !== undefined && !checkRegExpPassword(user.password)) { return { message: "Incorrect password.", status: 400 }; }
 
         return userRepository.update(user);
     }
 
-    self.delete = id => {
-        return userRepository.delete(id);	
-    }
+    function checkEmptyField(data, delEmptyField) {
+        let result = delEmptyField ? {} : false;
 
-    self.getBooks = id => {
-        return userRepository.getBooks(id);
-    }
-
-    self.test = () => {
-        return userRepository.test();
-    }
-
-    function checkEmptyField(data) {
-        let result = false;
-
-        for (const index in data) {
-            let field = data[index] + '';   
+        for (const key in data) {
+            let field = data[key] + '';   
             field = field.replace(/\s*/g, '');
 
-            if (field === "") {
+            if (!delEmptyField && field === "") {
                 result = true;
                 break;
+            } else if (delEmptyField && field !== "" && field !== 'undefined') {
+                result[key] = data[key];
             }
         }
-
-        return result;
-    }
-
-    function delEmptyFieldForUpdate(data) {
-        let result = data;
-
-        for (const index in result) {
-            let field = result[index] + ''; 
-            field = field.replace(/\s*/g, '');
-    
-            if (field === "") delete result[index];
-        }
-
+        
         return result;
     }
 
