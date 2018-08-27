@@ -1,14 +1,7 @@
-let jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 function Middleware () {
-    let self = this;
-
-    self.cors = (req, res, next) => {
-        res.header('Access-Control-Allow-Origin', "*");
-        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-        res.header('Access-Control-Allow-Headers', 'Content-Type');
-        next();
-    }
+    const self = this;
 
     self.token = (req, res, next) => {
         if (req.path === '/login') {
@@ -49,13 +42,19 @@ function Middleware () {
         });
     }
 
+    self.response = (res, data, error) => {
+        if (!error) {
+            return res.status(200).json(data)
+        }
+        res.status(data.status || 500).json({ error: data.message });
+    }
+
     self.notFoundUrl = (req, res, next) => {
         res.status(404);
         console.log(`Not found URL: ${req.url}`);
         res.send({ error: 'Not found' });
         next();
     }
-
     self.internalError = (err, req, res, next) => {
         res.status(err.status || 500);
         console.log(`Internal error(${res.statusCode}): ${err.message}`);

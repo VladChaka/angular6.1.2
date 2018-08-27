@@ -1,5 +1,5 @@
-let Core = require("./core").Core,
-    modules = Core.module('app');
+const Core    = require("./core").Core,
+      modules = Core.module('app');
 
 module.exports.Core = Core;
 

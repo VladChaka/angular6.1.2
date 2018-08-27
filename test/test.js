@@ -1,17 +1,17 @@
 require("../index");
-let chai = require('chai'),
-    chaiHttp = require('chai-http'),
-    server = require('../index'),
-    mongoose = require("mongoose"),
-    bcrypt = require('bcrypt-nodejs'),
-    jwt = require('jsonwebtoken'),
-    userRepository = require("../repository/core/dataCore").userRepository;
-    should = chai.should();
+const chai = require('chai'),
+      chaiHttp = require('chai-http'),
+      server = require('../index'),
+      mongoose = require("mongoose"),
+      bcrypt = require('bcrypt-nodejs'),
+      jwt = require('jsonwebtoken'),
+      userRepository = require("../repository/core/dataCore").userRepository;
+      should = chai.should();
 
 chai.use(chaiHttp);
 
 function TestingServise() {
-    let self = this;
+    const self = this;
 
     self.success = function (res, status) {        
         if (status === 200) {
@@ -36,7 +36,7 @@ function TestingServise() {
 }
 
 describe('Users', () => {
-    let self = this;
+    const self = this;
     delete mongoose.connection.models['User'];
     TestingServise.apply(self);
 
@@ -48,15 +48,15 @@ describe('Users', () => {
 
     describe('/GET users', () => {
         it('it should GET all users', () => {
-            let user = new userRepository.SchemaModel({
-                username: "Vasya0",
-                email: "allankar0@mail.ru",
-                post: "Admin",
-                phone: "4623452343",
-                password: "vlad12345",
-                fullname: "Vasya Pupkin",
-                rating: 0,
-                regDate: "30.10.2018"
+            const user = new userRepository.SchemaModel({
+                  username: "Vasya0",
+                  email: "allankar0@mail.ru",
+                  post: "Admin",
+                  phone: "4623452343",
+                  password: "vlad12345",
+                  fullname: "Vasya Pupkin",
+                  rating: 0,
+                  regDate: "30.10.2018"
             });
             chai.request(server)
                 .get('/users')
@@ -70,15 +70,15 @@ describe('Users', () => {
         });
 
         it('it should GET user by the given id', () => {
-            let user = new userRepository.SchemaModel({
-                username: "Vasya1",
-                email: "allankar1@mail.ru",
-                post: "Admin",
-                phone: "4623452343",
-                password: "vlad12345",
-                fullname: "Vasya Pupkin",
-                rating: 0,
-                regDate: "30.10.2018"
+            const user = new userRepository.SchemaModel({
+                 username: "Vasya1",
+                 email: "allankar1@mail.ru",
+                 post: "Admin",
+                 phone: "4623452343",
+                 password: "vlad12345",
+                 fullname: "Vasya Pupkin",
+                 rating: 0,
+                 regDate: "30.10.2018"
             });
             userRepository.hashPassword(user, function(user) {
                 user.save(function(err, user) {
@@ -95,15 +95,15 @@ describe('Users', () => {
         });
 
         it('it should not GET user by the given invalid id', () => {
-            let user = new userRepository.SchemaModel({
-                username: "Vasya2",
-                email: "allankar2@mail.ru",
-                post: "Admin",
-                phone: "4623452343",
-                password: "vlad12345",
-                fullname: "Vasya Pupkin",
-                rating: 0,
-                regDate: "30.10.2018"
+            const user = new userRepository.SchemaModel({
+                 username: "Vasya2",
+                 email: "allankar2@mail.ru",
+                 post: "Admin",
+                 phone: "4623452343",
+                 password: "vlad12345",
+                 fullname: "Vasya Pupkin",
+                 rating: 0,
+                 regDate: "30.10.2018"
             });
             userRepository.hashPassword(user, function(user) {
                 user.save(function(err, user) {
@@ -122,15 +122,15 @@ describe('Users', () => {
 
     describe('/POST users', () => {
         it('it should POST auth user', () => {
-            let user = new userRepository.SchemaModel({
-                username: "Vasya3",
-                email: "allankar3@mail.ru",
-                post: "Admin",
-                phone: "4623452343",
-                password: "vlad12345",
-                fullname: "Vasya Pupkin",
-                rating: 0,
-                regDate: "30.10.2018"
+            const user = new userRepository.SchemaModel({
+                 username: "Vasya3",
+                 email: "allankar3@mail.ru",
+                 post: "Admin",
+                 phone: "4623452343",
+                 password: "vlad12345",
+                 fullname: "Vasya Pupkin",
+                 rating: 0,
+                 regDate: "30.10.2018"
             });
             userRepository.hashPassword(user, function (user) {
                 user.save(function(err, user) {
@@ -155,15 +155,15 @@ describe('Users', () => {
         });
 
         it('it should not POST auth user without password field', () => {
-            let user = new userRepository.SchemaModel({
-                username: "Vasya4",
-                email: "allankar4@mail.ru",
-                post: "Admin",
-                phone: "4623452343",
-                password: "vlad12345",
-                fullname: "Vasya Pupkin",
-                rating: 0,
-                regDate: "30.10.2018"
+            const user = new userRepository.SchemaModel({
+                 username: "Vasya4",
+                 email: "allankar4@mail.ru",
+                 post: "Admin",
+                 phone: "4623452343",
+                 password: "vlad12345",
+                 fullname: "Vasya Pupkin",
+                 rating: 0,
+                 regDate: "30.10.2018"
             });
             userRepository.hashPassword(user, function(user) {
                 user.save(function(err, user) {				
@@ -183,15 +183,15 @@ describe('Users', () => {
         });
 
         it('it should POST user', () => {
-            let user = {
-                username: "Viktor",
-                email: "Viktoria@mail.ru",
-                post: "Odmennnnn",
-                password: "vlad12345",
-                phone: "4623452343",
-                fullname: "Odmen Viktor",
-                rating: 0,
-                regDate: "30.10.2018"
+            const user = {
+                 username: "Viktor",
+                 email: "Viktoria@mail.ru",
+                 post: "Odmennnnn",
+                 password: "vlad12345",
+                 phone: "4623452343",
+                 fullname: "Odmen Viktor",
+                 rating: 0,
+                 regDate: "30.10.2018"
             };
             chai.request(server)
                 .post('/users')
@@ -204,14 +204,14 @@ describe('Users', () => {
         });
 
         it('it should not POST user without password field', () => {
-            let user = {
-                username: "Vasya5",
-                email: "allankar5@mail.ru",
-                post: "Admin",
-                phone: "4623452343",
-                fullname: "Vasya Pupkin",
-                rating: 0,
-                regDate: "30.10.2018"
+            const user = {
+                 username: "Vasya5",
+                 email: "allankar5@mail.ru",
+                 post: "Admin",
+                 phone: "4623452343",
+                 fullname: "Vasya Pupkin",
+                 rating: 0,
+                 regDate: "30.10.2018"
             };
             chai.request(server)
                 .post('/users')
@@ -226,15 +226,15 @@ describe('Users', () => {
 
     describe('/PUT users', () => {
         it('it should PUT user by the given id', () => {
-            let user = new userRepository.SchemaModel({
-                username: "Vasya6",
-                email: "allankar6@mail.ru",
-                post: "Admin",
-                phone: "4623452343",
-                password: "vlad12345",
-                fullname: "Vasya Pupkin",
-                rating: 0,
-                regDate: "30.10.2018"
+            const user = new userRepository.SchemaModel({
+                 username: "Vasya6",
+                 email: "allankar6@mail.ru",
+                 post: "Admin",
+                 phone: "4623452343",
+                 password: "vlad12345",
+                 fullname: "Vasya Pupkin",
+                 rating: 0,
+                 regDate: "30.10.2018"
             });
             userRepository.hashPassword(user, function(user) {
                 user.save(function(err, user) {
@@ -259,15 +259,15 @@ describe('Users', () => {
         });
 
         it('it should not PUT user by the given invalid id', () => {
-            let user = new userRepository.SchemaModel({
-                username: "Vasya7",
-                email: "allankar7@mail.ru",
-                post: "Admin",
-                phone: "4623452343",
-                password: "vlad12345",
-                fullname: "Vasya Pupkin",
-                rating: 0,
-                regDate: "30.10.2018"
+            const user = new userRepository.SchemaModel({
+                 username: "Vasya7",
+                 email: "allankar7@mail.ru",
+                 post: "Admin",
+                 phone: "4623452343",
+                 password: "vlad12345",
+                 fullname: "Vasya Pupkin",
+                 rating: 0,
+                 regDate: "30.10.2018"
             });
             userRepository.hashPassword(user, function(user) {
                 user.save(function(err, user) {
@@ -294,15 +294,15 @@ describe('Users', () => {
 
     describe('/DELETE users', () => {
         it('it should DELETE user by the given id', () => {
-            let user = new userRepository.SchemaModel({
-                username: "Vasya8",
-                email: "allankar8@mail.ru",
-                post: "Admin",
-                phone: "4623452343",
-                password: "vlad12345",
-                fullname: "Vasya Pupkin",
-                rating: 0,
-                regDate: "30.10.2018"
+            const user = new userRepository.SchemaModel({
+                 username: "Vasya8",
+                 email: "allankar8@mail.ru",
+                 post: "Admin",
+                 phone: "4623452343",
+                 password: "vlad12345",
+                 fullname: "Vasya Pupkin",
+                 rating: 0,
+                 regDate: "30.10.2018"
             });
             userRepository.hashPassword(user, function(user) {
                 user.save(function(err, user) {
@@ -322,15 +322,15 @@ describe('Users', () => {
         });
 
         it('it should not DELETE user by the given invalid id', () => {
-            let user = new userRepository.SchemaModel({
-                username: "Vasya9",
-                email: "allankar9@mail.ru",
-                post: "Admin",
-                phone: "4623452343",
-                password: "vlad12345",
-                fullname: "Vasya Pupkin",
-                rating: 0,
-                regDate: "30.10.2018"
+            const user = new userRepository.SchemaModel({
+                  username: "Vasya9",
+                  email: "allankar9@mail.ru",
+                  post: "Admin",
+                  phone: "4623452343",
+                  password: "vlad12345",
+                  fullname: "Vasya Pupkin",
+                  rating: 0,
+                  regDate: "30.10.2018"
             });
             userRepository.hashPassword(user, function(user) {
                 user.save(function(err, user) {

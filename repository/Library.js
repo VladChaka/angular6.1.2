@@ -1,14 +1,14 @@
-let Core = require("./core/dataCore").Core,
-    library = require('./models/library'),
-    user = require('./models/user'),
-    takenBook = require('./models/takenBook'),
-    returnedBook = require('./models/returnedBook');
+const Core         = require("./core/dataCore").Core,
+      library      = require('./models/library'),
+      user         = require('./models/user'),
+      takenBook    = require('./models/takenBook'),
+      returnedBook = require('./models/returnedBook');
 
 Core.module('app').service('app.libraryRepository', Library);
 Library.$inject = ['app.userRepository'];
 
 function Library(userRepository) {
-    let self = this;
+    const self = this;
 
     self.BookSchemaModel = library.BookSchemaModel;
     self.UserSchemaModel = user.UserSchemaModel;
@@ -87,13 +87,13 @@ function Library(userRepository) {
         return find('findOne', { userid: data.userId }, 'TakenBookSchemaModel')
             .then(user => {
                 if (!user) {
-                    let newData = { 
-                        login: data.login,
-                        userid: data.userId,
-                        books: [{
-                            bookid: data.bookId,
-                            dateReceived: Date.now()
-                        }]
+                    const newData = { 
+                          login: data.login,
+                          userid: data.userId,
+                          books: [{
+                              bookid: data.bookId,
+                              dateReceived: Date.now()
+                          }]
                     };
 
                     return take(data.bookId)
@@ -148,14 +148,14 @@ function Library(userRepository) {
                         return find('findOne', { userid: data.userId }, 'ReturnedBookSchemaModel')
                             .then(succes => {
                                 if (!succes) {
-                                    let newData = {
-                                        login: data.login,
-                                        userid: data.userId,
-                                        books: [{
-                                            bookid: data.bookId,
-                                            dateReceived: user.books[0].dateReceived,
-                                            dateReturned: Date.now()
-                                        }]
+                                    const newData = {
+                                          login: data.login,
+                                          userid: data.userId,
+                                          books: [{
+                                              bookid: data.bookId,
+                                              dateReceived: user.books[0].dateReceived,
+                                              dateReturned: Date.now()
+                                          }]
                                     };
                                     
                                     return returned(data.bookId)

@@ -1,10 +1,10 @@
-let Core = require("../repository/core/dataCore").Core;
+const Core = require("../repository/core/dataCore").Core;
 
 LibraryDataService.$inject = ['app.libraryRepository'];
 Core.module('app').service('app.libraryDataService', LibraryDataService);
 
 function LibraryDataService (libraryRepository) {
-    let self = this;
+    const self = this;
 
     self.getAll = () => {
         return libraryRepository.getAll();

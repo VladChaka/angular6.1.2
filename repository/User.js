@@ -1,18 +1,18 @@
-let Core = require("./core/dataCore").Core,
-    bcrypt = require('bcrypt-nodejs'),
-    jwt = require('jsonwebtoken'),
-    user = require('./models/user');
+const Core   = require("./core/dataCore").Core,
+      bcrypt = require('bcrypt-nodejs'),
+      jwt    = require('jsonwebtoken'),
+      user   = require('./models/user');
     
 Core.module('app').service('app.userRepository', UserRepository);
 
 function UserRepository() {
-    let self = this;
+    const self = this;
 
-    self.UserSchema = user.UserSchema;
+    self.UserSchema      = user.UserSchema;
     self.UserSchemaModel = user.UserSchemaModel;
 
     self.login = data => {
-        let error = { message: 'Authentication failed. Login or password wrong.', status: 400 };
+        const error = { message: 'Authentication failed. Login or password wrong.', status: 400 };
 
         return find('findOne', { username: data.username }, 'UserSchemaModel')
             .then(user => {                    

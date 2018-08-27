@@ -1,10 +1,10 @@
-let Core = require("../repository/core/dataCore").Core;
+const Core = require("../repository/core/dataCore").Core;
 
-UserDataServise.$inject = ['app.userRepository', 'app.libraryRepository'];
+UserDataServise.$inject = ['app.userRepository'];
 Core.module('app').service('app.userDataServise', UserDataServise);
 
-function UserDataServise (userRepository, libraryRepository) {
-    let self = this;
+function UserDataServise (userRepository) {
+    const self = this;
 
     self.login = data => {
         return userRepository.login(data);
@@ -19,10 +19,10 @@ function UserDataServise (userRepository, libraryRepository) {
     }
 
     self.add = data => {
-        if (checkEmptyField(data))               return { message: "Fields empty.", status: 400 };
-        if (!checkRegExpEmail(data.email))       return { message: "Incorrect email.", status: 400 };
-        if (!checkRegExpLogin(data.username))    return { message: "Incorrect login.", status: 400 };
-        if (!checkRegExpPassword(data.password)) return { message: "Incorrect password.", status: 400 };
+        if (checkEmptyField(data))               { return { message: "Fields empty.", status: 400 }; }
+        if (!checkRegExpEmail(data.email))       { return { message: "Incorrect email.", status: 400 }; }
+        if (!checkRegExpLogin(data.username))    { return { message: "Incorrect login.", status: 400 }; }
+        if (!checkRegExpPassword(data.password)) { return { message: "Incorrect password.", status: 400 }; }
 
         return userRepository.add(data);
     }
@@ -31,9 +31,9 @@ function UserDataServise (userRepository, libraryRepository) {
         let user = delEmptyFieldForUpdate(data);
 
         if (checkEmptyField(data)) return { message: "Fields empty.", status: 400 };
-        if (user.email    !== undefined && !checkRegExpEmail(user.email))       return { message: "Incorrect email.", status: 400 };
-        if (user.username !== undefined && !checkRegExpLogin(user.username))    return { message: "Incorrect login.", status: 400 };
-        if (user.password !== undefined && !checkRegExpPassword(user.password)) return { message: "Incorrect password.", status: 400 };
+        if (user.email    !== undefined && !checkRegExpEmail(user.email))       { return { message: "Incorrect email.", status: 400 }; }
+        if (user.username !== undefined && !checkRegExpLogin(user.username))    { return { message: "Incorrect login.", status: 400 }; }
+        if (user.password !== undefined && !checkRegExpPassword(user.password)) { return { message: "Incorrect password.", status: 400 }; }
 
         return userRepository.update(user);
     }
@@ -53,7 +53,7 @@ function UserDataServise (userRepository, libraryRepository) {
     function checkEmptyField(data) {
         let result = false;
 
-        for (let index in data) {
+        for (const index in data) {
             let field = data[index] + '';   
             field = field.replace(/\s*/g, '');
 
@@ -69,7 +69,7 @@ function UserDataServise (userRepository, libraryRepository) {
     function delEmptyFieldForUpdate(data) {
         let result = data;
 
-        for (let index in result) {
+        for (const index in result) {
             let field = result[index] + ''; 
             field = field.replace(/\s*/g, '');
     
@@ -78,6 +78,7 @@ function UserDataServise (userRepository, libraryRepository) {
 
         return result;
     }
+
     function checkRegExpLogin(login) { return /^[a-zA-Z1-9].{4,16}$/.test(login); }
     function checkRegExpPassword(pass) { return /^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/.test(pass) && pass.length > 7; }
     function checkRegExpEmail(email) { return /(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/.test(email); }
