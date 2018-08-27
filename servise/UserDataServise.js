@@ -6,10 +6,10 @@ Core.module('app').service('app.userDataServise', UserDataServise);
 function UserDataServise (userRepository) {
     const self = this;
 
-    self.login   = data  => { return userRepository.login(data); }
-    self.getAll = login => { return userRepository.findAll(login); }
-    self.getOne  = data  => { return userRepository.getOne(data); }
-    self.delete  = data  => { return userRepository.delete(data); }
+    self.login  = data  => { return userRepository.login(data); }
+    self.getAll = login => { return userRepository.getAll(login); }
+    self.getOne = data  => { return userRepository.getOne(data); }
+    self.delete = data  => { return userRepository.delete(data); }
 
     self.add = data => {
         if (checkEmptyField(data)) {               return { message: "Fields empty.", status: 400 }; }

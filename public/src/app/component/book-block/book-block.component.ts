@@ -26,6 +26,8 @@ export class BookBlockComponent implements OnInit {
 getMyId(): void{
     this.userService.getMyId(this.token)
     .subscribe(id => {
+        console.log(id);
+        
         this.id = id;
     })
 }
