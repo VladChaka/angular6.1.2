@@ -5,7 +5,7 @@ let chai = require('chai'),
     mongoose = require("mongoose"),
     bcrypt = require('bcrypt-nodejs'),
     jwt = require('jsonwebtoken'),
-    userRepository = require("../util/dataCore").userRepository;
+    userRepository = require("../repository/core/dataCore").userRepository;
     should = chai.should();
 
 chai.use(chaiHttp);

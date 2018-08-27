@@ -1,4 +1,4 @@
-let Core = require("../util/dataCore").Core,
+let Core = require("../repository/core/dataCore").Core,
     path = require('path');
 
 PhotoDataService.$inject = ['app.userRepository', 'app.libraryRepository'];

@@ -1,12 +1,16 @@
 let express = require('express'),
-    Core = require("../util/dataCore"),
+    Core = require("../repository/core/dataCore"),
+    jwt = require('jsonwebtoken'),
     userDataServise = Core.userDataServise,
     libraryDataService = Core.libraryDataService,
     photoDataService = Core.photoDataService,
-    router = express.Router(),
-    token__module = require('../util/token/token');
+    router = express.Router();
 
-router.get('/token', token__module, (req, res) => res.status(200).json({ status: 'ok' }));
+router.get('/token', (req, res) => {
+    userDataServise.findOne('username', Zone.current.data.login)
+        .then(user => res.status(200).json(user._id))
+        .catch(err => res.status(err.status || 500).json({ error: err.message }));
+});
 
 /**
  * Users
@@ -29,7 +33,7 @@ router.get('/users', (req, res) => {
 });
 
 router.get('/users/:userId', (req, res) => {
-    userDataServise.findOne(req.params.userId)
+    userDataServise.findOne('_id', req.params.userId)
         .then(result => res.status(200).json(result))
         .catch(err => res.status(err.status || 500).json({ error: err.message }));
 });

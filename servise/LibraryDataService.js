@@ -1,4 +1,4 @@
-let Core = require("../util/dataCore").Core;
+let Core = require("../repository/core/dataCore").Core;
 
 LibraryDataService.$inject = ['app.libraryRepository'];
 Core.module('app').service('app.libraryDataService', LibraryDataService);

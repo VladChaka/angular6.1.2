@@ -7,8 +7,7 @@ let express = require("express"),
     port = getParam("port", 4000),
     dbMlab = "mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb",
     dbMlabTest = "mongodb://admin:vlad12345@ds121088.mlab.com:21088/unittest",
-    jwt = require('jsonwebtoken'),
-    token__module = require('./util/token/token'),
+    middleware = require('./Middleware/index'),
     upload = require('express-fileupload'),
     db = getParam("local", dbMlab);
 
@@ -16,58 +15,21 @@ mongoose.connect(db, { useNewUrlParser: true }, err => {
     if (err) return console.log("Connection error: ", err.message);
 });
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-});
+app.use(express.static(__dirname + '/public_chameleon47'));
 
-app.use(upload());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(__dirname + '/public_chameleon47'));
-app.use((req, res, next) => {
-    if (req.path !== '/login') {
-        token__module(req, res, next);
-    } else {
-        next();
-    }
-});
+app.use(upload());
 
-app.use((req, res, next) => {    
-    const token = req.body.token || req.query.token || req.headers['x-access-token'],
-          decoded = jwt.decode(token) || '';
-
-    Zone.current.fork({}).run(() => {
-        Zone.current.data = {
-            username: req.body.username || '',
-            login: decoded.username || '',
-            email: req.body.email || '',
-            phone: req.body.phone || '',
-            post: req.body.post || '',
-            password: req.body.password || '',
-            fullname: req.body.fullname || ''
-        }
-        next();
-    });
-});
+app.use(middleware.cors);
+app.use(middleware.token);
+app.use(middleware.zone);
 
 //route
 app.use('/', require(__dirname + '/controller/index').router);
 
-app.use((req, res, next) => {
-    res.status(404);
-    console.log(`Not found URL: ${req.url}`);
-    res.send({ error: 'Not found' });
-    next();
-});
-app.use((err, req, res, next) => {
-    res.status(err.status || 500);
-    console.log(`Internal error(${res.statusCode}): ${err.message}`);
-    res.send({ error: err.message });
-    return;
-});
+app.use(middleware.notFoundUrl);
+app.use(middleware.internalError);
 
 app.listen(port, () => {
     console.log(`Start server on ${port} port`);

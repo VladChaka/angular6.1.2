@@ -1,4 +1,4 @@
-let Core = require("../util/dataCore").Core;
+let Core = require("../repository/core/dataCore").Core;
 
 UserDataServise.$inject = ['app.userRepository', 'app.libraryRepository'];
 Core.module('app').service('app.userDataServise', UserDataServise);
@@ -14,8 +14,8 @@ function UserDataServise (userRepository, libraryRepository) {
         return userRepository.findAll(login);
     }
 
-    self.findOne = id => {
-        return userRepository.getOne(id);	
+    self.findOne = (key, data) => {
+        return userRepository.getOne(key, data);	
     }
 
     self.add = data => {

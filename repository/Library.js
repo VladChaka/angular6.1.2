@@ -1,4 +1,4 @@
-let Core = require("../util/dataCore").Core,
+let Core = require("./core/dataCore").Core,
     library = require('./models/library'),
     user = require('./models/user'),
     takenBook = require('./models/takenBook'),

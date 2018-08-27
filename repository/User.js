@@ -1,4 +1,4 @@
-let Core = require("../util/dataCore").Core,
+let Core = require("./core/dataCore").Core,
     bcrypt = require('bcrypt-nodejs'),
     jwt = require('jsonwebtoken'),
     user = require('./models/user');
@@ -52,8 +52,8 @@ function UserRepository() {
             });
     }
 
-    self.getOne = id => {
-        return find('findOne', { _id: id }, 'UserSchemaModel')
+    self.getOne = (key, data) => {
+        return find('findOne', { [key]: data }, 'UserSchemaModel')
             .then(user => {
                 if (!user) throw { message: 'Incorrect ID.', status: 400 };
                                 

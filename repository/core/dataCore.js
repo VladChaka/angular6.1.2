@@ -1,13 +1,13 @@
-let Core = require("../repository/core").Core,
+let Core = require("./core").Core,
     modules = Core.module('app');
 
 module.exports.Core = Core;
 
-require("../repository/User");
-require("../repository/Library");
-require("../Servise/UserDataServise");
-require("../Servise/LibraryDataService");
-require("../Servise/PhotoDataService");
+require("../User");
+require("../Library");
+require("../../servise/UserDataServise");
+require("../../servise/LibraryDataService");
+require("../../servise/PhotoDataService");
 
 modules.run();
 
