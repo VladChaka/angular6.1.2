@@ -22,6 +22,7 @@ export class ProfileBooklistComponent implements OnInit {
         .subscribe(
             books => {
                 this.books = books;
+                console.log(books);
             },
             err => console.log("err",err)
         );

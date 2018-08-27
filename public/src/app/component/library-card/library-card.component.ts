@@ -26,13 +26,6 @@ export class LibraryCardComponent implements OnInit {
     ngOnInit() {
         this.getUserBooks();
     }
-  
-    // getMyId(): void{
-    //     this.userService.getMyId(this.token)
-    //     .subscribe(id => {
-    //         this.id = id;
-    //     })
-    // }
 
     getUserBooks(): void {
         this.userService.getMyId(this.token)

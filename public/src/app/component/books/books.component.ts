@@ -7,7 +7,6 @@ import { LibraryService } from '../../service/library.service';
 })
 export class BooksComponent implements OnInit {
     token: string = localStorage['token'] || sessionStorage['token'];
-    role: boolean = localStorage['role'] || sessionStorage['role'];
     books: any;
     showUserProfile: boolean;
     currentPage: number = 1;

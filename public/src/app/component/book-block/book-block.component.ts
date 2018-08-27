@@ -35,9 +35,9 @@ getMyId(): void{
         .subscribe(data => console.log(data))
     }
     passBook():void {
-        console.log(this.id, this.book._id);
+        console.log(this.book);
         
-        this.libraryService.passBook(this.id, this.book._id, this.token)
+        this.libraryService.passBook(this.id, this.book.bookid, this.token)
         .subscribe(data => console.log(data))
     }
 }

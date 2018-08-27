@@ -15,6 +15,12 @@
     flex-wrap: wrap;
     justify-content: space-between;
 }
+.list-book-buttons{
+    flex-wrap: wrap-reverse;
+    >*{
+        flex-basis: 50%;
+    }
+}
 .list-buttons>*{
     padding:5px;
  }
@@ -43,7 +49,7 @@
     flex-basis: 100%;
     border-bottom: 2px solid @color2;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin: 0;
 }
 }
