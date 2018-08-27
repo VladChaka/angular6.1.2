@@ -33,6 +33,10 @@ export class UserService {
         return this.remoteService.getById(id, token);
     };
 
+    getMyId(token: string): Observable<any> {
+        return this.remoteService.getByToken(token);
+    };
+
     getAll(token: string): Observable<any> {
         return this.remoteService.getAll(token);
     }

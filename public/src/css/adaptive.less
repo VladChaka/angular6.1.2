@@ -1,83 +1,5 @@
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
-  .list-user-buttons {
-    flex-basis: 25%;
-    border-left: none;
-    justify-content: space-between;
-    padding: 2px 5px 2px 0;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-
-  .list-user-block button {
-    width: 33%;
-    font-size: 0.8rem;
-    padding: 2px 0 0 0;
-    background: @color1;
-    margin: 1px;
-  }
-
-  .users-title {
-    border-left: none;
-    h2{
-      white-space: nowrap;
-    }
-  }
-  .list-user-names {
-    white-space: nowrap;
-    font-size: 0.8rem;
-    flex-wrap: wrap-reverse;
-    justify-content: flex-start;
-    padding-left: 0;
-    >div{
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      padding: 2px 5px 2px 0;
-      flex-basis: 25%;
-    }
-    >div:last-child {
-      flex-basis: 100%;
-    }
-    >div:first-child{
-      display: none;
-    }
-  }
-  .list-user-block {
-    white-space: nowrap;
-    font-size: 0.8rem;
-    padding-left: 0;
-    justify-content: flex-start;
-    >div{
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      padding: 2px 5px 2px 0;
-      flex-basis: 25%;
-    }
-    >div:first-child{
-      display: none;
-    }
-  }
-  .users-menu {
-    padding: 2px 5px;
-    justify-content: space-between;
-    border: 4px solid @color2;
-    width: 100%;
-    border-radius: 70%/5% 70%/5% 70%/5% 70%/5%;
-    *{
-      margin: 0;
-    }
-  }
-  div.filters-order{
-    overflow: visible;
-  }
-  .filters-order-popup {
-    top: 18px;
-  > div {
-    padding: 2px 4px;
-  }
-  }
 
   .user-add, .user-edit, .library-card {
     overflow-y: auto;
@@ -88,105 +10,118 @@
       width: 65%;
     }
   }
-  #popupsContainer{
-    padding: 10px;
-  }
 
+  .list-buttons {
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.list-buttons>*{
+    padding:5px;
+ }
+
+.list-user-names {
+  padding-left: 0;
+  flex-wrap: wrap-reverse;
+  justify-content: flex-start;
+  >div{
+      padding: 5px;
+      flex-basis: 100%/3;
+  }
+}
+.list-user-block {
+  justify-content: flex-start;
+  padding-left: 0;
+  >div{
+      flex-basis: 100%/3;
+  }
+}
+.users-menu {
+    padding: 0;
+    flex-wrap: wrap-reverse
+}
+.dashboard-btns{
+    flex-basis: 100%;
+    border-bottom: 2px solid @color2;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+}
 }
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) and (max-width: 767.98px) {
-  .list-user-buttons {
-    padding: 0 0;
-    flex-wrap: wrap;
-    flex-basis: 12%;
+  .list-buttons {
+      flex-wrap: nowrap;
+      justify-content: space-between;
   }
+  .list-buttons>*{
+      padding: 0 5px;
+   }
 
-  .list-user-block button {
-    height: 32px;
-    flex-basis: 100%;
-    .border-radius(0px);
-  }
-
-  .list-user-block button:first-child {
-    border-top: 2px solid @color3;
-    border-bottom: 2px solid @grey;
-  }
-
-  .list-user-block button:last-child {
-    border-bottom: 2px solid @color3;
-    border-top: 2px solid @grey;
-  }
-  .users-title {
-    border-left: none;
-    h2{
-      white-space: nowrap;
-    }
-  }
   .list-user-names {
     padding-left: 0;
     flex-wrap: wrap-reverse;
     justify-content: flex-start;
-    >div:first-child{
-      padding-left: 20px;
-    }
     >div{
-      padding: 5px 0;
-      padding-left: 5px;
-      flex-basis: 22%;
-    }
-    >div:last-child {
-      flex-basis: 100%;
+        padding: 5px;
+        flex-basis: 100%/3;
     }
   }
   .list-user-block {
     justify-content: flex-start;
     padding-left: 0;
-    >div:first-child {
-      padding-left: 20px;
-    }
     >div{
-      padding-left: 5px;
-      flex-basis: 22%;
+        flex-basis: 100%/3;
     }
   }
   .users-menu {
-    justify-content: space-between;
     border-left: 4px solid @color2;
     border-right: 4px solid @color2;
-    width: 88%;
-    border-radius: 70%/5% 70%/5% 70%/5% 70%/5%;
   }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) and (max-width: 991.98px) {
-  .list-user-buttons {
-    padding: 0 0;
-    flex-wrap: wrap;
-    border-left-color:@color2;
-  }
-
-  .list-user-block button {
-    height: 32px;
-    flex-basis: 100%;
-    .border-radius(0px);
-  }
-
-  .list-user-block button:first-child {
-    border-top: 2px solid @color3;
-    border-bottom: 2px solid @grey;
-  }
-
-  .list-user-block button:last-child {
-    border-bottom: 2px solid @color3;
-    border-top: 2px solid @grey;
-  }
+  .list-user-names {
+      > div {
+        padding: 0 5px;
+        flex-basis: 22%;
+      }
+      >div:last-child{
+          flex-basis: 250px;
+      }
+    }
+    .list-user-block {
+        > div {
+          padding: 0 5px;
+          flex-basis: 22%;
+        }
+        >div:last-child{
+            flex-basis: 250px;
+        }
+      }
 }
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) and (max-width: 1199.98px) {
-
+    .list-user-names {
+        > div {
+          padding: 0 5px;
+          flex-basis: 22%;
+        }
+        >div:last-child{
+            flex-basis: 250px;
+        }
+      }
+      .list-user-block {
+          > div {
+            padding: 0 5px;
+            flex-basis: 22%;
+          }
+          >div:last-child{
+              flex-basis: 250px;
+          }
+        }
 }
 
 // Extra large devices (large desktops, 1200px and up)

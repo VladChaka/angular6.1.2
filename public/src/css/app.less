@@ -334,20 +334,30 @@ authorization-form * {
   font-weight: bold;
   text-align: left;
   display: flex;
-  //justify-content: space-between;
+//   justify-content: space-between;
   align-items: center;
   background: @color3;
   border-bottom: 1px solid @color1;
   position: relative;
-  border-bottom: 2px solid @color1;
   padding: 2px 0;
   > div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 0 5px;
     flex-basis: 25%;
   }
+  >div.filters-order{
+      overflow: visible
+  }
+  >div.list-buttons{
+    white-space: normal;
+    overflow:visible;
+    text-overflow: clip;
+      flex-basis: 250px;
+  }
 }
 .list-buttons{
-  margin-right: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -358,6 +368,7 @@ authorization-form * {
     flex-basis: 100%;
   }
   .ngx-pagination {
+      white-space: nowrap;
      margin-bottom:0;
    }
   .ngx-pagination .current {
@@ -365,10 +376,10 @@ authorization-form * {
     color: @color3;
   }
   .ngx-pagination a, .ngx-pagination button, .ngx-pagination .current {
-    padding: 2px 4px;
+    padding: 2px 3px;
   }
   .ngx-pagination .disabled {
-     padding: 2px 4px;
+     padding: 2px 3px;
      color: #cacaca;
      cursor: not-allowed;
    }
@@ -440,6 +451,9 @@ authorization-form * {
   border-bottom: 2px solid @color1;
   padding: 10px 0;
   > div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 0 5px;
     flex-basis: 25%;
   }

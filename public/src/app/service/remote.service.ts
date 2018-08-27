@@ -19,6 +19,9 @@ export class RemoteService {
     getById(id: string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/${id}`, token, null, 'get');
     }
+    getByToken(token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/token`, token, null, 'get');
+    }
     create(data: object, token: string): Observable<any> {
         return this.checkToken('http://localhost:4000/users', token, data, 'post');
     }

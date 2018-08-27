@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
 import { LibraryService } from '../../service/library.service';
+import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'book-block',
@@ -8,17 +9,26 @@ import { LibraryService } from '../../service/library.service';
 })
 export class BookBlockComponent implements OnInit {
     token: string = localStorage['token'] || sessionStorage['token'];
-    id: string = localStorage['id'] || sessionStorage['id'];
+    id: string;
     @Input() book: any;
     @Input() showPassBtn: boolean;
     @Input() showTakeBtn: boolean;
 
-    constructor(private libraryService: LibraryService) {
+    constructor(private libraryService: LibraryService,
+                private userService: UserService) {
 
      }
 
   ngOnInit() {
+      this.getMyId();
   }
+  
+getMyId(): void{
+    this.userService.getMyId(this.token)
+    .subscribe(id => {
+        this.id = id;
+    })
+}
     takeBook():void {
         
         this.libraryService.takeBook(this.id, this.book._id, this.token)

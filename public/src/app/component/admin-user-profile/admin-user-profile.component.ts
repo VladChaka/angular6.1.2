@@ -11,7 +11,7 @@ export class AdminUserProfileComponent implements OnInit {
     router: any;
     profileIsEdit:boolean = false;
     token: string = localStorage['token'] || sessionStorage['token'];
-    id: string = localStorage['id'] || sessionStorage['id'];
+    id: string;
     userProfile: any = {
         email: "",
         username: "",
@@ -30,6 +30,8 @@ export class AdminUserProfileComponent implements OnInit {
         this.getOneUser();
     }
     getOneUser(): void {
+        console.log();
+        if (this.route.routeConfig.path !='myprofile'){
         this.route.params
             .subscribe(params => {
                 this.userService.getOne(params.id, this.token)
@@ -40,6 +42,21 @@ export class AdminUserProfileComponent implements OnInit {
                         err => console.log("err",err)
                     );
             });
+        } else{
+            this.userService.getMyId(this.token)
+            .subscribe(id => {
+                this.id = id;
+                this.userService.getOne(this.id, this.token)
+                    .subscribe(
+                        userProfile => {
+                            this.userProfile = userProfile;
+                        },
+                        err => console.log("err",err)
+                    );
+            })
+        }
+    }
+    myId(){
     }
     editUser(): void {
         this.profileIsEdit = !this.profileIsEdit;
@@ -48,9 +65,10 @@ export class AdminUserProfileComponent implements OnInit {
         } else {
             this.userProfileBtnText = 'Edit'
         }
-        console.log(this.userProfile);
+        // console.log(this.userProfile);
         
         this.userService.edit(this.userProfile, this.userProfile._id, this.token)
+        .subscribe();
     }
     deleteUser(): void {
         this.userService.delete(this.userProfile._id, this.token);
