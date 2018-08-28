@@ -16,11 +16,11 @@ function UserRepository() {
 
         return find('findOne', { username: data.username }, 'UserSchemaModel')
             .then(user => {                    
-                if (!user) throw error;
+                if (!user) { throw error; }
 
                 return verifyPassword(data.password, user.password)
                     .then(success => {
-                        if (!success) throw error;
+                        if (!success) { throw error; }
 
                         const token = jwt.sign({ username: data.username }, 'yqawv8nqi5');
 
@@ -32,11 +32,11 @@ function UserRepository() {
     self.getAll = login => {
         return checkAdmin({ username: login })
             .then(result => {
-                if (!result.admin) throw { message: 'No access.', status: 403 };
+                if (!result.admin) { throw { message: 'No access.', status: 403 }; }
 
                 return find('find', {}, 'UserSchemaModel')
                     .then(users => {
-                        if (!users) throw { message: 'Unknown error.', status: 500 };
+                        if (!users) { throw { message: 'Unknown error.', status: 500 }; }
 
                         return rebuildUserData(users, [
                                 '_id',
@@ -53,14 +53,16 @@ function UserRepository() {
     }
 
     self.getOne = data => {
-        return checkAdmin({ username: data.username })
+        return checkAdmin({ username: data.login })
             .then(result => {
-                let id = data.id || result.id;
-                if (!result.admin) { id = result.id; }                
+                let id = data.id;
+
+                if (!result.admin) { id = result.id; }
+                if (id === undefined || id === null) { throw { message: 'Incorrect ID.', status: 400 }; }
 
                 return find('findOne', { _id: id }, 'UserSchemaModel')
                     .then(user => {                        
-                        if (!user) throw { message: 'Incorrect ID.', status: 400 };
+                        if (!user) { throw { message: 'Incorrect ID.', status: 400 }; }
                                         
                         return rebuildUserData(user, [
                                     '_id',
@@ -86,7 +88,7 @@ function UserRepository() {
             .then(user => {                        
                 return user.save()
                     .then(user => {
-                        if (!user) throw { message: 'Unknown error.', status: 500 };
+                        if (!user) { throw { message: 'Unknown error.', status: 500 }; }
 
                         return rebuildUserData(user, [
                                 '_id',
@@ -106,14 +108,14 @@ function UserRepository() {
     self.update = data => {
         return createHashPassword(data)
             .then(user => {
-                return checkAdmin({ username: data.username })
+                return checkAdmin({ username: data.login })
                     .then(result => {
                         let id = data.id;
                         if (!result.admin) { id = result.id; }
 
                         return update({ _id: id }, user, 'UserSchemaModel')
                             .then(user => {
-                                if (!user) throw { message: 'Incorrect ID.', status: 400 };
+                                if (!user) { throw { message: 'Incorrect ID.', status: 400 }; }
                                 return { message: 'Ok' }
                             });
                     });
@@ -121,7 +123,7 @@ function UserRepository() {
     }
 
     self.delete = data => {        
-        return checkAdmin({ username: data.username })
+        return checkAdmin({ username: data.login })
             .then(result => {
                 let id = data.id;
                 if (!result.admin) { id = result.id; }
@@ -132,7 +134,7 @@ function UserRepository() {
     }
 
     self.updatePhoto = (data, photoName) => {
-        return checkAdmin({ username: data.username })
+        return checkAdmin({ username: data.login })
             .then(result => {
                 let id = data.id;
                 if (!result.admin) { id = result.id; }
@@ -142,7 +144,7 @@ function UserRepository() {
                         { photo: photoName },
                         'UserSchemaModel'
                     ).then(user => {
-                        if (!user) throw { message: 'Incorrect ID.', status: 400 };                
+                        if (!user) { throw { message: 'Incorrect ID.', status: 400 }; }                
                         return { message: 'Ok' }
                     });
             });
@@ -151,8 +153,7 @@ function UserRepository() {
     function verifyPassword(password, _thisPassword) {
         return new Promise((resolve, reject) => {
             bcrypt.compare(password, _thisPassword, (err, isMatch) => {			
-                if (err) 
-                    reject({ message: err.message, status: 500 });
+                if (err) reject({ message: err.message, status: 500 });
 
                 resolve(isMatch);
             });

@@ -11,9 +11,7 @@ const express            = require('express'),
  */
 
 router.get('/token', (req, res) => {
-    const data = {
-        username: Zone.current.data.login
-    };
+    const data = { login: Zone.current.data.login };
 
     userDataServise.getOne(data)
         .then(user => response(res, user._id, false))
@@ -43,7 +41,7 @@ router.get('/users', (req, res) => {
 
 router.get('/users/:userid', (req, res) => {
     let data = {
-        username: Zone.current.data.login,
+        login: Zone.current.data.login,
         id: req.params.userid  
     };
     
@@ -90,9 +88,10 @@ router.put('/users/:userid', (req, res) => {
 
 router.delete('/users/:userid', (req, res) => {
     const data = {
-        username: Zone.current.data.login,
+        login: Zone.current.data.login,
         id: req.params.userid
     };
+
     userDataServise.delete(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
@@ -117,7 +116,7 @@ router.get('/books/:bookid', (req, res) => {
 router.delete('/books/:bookid', (req, res) => {
     const data = {
         id: req.params.bookid,
-        username: Zone.current.data.login
+        login: Zone.current.data.login
     };
     
     libraryDataService.delete(data)
@@ -156,7 +155,7 @@ router.put('/books/:bookid', (req, res) => {
 
 router.get('/users/:userid/books', (req, res) => {
     let data = {
-        username: Zone.current.data.login,
+        login: Zone.current.data.login,
         id: req.params.userid
     };
     
@@ -170,7 +169,8 @@ router.put('/users/:userid/books/:bookid', (req, res) => {
         login: Zone.current.data.login,
         userid: req.params.userid,
         bookid: req.params.bookid
-    };    
+    };
+
     libraryDataService.takeBook(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
@@ -181,7 +181,8 @@ router.delete('/users/:userid/books/:bookid', (req, res) => {
         login: Zone.current.data.login,
         userid: req.params.userid,
         bookid: req.params.bookid
-    };    
+    };
+
     libraryDataService.returnBook(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
@@ -193,22 +194,21 @@ router.delete('/users/:userid/books/:bookid', (req, res) => {
 
 router.get('/users/:userid/photo', (req, res) => {
     const data = {
-        username: Zone.current.data.login,
+        login: Zone.current.data.login,
         id: req.params.userid,
         user: true
     };
+
     photoDataService.getPhoto(data)
         .then(result => res.status(200).sendFile(`${result}`))
         .catch(err => response(res, err, true));
 });
 
 router.put('/users/:userid/photo', (req, res) => {
-    if (!req.files) {
-        return response(res, { message: 'No files uploaded.', status: 400 }, true);
-    }
+    if (!req.files) { return response(res, { message: 'No files uploaded.', status: 400 }, true); }
 
     const data = {
-        username: Zone.current.data.login,
+        login: Zone.current.data.login,
         id: req.params.userid,
         photo: req.files.image,
         user: true
@@ -221,7 +221,7 @@ router.put('/users/:userid/photo', (req, res) => {
 
 router.get('/books/:bookid/photo', (req, res) => {
     const data = {
-        username: Zone.current.data.login,
+        login: Zone.current.data.login,
         id: req.params.bookid,
         user: false
     };
@@ -232,17 +232,15 @@ router.get('/books/:bookid/photo', (req, res) => {
 });
 
 router.post('/books/:bookid/photo', (req, res) => {
-    if (!req.files) {
-        return response(res, { message: 'No files uploaded.', status: 400 }, true);
-    }
+    if (!req.files) { return response(res, { message: 'No files uploaded.', status: 400 }, true); }
 
     const data = {
-        username: Zone.current.data.login,
+        login: Zone.current.data.login,
         id: req.params.bookid,
         photo: req.files.image,
         user: false
     };
-    
+
     photoDataService.upadtePhoto(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
