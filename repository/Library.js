@@ -94,14 +94,14 @@ function Library(userRepository) {
                 return find('findOne', { 
                         books: {
                             $elemMatch: {
-                                bookid: data.bookid
+                                bookid: data.id
                             }
                         } 
                     },
                     'TakenBookSchemaModel'
                     ).then(book => {
                         if (book) { throw { message: 'This book have one or more users.', status: 400 }; }
-
+                        
                         return self.BookSchemaModel.findOneAndRemove({ _id: data.id })
                             .then(() => { return { message: 'ok' } });
                     });
@@ -279,13 +279,9 @@ function Library(userRepository) {
         return self[SchemaModel][findAllOrOne](query);
     }
     
-    function checkAdmin(query) {
-        console.log('query',query);
-        
+    function checkAdmin(query) {        
         return self.UserSchemaModel.findOne(query)
-            .then(user => {
-                console.log('user',user);
-                
+            .then(user => {                
                 let data = {
                     admin: true,
                     id: user._id
