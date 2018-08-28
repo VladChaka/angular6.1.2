@@ -119,7 +119,6 @@ router.delete('/books/:bookid', (req, res) => {
         id: req.params.bookid,
         username: Zone.current.data.login
     };
-    console.log(data);
     
     libraryDataService.delete(data)
         .then(result => response(res, result, false))
@@ -205,11 +204,7 @@ router.get('/users/:userid/photo', (req, res) => {
 
 router.put('/users/:userid/photo', (req, res) => {
     if (!req.files) {
-        return response(res, {
-                message: 'No files uploaded.',
-                status: 400 
-            },
-            true);
+        return response(res, { message: 'No files uploaded.', status: 400 }, true);
     }
 
     const data = {
@@ -238,11 +233,7 @@ router.get('/books/:bookid/photo', (req, res) => {
 
 router.post('/books/:bookid/photo', (req, res) => {
     if (!req.files) {
-        return response(res, {
-                message: 'No files uploaded.',
-                status: 400 
-            },
-            true);
+        return response(res, { message: 'No files uploaded.', status: 400 }, true);
     }
 
     const data = {

@@ -106,7 +106,7 @@ function UserRepository() {
     self.update = data => {
         return createHashPassword(data)
             .then(user => {
-                return checkAdmin({ username: data.login })
+                return checkAdmin({ username: data.username })
                     .then(result => {
                         let id = data.id;
                         if (!result.admin) { id = result.id; }
@@ -120,19 +120,19 @@ function UserRepository() {
             });
     }
 
-    self.delete = data => {
-        return checkAdmin({ username: data.login })
+    self.delete = data => {        
+        return checkAdmin({ username: data.username })
             .then(result => {
                 let id = data.id;
                 if (!result.admin) { id = result.id; }
-
+                
                 return self.UserSchemaModel.findOneAndRemove({ _id: id })
                     .then(() => { return { message: 'ok' } });
             });
     }
 
     self.updatePhoto = (data, photoName) => {
-        return checkAdmin({ username: data.login })
+        return checkAdmin({ username: data.username })
             .then(result => {
                 let id = data.id;
                 if (!result.admin) { id = result.id; }
