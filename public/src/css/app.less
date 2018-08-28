@@ -553,11 +553,10 @@ authorization-form * {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 5px;
   ul{
-    flex-basis: 50%;
+    flex-basis: 80%;
     display: flex;
-    justify-content: center;
     align-items: center;
   }
   li{
@@ -572,16 +571,16 @@ authorization-form * {
     border-right: 3px solid @color3;
   }
   li.active{
-    border-left: 3px solid @color2;
-    border-right: 3px solid @color2;
-    background: @color2;
-    color:@color1;
+    border-top: 3px solid @color3;
+    border-left: 3px solid @color1;
+    background: @color1;
+    color:@color2;
   }
   li:hover:not(.active){
-    border-left: 3px solid @color2;
-    border-right: 3px solid @color2;
-    background: @color2;
-    color:@color1;
+    border-top: 3px solid @color3;
+    border-left: 3px solid @color1;
+    background: @color1;
+    color:@color2;
   }
 }
 .route{
@@ -634,6 +633,7 @@ authorization-form * {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   position: relative;
+  align-items: flex-start;
   display: flex;
   font-size: 1rem;
   color: @color1;
@@ -753,7 +753,6 @@ div.user-edit-btns {
   border:2px solid @color1;
   padding: 6px 10px 4px 10px;
   transition: 0.2s ease;
-  border-radius: 2px;
   background: @color1;
 }
 

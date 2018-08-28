@@ -1,15 +1,14 @@
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
 
-  .user-add, .user-edit, .library-card {
-    overflow-y: auto;
-    max-height: 90vh;
-    font-size: 0.9rem;
-    padding: 5px 10px;
-    input{
-      width: 65%;
-    }
-  }
+  //.user-add, .user-edit, .library-card {
+  //  overflow-y: auto;
+  //  font-size: 0.9rem;
+  //  padding: 5px 10px;
+  //  input{
+  //    width: 65%;
+  //  }
+  //}
 
   .list-buttons {
     flex-wrap: wrap;
@@ -41,10 +40,6 @@
       flex-basis: 100%/3;
   }
 }
-.users-menu {
-    padding: 0;
-    flex-wrap: wrap-reverse
-}
 .dashboard-btns{
     flex-basis: 100%;
     border-bottom: 2px solid @color2;
@@ -53,11 +48,42 @@
     margin: 0;
 }
 
+.user-dashboard{
+  flex-wrap: wrap;
+  >*{
+    flex-basis: 100%;
+  }
+}
+.user-edit{
+  font-size: 0.85rem;
+  input{
+    font-size: 0.85rem;
+  }
+  border-radius: 0;
+  > div > span {
+      padding-right: 3px;
+    }
+}
+.user-dashboard>form>div:not(:last-child){
+  padding:2px 3px;
+  margin-bottom: 0;
+}
+
   .users-menu{
+    padding: 0;
+    flex-wrap: wrap-reverse;
     border-left: none;
     border-right: none;
   }
-
+.user-form{
+  font-size: 0.85rem;
+  input{
+    font-size: 0.85rem;
+  }
+}
+.users-login{
+  padding: 10px 20px;
+}
 }
 
 // Small devices (landscape phones, 576px and up)
