@@ -31,7 +31,7 @@ export class AuthenticationFormComponent {
                     sessionStorage.setItem('token', data.token);
                 }
                 if(data.role == 'Administrator'){
-                    this.router.navigate(['admin']);
+                    this.router.navigate(['admin/users']);
                 } else{
                     this.router.navigate(['dashboard/books']);
                 }
