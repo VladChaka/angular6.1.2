@@ -44,6 +44,9 @@ export class RemoteService {
     updateBook(id: string, data: object, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/books/${id}`, token, data, 'put');
     }
+    deleteBook(id: string, token: string): Observable<any> {
+        return this.checkToken(`http://localhost:4000/books/${id}`, token, null, 'delete');
+    }
     getUserBooks(id: string, token: string): Observable<any> {
         return this.checkToken(`http://localhost:4000/users/${id}/books`, token, null, 'get');
     }
