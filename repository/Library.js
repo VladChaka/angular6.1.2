@@ -42,7 +42,7 @@ function Library(userRepository) {
     }
 
     self.update = data => {
-        return checkAdmin({ username: data.username })
+        return checkAdmin({ username: data.login })
             .then(result => {
                 if (!result.admin) throw { message: 'No access.', status: 403 };
 
@@ -59,7 +59,7 @@ function Library(userRepository) {
     }
 
     self.updatePhoto = (data, photoName) => {
-        return checkAdmin({ username: data.username })
+        return checkAdmin({ username: data.login })
             .then(result => {
                 let id = data.id;
                 if (!result.admin) { id = result.id; }
@@ -73,7 +73,7 @@ function Library(userRepository) {
     }
 
     self.getUserBooks = data => {        
-        return checkAdmin({ username: data.username })
+        return checkAdmin({ username: data.login })
             .then(result => {
                 let id = data.id;
                 if (!result.admin) { id = result.id; }
@@ -87,7 +87,7 @@ function Library(userRepository) {
     }
 
     self.delete = data => {
-        return checkAdmin({ username: data.username })
+        return checkAdmin({ username: data.login })
             .then(result => {
                 if (!result.admin) throw { message: 'No access.', status: 403 };
                 
@@ -298,7 +298,7 @@ function Library(userRepository) {
     function add(data, SchemaModel, isAdmin) {
         const newData = new self[SchemaModel](data);
         if (isAdmin) {
-            return checkAdmin({ username: data.username })
+            return checkAdmin({ username: data.login })
                 .then(result => {
                     if (!result.admin) throw { message: 'No access.', status: 403 };
                     return newData.save()
