@@ -91,8 +91,15 @@ function Library(userRepository) {
             .then(result => {
                 if (!result.admin) throw { message: 'No access.', status: 403 };
                 
-                return find('findOne', { bookid: data.id }, 'TakenBookSchemaModel')
-                    .then(book => {
+                return find('findOne', { 
+                        books: {
+                            $elemMatch: {
+                                bookid: data.bookid
+                            }
+                        } 
+                    },
+                    'TakenBookSchemaModel'
+                    ).then(book => {
                         if (book) { throw { message: 'This book have one or more users.', status: 400 }; }
 
                         return self.BookSchemaModel.findOneAndRemove({ _id: data.id })
