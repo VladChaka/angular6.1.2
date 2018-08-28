@@ -55,10 +55,9 @@ function UserRepository() {
     self.getOne = data => {
         return checkAdmin({ username: data.login })
             .then(result => {
-                let id = data.id;
+                let id = data.id || result.id;
 
                 if (!result.admin) { id = result.id; }
-                if (id === undefined || id === null) { throw { message: 'Incorrect ID.', status: 400 }; }
 
                 return find('findOne', { _id: id }, 'UserSchemaModel')
                     .then(user => {                        
