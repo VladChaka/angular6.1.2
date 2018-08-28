@@ -86,12 +86,12 @@ function Library(userRepository) {
             });
     }
 
-    self.delete = id => {
+    self.delete = data => {
         return checkAdmin({ username: data.login })
             .then(result => {
                 if (!result.admin) throw { message: 'No access.', status: 403 };
 
-                return self.BookSchemaModel.findOneAndRemove({ _id: id })
+                return self.BookSchemaModel.findOneAndRemove({ _id: data.id })
                     .then(() => { return { message: 'ok' } });
             });
     }

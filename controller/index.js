@@ -114,8 +114,12 @@ router.get('/books/:bookid', (req, res) => {
         .catch(err => response(res, err, true));
 });
 
-router.delete('/books/:userid', (req, res) => {
-    libraryDataService.delete(req.params.userid)
+router.delete('/books/:bookid', (req, res) => {
+    const data = {
+        id: req.params.bookid,
+        username: Zone.current.data.login
+    }; 
+    libraryDataService.delete(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
 });
