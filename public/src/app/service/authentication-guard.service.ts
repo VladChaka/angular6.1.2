@@ -16,18 +16,17 @@ export class AuthenticationGuard {
 
     canActivate(route, state) {
         let role = localStorage['role'] || sessionStorage['role'],
-            test = state.url.split('admin');
+            test = state.url.split('/')[1];
             
         if (!this.authenticationService.isLogged()) {
             this.router.navigate(['login']);
-            return false;
-        }
-        if (!this.authenticationService.isLogged()) {
-            this.router.navigate(['login']);
-            return false;
         }
 
-        if (state.url === '/admin' && role !== 'Administrator') {
+        if (!this.authenticationService.isLogged()) {
+            this.router.navigate(['login']);
+        }
+
+        if (test === 'admin' && role !== 'Administrator') {
             this.router.navigate(['404']);
         }
 
