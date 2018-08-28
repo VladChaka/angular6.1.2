@@ -18,7 +18,8 @@ function Library(userRepository) {
     self.getAll = () => {
         return find('find', {}, 'BookSchemaModel')
             .then(books => {
-                if (!books) throw { message: 'Unknown error.', status: 500 };
+                if (!books) { throw { message: 'Unknown error.', status: 500 }; }
+
                 return books;
             });
     }
@@ -26,7 +27,7 @@ function Library(userRepository) {
     self.getOne = id => {
         return find('findOne', { _id: id }, 'BookSchemaModel')
             .then(book => {
-                if (!book) throw { message: 'Incorrect ID.', status: 400 };
+                if (!book) { throw { message: 'Incorrect ID.', status: 400 }; }
 
                 return book;
             });
@@ -44,7 +45,7 @@ function Library(userRepository) {
     self.update = data => {
         return checkAdmin({ username: data.login })
             .then(result => {
-                if (!result.admin) throw { message: 'No access.', status: 403 };
+                if (!result.admin) { throw { message: 'No access.', status: 403 }; }
 
                 update(
                     { _id: data.bookid },
@@ -52,7 +53,7 @@ function Library(userRepository) {
                     'BookSchemaModel'
                 )
                 .then(book => {
-                    if (!book) throw { message: 'Incorrect ID.', status: 400 };
+                    if (!book) { throw { message: 'Incorrect ID.', status: 400 }; }
                     return book;
                 });
             });
@@ -66,7 +67,8 @@ function Library(userRepository) {
 
                 return update({ _id: id }, { photo: photoName }, 'BookSchemaModel'
                     ).then(book => {
-                        if (!book) throw { message: 'Incorrect ID.', status: 400 };
+                        if (!book) { throw { message: 'Incorrect ID.', status: 400 }; }
+
                         return { message: 'Ok' };
                     });
             });
@@ -80,7 +82,8 @@ function Library(userRepository) {
 
                 return find('findOne', { userid: id }, 'TakenBookSchemaModel')
                     .then(user => {                        
-                        if (!user) throw { message: 'User don\'t have books.', status: 204 };
+                        if (!user) { throw { message: 'User don\'t have books.', status: 400 }; }
+
                         return user.books
                     });
             });
@@ -89,7 +92,7 @@ function Library(userRepository) {
     self.delete = data => {
         return checkAdmin({ username: data.login })
             .then(result => {
-                if (!result.admin) throw { message: 'No access.', status: 403 };
+                if (!result.admin) { throw { message: 'No access.', status: 403 }; }
                 
                 return find('findOne', { 
                         books: {
@@ -126,7 +129,8 @@ function Library(userRepository) {
                             
                             return add(newData, 'TakenBookSchemaModel', false)
                                 .then(book => {
-                                    if (!book) throw { message: 'Unknown error.', status: 500 };
+                                    if (!book) { throw { message: 'Unknown error.', status: 500 }; }
+
                                     return { message: 'Ok' }
                                 });
                         });
@@ -167,7 +171,7 @@ function Library(userRepository) {
                 }, 
                 'TakenBookSchemaModel'
             ).then(user => {                
-                if (!user) throw { message: 'Incorrect ID.', status: 400 };
+                if (!user) { throw { message: 'Incorrect ID.', status: 400 }; }
                 
                 return checkBook(data, { message: 'User have this book.', status: 400 }, false)
                     .then(() => {
@@ -188,7 +192,8 @@ function Library(userRepository) {
                                         .then(() => {
                                             return add(newData, 'ReturnedBookSchemaModel', false)
                                                 .then(result => {
-                                                    if (!result) throw { message: 'Unknown error.', status: 500 };
+                                                    if (!result) { throw { message: 'Unknown error.', status: 500 }; }
+
                                                     return update(
                                                         { userid: data.userid },
                                                         { $pull: {
@@ -242,15 +247,16 @@ function Library(userRepository) {
     function take(id) {
         return find('findOne', { _id: id }, 'BookSchemaModel')
             .then(book => {
-                if (!book) throw { message: 'Incorrect ID.', status: 400 };
-                if (book.count < 1) throw { message: 'Not available.', status: 400 };
+                if (!book) { throw { message: 'Incorrect ID.', status: 400 }; }
+                if (book.count < 1) { throw { message: 'Not available.', status: 400 }; }
                 
                 return update(
                         { _id: id },
                         { count: book.count - 1 },
                         'BookSchemaModel'
                     ).then(book => {
-                        if (!book) throw { message: 'Incorrect ID.', status: 400 };
+                        if (!book) { throw { message: 'Incorrect ID.', status: 400 }; }
+
                         return book;
                     });
             });
@@ -259,13 +265,15 @@ function Library(userRepository) {
     function returned(id) {
         return find('findOne', { _id: id }, 'BookSchemaModel')
             .then(book => {
-                if (!book) throw { message: 'Incorrect ID.', status: 400 };
+                if (!book) { throw { message: 'Incorrect ID.', status: 400 }; }
+
                 return update(
                         { _id: id },
                         { count: book.count + 1 },
                         'BookSchemaModel'
                     ).then(result => {
-                        if (!result) throw { message: 'Incorrect ID.', status: 400 };
+                        if (!result) { throw { message: 'Incorrect ID.', status: 400 }; }
+
                         return result;
                     });
             });
@@ -286,7 +294,9 @@ function Library(userRepository) {
                     admin: true,
                     id: user._id
                 };
-                if (!user || user.post !== 'Administrator') data.admin = false;
+
+                if (!user || user.post !== 'Administrator') { data.admin = false; }
+                
                 return data;
             });
     }
@@ -300,10 +310,12 @@ function Library(userRepository) {
         if (isAdmin) {
             return checkAdmin({ username: data.login })
                 .then(result => {
-                    if (!result.admin) throw { message: 'No access.', status: 403 };
+                    if (!result.admin) { throw { message: 'No access.', status: 403 }; }
+
                     return newData.save()
                         .then(book => {                            
-                            if (!book) throw { message: 'Unknown error.', status: 500 };
+                            if (!book) { throw { message: 'Unknown error.', status: 500 }; }
+
                             return book;
                         });
                 });
@@ -311,7 +323,7 @@ function Library(userRepository) {
             
         return newData.save()
             .then(book => {
-                if (!book) throw { message: 'Unknown error.', status: 500 };
+                if (!book) { throw { message: 'Unknown error.', status: 500 }; }
                 return book;
             });
     }
@@ -327,11 +339,12 @@ function Library(userRepository) {
                 },
                 'TakenBookSchemaModel'
             ).then(user => {
-                if (takeBook) {
-                    if (user) throw error;
-                } else {
-                    if (!user) throw error;
+                if (takeBook && user) {
+                    throw error;
+                } else if (!takeBook && !user) {
+                    throw error;
                 }
+
                 return user;
             });
     }

@@ -53,9 +53,8 @@ function Middleware () {
     }
 
     self.response = (res, data, error) => {
-        if (!error) {
-            return res.status(200).json(data)
-        }
+        if (!error) { return res.status(200).json(data) }
+        
         res.status(data.status || 500).json({ error: data.message });
     }
 

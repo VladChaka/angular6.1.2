@@ -152,7 +152,7 @@ function UserRepository() {
     function verifyPassword(password, _thisPassword) {
         return new Promise((resolve, reject) => {
             bcrypt.compare(password, _thisPassword, (err, isMatch) => {			
-                if (err) reject({ message: err.message, status: 500 });
+                if (err) { reject({ message: err.message, status: 500 }); }
 
                 resolve(isMatch);
             });
@@ -201,7 +201,7 @@ function UserRepository() {
                     admin: true,
                     id: user._id
                 };
-                if (!user || user.post !== 'Administrator') result.admin = false;
+                if (!user || user.post !== 'Administrator') { result.admin = false; }
                 return result;
             });
     }
