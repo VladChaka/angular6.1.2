@@ -132,7 +132,7 @@ function Library(userRepository) {
                         });
                     
                 } else {
-                    return checkBook(data, { message: 'User have this book.', status: 204 }, true)
+                    return checkBook(data, { message: 'User have this book.', status: 400 }, true)
                     .then(() => {
                         return take(data.bookid)
                             .then(() => {                       
@@ -169,7 +169,7 @@ function Library(userRepository) {
             ).then(user => {                
                 if (!user) throw { message: 'Incorrect ID.', status: 400 };
                 
-                return checkBook(data, { message: 'User have this book.', status: 204 }, false)
+                return checkBook(data, { message: 'User have this book.', status: 400 }, false)
                     .then(() => {
                         return find('findOne', { userid: data.userid }, 'ReturnedBookSchemaModel')
                             .then(succes => {
