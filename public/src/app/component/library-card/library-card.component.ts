@@ -25,26 +25,6 @@ export class LibraryCardComponent implements OnInit {
         this.getUserBooks();
     }
 
-    // getUserBooks(): void {
-    //     this.userService.getMyId(this.token)
-    //         .subscribe(id => {
-    //             console.log(id);
-                
-            //     this.libraryService.getUserBooks(id, this.token)
-            //         .subscribe(
-            //             books => {
-            //                 for (let i = 0; i < books.length; i++) {
-            //                     this.libraryService.getOneBook(books[i].bookid, this.token)
-            //                     .subscribe(data => this.userBooks.push(data));
-            //                 }
-            //             },
-            //             err => console.log("err",err)
-            // );
-    //         });
-        
-        
-    // }
-
     getUserBooks(): void {
         console.log(this.route);
         
@@ -84,24 +64,4 @@ export class LibraryCardComponent implements OnInit {
                 });
         }
     }
-
-    // getUserBooks(): void {
-    //     this.route.parent.params
-    //         .subscribe(params => {
-    //             console.log(params.id);
-                
-    //             this.libraryService.getUserBooks(params.id, this.token)
-    //             .subscribe(
-    //                 books => {
-    //                     for (let i = 0; i < books.length; i++) {
-    //                         this.libraryService.getOneBook(books[i].bookid, this.token)
-    //                         .subscribe(data => this.userBooks.push(data));
-    //                     }
-    //                 },
-    //                 err => console.log("err",err)
-    //             );
-    //         });
-        
-    // }
-
 }

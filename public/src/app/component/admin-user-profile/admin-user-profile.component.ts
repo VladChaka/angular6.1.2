@@ -36,6 +36,7 @@ export class AdminUserProfileComponent implements OnInit {
                 this.userService.getOne(params.id, this.token)
                     .subscribe(
                         userProfile => {
+                            console.log(userProfile);
                             this.userProfile = userProfile;
                         },
                         err => console.log("err",err)
@@ -44,8 +45,7 @@ export class AdminUserProfileComponent implements OnInit {
         } else{
             this.userService.getMyId(this.token)
             .subscribe(id => {
-                this.id = id;
-                this.userService.getOne(this.id, this.token)
+                this.userService.getOne(id, this.token)
                     .subscribe(
                         userProfile => {
                             this.userProfile = userProfile;

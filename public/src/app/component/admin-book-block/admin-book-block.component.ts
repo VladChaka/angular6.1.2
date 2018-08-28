@@ -22,14 +22,17 @@ export class AdminBookBlockComponent implements OnInit {
     ngOnInit() {
         this.getMyId();
     }
-  
-    getMyId(): void{
-        this.route.parent.params
-            .subscribe(params => {
-                this.id = params.id;
-            });
+
+    getMyId(): void {
+            this.userService.getMyId(this.token)
+                .subscribe(id => {
+                    this.id = id;
+                });
     }
-  takeBook():void {  
+  takeBook():void {
+        console.log(this.id);
+        console.log(this.book._id);
+        console.log(this.token);
     this.libraryService.takeBook(this.id, this.book._id, this.token)
     .subscribe()
 }
