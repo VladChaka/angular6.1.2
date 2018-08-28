@@ -87,12 +87,17 @@ function Library(userRepository) {
     }
 
     self.delete = data => {
-        return checkAdmin({ username: data.login })
+        return checkAdmin({ username: data.username })
             .then(result => {
                 if (!result.admin) throw { message: 'No access.', status: 403 };
-console.log(data.id);
-                return self.BookSchemaModel.findOneAndRemove({ _id: data.id })
-                    .then(() => { return { message: 'ok' } });
+                
+                return find('findOne', { bookid: data.id }, 'TakenBookSchemaModel')
+                    .then(book => {
+                        if (book) { throw { message: 'This book have one or more users.', status: 400 }; }
+
+                        return self.BookSchemaModel.findOneAndRemove({ _id: data.id })
+                            .then(() => { return { message: 'ok' } });
+                    });
             });
     }
 
@@ -268,8 +273,12 @@ console.log(data.id);
     }
     
     function checkAdmin(query) {
+        console.log('query',query);
+        
         return self.UserSchemaModel.findOne(query)
             .then(user => {
+                console.log('user',user);
+                
                 let data = {
                     admin: true,
                     id: user._id

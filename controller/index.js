@@ -118,7 +118,9 @@ router.delete('/books/:bookid', (req, res) => {
     const data = {
         id: req.params.bookid,
         username: Zone.current.data.login
-    }; 
+    };
+    console.log(data);
+    
     libraryDataService.delete(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
