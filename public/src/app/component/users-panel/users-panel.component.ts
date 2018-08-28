@@ -26,8 +26,7 @@ getUsers(): void {
             users => {
                 this.users = users.slice().reverse();
                 this.convertDate(this.users);
-            },
-            err => console.log("err",err)
+            }
         );
 }
 

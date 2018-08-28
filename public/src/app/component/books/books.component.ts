@@ -22,8 +22,7 @@ export class BooksComponent implements OnInit {
             .subscribe(
                 books => {
                     this.books = books;
-                },
-                err => console.log("err",err)
+                }
             );
     }
 }

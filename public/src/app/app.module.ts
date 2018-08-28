@@ -13,8 +13,7 @@ import { UsersMenuComponent } from './component/users-menu/users-menu.component'
 import { UsersPanelComponent } from './component/users-panel/users-panel.component';
 import { AddUserComponent } from './component/add-user/add-user.component';
 
-import {BooksComponent} from './component/books/books.component'
-import { LoginValidationDirective } from './directive/login-validation.directive';
+import {BooksComponent} from './component/books/books.component';
 import { BookBlockComponent } from './component/book-block/book-block.component';
 import { UserBlockComponent } from './component/user-block/user-block.component';
 import { Error404Component } from './component/error404/error404.component';
@@ -28,7 +27,6 @@ import { ProfileBooklistComponent } from './component/profile-booklist/profile-b
 @NgModule({
   declarations: [
     MainPageComponent,
-    LoginValidationDirective,
     AuthenticationFormComponent,
     UserProfileComponent,
     LibraryCardComponent,

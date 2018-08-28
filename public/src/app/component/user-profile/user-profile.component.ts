@@ -35,8 +35,7 @@ export class UserProfileComponent implements OnInit {
                     .subscribe(
                         userProfile => {
                             this.userProfile = userProfile;
-                        },
-                        err => console.log("err",err)
+                        }
                     );
             })
     }

@@ -14,6 +14,7 @@ export class BookBlockComponent implements OnInit {
     @Input() book: any;
     @Input() showPassBtn: boolean;
     @Input() showTakeBtn: boolean;
+    @Input() hideNotAvailable: boolean;
 
     constructor(private libraryService: LibraryService,
                 private userService: UserService,
@@ -25,7 +26,7 @@ export class BookBlockComponent implements OnInit {
   }
   
     getMyId(): void{
-        if (this.route.parent.routeConfig.path != 'myprofile') {
+        if (this.route.parent.routeConfig.path != 'myprofile' && this.route.routeConfig.path != 'books') {
             this.route.parent.params
                 .subscribe(params => {
                     this.id = params.id;
@@ -39,12 +40,9 @@ export class BookBlockComponent implements OnInit {
     }
     takeBook():void {
         this.libraryService.takeBook(this.id, this.book._id, this.token)
-        .subscribe()
+            .subscribe()
     }
     passBook():void {
-        console.log(this.id);
-        console.log(this.book._id);
-        console.log(this.token);
         this.libraryService.passBook(this.id, this.book._id, this.token)
         .subscribe()
     }

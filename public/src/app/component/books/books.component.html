@@ -6,5 +6,5 @@
         </div>
     </div>
 <div class="list-books-container">
-<book-block [book]="book" [showTakeBtn]="true" *ngFor="let book of books | paginate: { itemsPerPage: pageSize, currentPage: currentPage}"></book-block>
+<book-block [book]="book" [showTakeBtn]="true" [hideNotAvailable]="true" *ngFor="let book of books | paginate: { itemsPerPage: pageSize, currentPage: currentPage}"></book-block>
 </div>

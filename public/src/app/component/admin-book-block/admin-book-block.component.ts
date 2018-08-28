@@ -26,10 +26,17 @@ export class AdminBookBlockComponent implements OnInit {
     }
 
     getMyId(): void {
-        this.userService.getMyId(this.token)
-            .subscribe(id => {
-                this.id = id;
-            });
+        if (this.route.routeConfig.path != 'books' && this.route.routeConfig.path != 'booklist') {
+            this.route.parent.params
+                .subscribe(params => {
+                    this.id = params.id;
+                });
+        } else{
+            this.userService.getMyId(this.token)
+                .subscribe(id => {
+                    this.id = id;
+                });
+        }
     }
 
     takeBook(): void {
@@ -38,8 +45,6 @@ export class AdminBookBlockComponent implements OnInit {
     }
 
     deleteBook():void {
-        console.log(this.book);
-        console.log(this.token);
         this.libraryService.deleteBook(this.book._id, this.token)
             .subscribe()
     }

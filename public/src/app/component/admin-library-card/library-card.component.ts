@@ -39,8 +39,7 @@ export class LibraryCardComponent implements OnInit {
                 .subscribe(
                     books => {
                         this.userBooks = books;
-                    },
-                    err => console.log("err",err)
+                    }
                 );
             }
         );

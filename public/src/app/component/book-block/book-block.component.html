@@ -1,4 +1,4 @@
-<div class="list-book-block">
+<div class="list-book-block" *ngIf="!hideNotAvailable || book.count > 0">
     <div><img src="../../../assets/fightclub.jpg"></div>
 <div><p>Book Title:</p> {{ book.bookname}}</div>
     <div><p>Author</p> {{book.author}}</div>
