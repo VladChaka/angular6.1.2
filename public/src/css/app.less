@@ -44,6 +44,7 @@ body {
   margin: 5px 0;
   padding-left: 5px;
   border: 1px solid @color1;
+  display: none; // DELETE THIS
 }
 
 /* USER ADD FORM START */
@@ -100,6 +101,8 @@ input:focus, textarea:focus, select:focus {
   align-items: center;
   padding: 0 15px;
   text-align: center;
+  border-left: 4px solid @color2;
+  border-right: 4px solid @color2;
   > * {
     margin: 0 10px;
   }
@@ -558,6 +561,7 @@ authorization-form * {
     align-items: center;
   }
   li{
+    white-space: nowrap;
     cursor: pointer;
     list-style-type: none;
     padding: 5px;
@@ -585,6 +589,8 @@ authorization-form * {
   flex-basis: 25%;
   font-weight: bold;
   font-size: 0.85rem;
+  display: flex;
+  align-items: center;
 }
 .close-button {
   text-align: right;
@@ -638,8 +644,8 @@ authorization-form * {
   input:-ms-input-placeholder { color: @color2; }
   input::-ms-input-placeholder { color: @color2; }
   input::placeholder { color: @color2; }
->form>div{
-  padding: 0 10px;
+>form>div:not(:last-child){
+  padding:2px 10px;
   margin-bottom: 0;
 }
   .user-profile-title{
@@ -744,10 +750,10 @@ div.user-edit-btns {
   font-weight: bold;
   color: @color2;
   text-transform: uppercase;
-  border: 2px solid @grey;
+  border:2px solid @color1;
   padding: 6px 10px 4px 10px;
   transition: 0.2s ease;
-  border-radius: 5px;
+  border-radius: 2px;
   background: @color1;
 }
 

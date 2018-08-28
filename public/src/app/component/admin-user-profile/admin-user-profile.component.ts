@@ -29,6 +29,7 @@ export class AdminUserProfileComponent implements OnInit {
     ngOnInit(): void {
         this.getOneUser();
     }
+
     getOneUser(): void {
         if (this.route.routeConfig.path !='myprofile'){
         this.route.params
@@ -65,6 +66,7 @@ export class AdminUserProfileComponent implements OnInit {
         .subscribe();
     }
     deleteUser(): void {
-        this.userService.delete(this.userProfile._id, this.token);
+        console.log(this.userProfile._id);
+        this.userService.delete(this.userProfile._id, this.token)
     }
 }
