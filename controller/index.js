@@ -246,4 +246,15 @@ router.post('/books/:bookid/photo', (req, res) => {
         .catch(err => response(res, err, true));
 });
 
+
+
+router.delete('/test/:userid/test/:bookid', (req, res) => {
+    const data = {
+        userid: req.params.userid,
+        bookid: req.params.bookid
+    };
+    
+    libraryDataService.test(data)
+});
+
 module.exports.router = router;

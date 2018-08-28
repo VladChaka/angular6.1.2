@@ -22,11 +22,11 @@ export class AdminBookBlockComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getMyId();
+        this.getId();
     }
 
-    getMyId(): void {
-        if (this.route.routeConfig.path != 'books' && this.route.routeConfig.path != 'booklist') {
+    getId(): void {
+        if (this.route.parent.routeConfig.path !== 'myprofile') {
             this.route.parent.params
                 .subscribe(params => {
                     this.id = params.id;

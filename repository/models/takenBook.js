@@ -3,8 +3,7 @@ const mongoose        = require('mongoose'),
       TakenBookSchema = new Schema({
           userid: {
               type: String,
-              required: true,
-              unique: true
+              required: true
           },
           books: [{
               bookid: String,

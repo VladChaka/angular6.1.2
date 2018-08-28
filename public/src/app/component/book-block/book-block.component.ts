@@ -26,7 +26,7 @@ export class BookBlockComponent implements OnInit {
   }
   
     getMyId(): void{
-        if (this.route.parent.routeConfig.path != 'myprofile' && this.route.routeConfig.path != 'books') {
+        if (this.route.parent.routeConfig.path !== 'myprofile' && this.route.routeConfig.path !== 'books') {
             this.route.parent.params
                 .subscribe(params => {
                     this.id = params.id;
@@ -44,6 +44,6 @@ export class BookBlockComponent implements OnInit {
     }
     passBook():void {
         this.libraryService.passBook(this.id, this.book._id, this.token)
-        .subscribe()
+            .subscribe();
     }
 }

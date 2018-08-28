@@ -14,4 +14,6 @@ function LibraryDataService (libraryRepository) {
     self.getUserBooks = data => { return libraryRepository.getUserBooks(data); }
     self.takeBook     = data => { return libraryRepository.takeBook(data); }
     self.returnBook   = data => { return libraryRepository.returnBook(data); }
+    
+    self.test   = data => { return libraryRepository.test(data); }
 }
