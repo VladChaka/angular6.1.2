@@ -1,4 +1,4 @@
-module.exports = function getParam(key, value) {
+module.exports = (key, value) => {
     let result = value;
 	
     for (let index in process.argv) {

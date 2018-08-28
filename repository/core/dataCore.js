@@ -8,11 +8,13 @@ require("../Library");
 require("../../servise/UserDataServise");
 require("../../servise/LibraryDataService");
 require("../../servise/PhotoDataService");
+require("../../servise/Middleware");
 
 modules.run();
 
 module.exports = { 
     userDataServise: modules.get('app.userDataServise'),
+    middleware: modules.get('app.middleware'),
     userRepository: modules.get('app.userRepository'),
     libraryRepository: modules.get('app.libraryRepository'),
     libraryDataService: modules.get('app.libraryDataService'),

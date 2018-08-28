@@ -1,7 +1,6 @@
 const express            = require('express'),
       Core               = require("../repository/core/dataCore"),
-      middleware         = require('../Middleware/index'),
-      response           = middleware.response,
+      response           = Core.middleware.response,
       userDataServise    = Core.userDataServise,
       libraryDataService = Core.libraryDataService,
       photoDataService   = Core.photoDataService,

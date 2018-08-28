@@ -1,4 +1,7 @@
-const jwt = require('jsonwebtoken');
+const Core = require("../repository/core/dataCore").Core,
+      jwt = require('jsonwebtoken');
+
+Core.module('app').service('app.middleware', Middleware);
 
 function Middleware () {
     const self = this;

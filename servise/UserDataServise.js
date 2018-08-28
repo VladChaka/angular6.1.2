@@ -6,15 +6,15 @@ Core.module('app').service('app.userDataServise', UserDataServise);
 function UserDataServise (userRepository) {
     const self = this;
 
-    self.login  = data  => { return userRepository.login(data); }
+    self.login  = data  => { return userRepository.login(data);   }
     self.getAll = login => { return userRepository.getAll(login); }
-    self.getOne = data  => { return userRepository.getOne(data); }
-    self.delete = data  => { return userRepository.delete(data); }
+    self.getOne = data  => { return userRepository.getOne(data);  }
+    self.delete = data  => { return userRepository.delete(data);  }
 
     self.add = data => {
-        if (checkEmptyField(data)) {               return { message: "Fields empty.", status: 400 }; }
-        if (!checkRegExpEmail(data.email)) {       return { message: "Incorrect email.", status: 400 }; }
-        if (!checkRegExpLogin(data.username)) {    return { message: "Incorrect login.", status: 400 }; }
+        if (checkEmptyField(data)) {               return { message: "Fields empty.", status: 400 };       }
+        if (!checkRegExpEmail(data.email)) {       return { message: "Incorrect email.", status: 400 };    }
+        if (!checkRegExpLogin(data.username)) {    return { message: "Incorrect login.", status: 400 };    }
         if (!checkRegExpPassword(data.password)) { return { message: "Incorrect password.", status: 400 }; }
 
         return userRepository.add(data);
@@ -23,8 +23,8 @@ function UserDataServise (userRepository) {
     self.update = data => {
         let user = checkEmptyField(data, true);
 
-        if (user.email    !== undefined && !checkRegExpEmail(user.email)) {       return { message: "Incorrect email.", status: 400 }; }
-        if (user.username !== undefined && !checkRegExpLogin(user.username)) {    return { message: "Incorrect login.", status: 400 }; }
+        if (user.email    !== undefined && !checkRegExpEmail(user.email)) {       return { message: "Incorrect email.", status: 400 };    }
+        if (user.username !== undefined && !checkRegExpLogin(user.username)) {    return { message: "Incorrect login.", status: 400 };    }
         if (user.password !== undefined && !checkRegExpPassword(user.password)) { return { message: "Incorrect password.", status: 400 }; }
 
         return userRepository.update(user);

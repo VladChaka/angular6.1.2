@@ -10,8 +10,8 @@ export class RemoteService {
 
     constructor(private http: HttpClient) { }
 
-    authentication(authInfo: object): Observable<any>{
-        return this.http.post('http://localhost:4000/login', authInfo);
+    authentication(data: object): Observable<any>{
+        return this.http.post('http://localhost:4000/login', data);
     }
     getAll(token: string): Observable<any> {
         return this.checkToken('http://localhost:4000/users', token, null, 'get'); 
@@ -71,10 +71,10 @@ export class RemoteService {
         return defer(() => {
             let result;
 
-            if (token === undefined) {
+            if (token === undefined || token === null || token === '') {
                 result = 'error';
             } else {
-                result =  this.useHttpRequest(url, token, data, method);
+                result = this.useHttpRequest(url, token, data, method);
             }
             
             return result;
@@ -85,7 +85,7 @@ export class RemoteService {
         let result;
 
         if (method === 'post') {
-            result =  this.http.post(url, data, { params: { token: token } });
+            result = this.http.post(url, data, { params: { token: token } });
         } else if (method === 'get'){
             result = this.http.get(url, { params: { token: token } });
         } else if (method === 'put') {
