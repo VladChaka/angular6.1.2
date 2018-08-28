@@ -25,16 +25,26 @@ export class BookBlockComponent implements OnInit {
   }
   
     getMyId(): void{
-        this.route.parent.params
-            .subscribe(params => {
-                this.id = params.id;
-            });
+        if (this.route.parent.routeConfig.path != 'myprofile') {
+            this.route.parent.params
+                .subscribe(params => {
+                    this.id = params.id;
+                });
+        } else{
+            this.userService.getMyId(this.token)
+                .subscribe(id => {
+                    this.id = id;
+                });
+        }
     }
     takeBook():void {
         this.libraryService.takeBook(this.id, this.book._id, this.token)
         .subscribe()
     }
     passBook():void {
+        console.log(this.id);
+        console.log(this.book._id);
+        console.log(this.token);
         this.libraryService.passBook(this.id, this.book._id, this.token)
         .subscribe()
     }

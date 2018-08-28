@@ -90,7 +90,7 @@ function Library(userRepository) {
         return checkAdmin({ username: data.login })
             .then(result => {
                 if (!result.admin) throw { message: 'No access.', status: 403 };
-
+console.log(data.id);
                 return self.BookSchemaModel.findOneAndRemove({ _id: data.id })
                     .then(() => { return { message: 'ok' } });
             });

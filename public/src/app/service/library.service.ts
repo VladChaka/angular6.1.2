@@ -14,6 +14,10 @@ export class LibraryService {
         return this.remoteService.takeBook(userId, bookId, token);
     }
 
+    deleteBook(bookId: string, token: string): Observable<any> {
+        return this.remoteService.deleteBook(bookId, token);
+    }
+
     passBook(userId: string, bookId:string, token: string): Observable<any> {
         return this.remoteService.passBook(userId, bookId, token);
     };

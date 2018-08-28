@@ -1,10 +1,9 @@
 <div class="list-book-buttons">
-    <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
     <div class="list-search">
         <input placeholder="Search Book">
         <i class="fab fa-searchengin"></i>
     </div>
 </div>
 <div class="list-books-container">
-<admin-book-block [book]="book" [showTakeBtn]="true" [hideNotAvailable]="true" *ngFor="let book of books | paginate: { itemsPerPage: pageSize, currentPage: currentPage}"></admin-book-block>
+<admin-book-block [book]="book" [showTakeBtn]="true" [hideNotAvailable]="true" *ngFor="let book of books"></admin-book-block>
 </div>
