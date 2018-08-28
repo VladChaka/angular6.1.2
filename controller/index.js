@@ -170,7 +170,7 @@ router.put('/users/:userid/books/:bookid', (req, res) => {
         userid: req.params.userid,
         bookid: req.params.bookid
     };
-
+    
     libraryDataService.takeBook(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
@@ -244,17 +244,6 @@ router.post('/books/:bookid/photo', (req, res) => {
     photoDataService.upadtePhoto(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
-});
-
-
-
-router.delete('/test/:userid/test/:bookid', (req, res) => {
-    const data = {
-        userid: req.params.userid,
-        bookid: req.params.bookid
-    };
-    
-    libraryDataService.test(data)
 });
 
 module.exports.router = router;
