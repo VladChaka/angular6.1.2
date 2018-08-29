@@ -7,7 +7,7 @@ const mongoose           = require('mongoose'),
           },
           books: [{
               bookid: String,
-              dateReceiving: String,
+              dateReceived: String,
               dateReturned: String
           }]
       }),

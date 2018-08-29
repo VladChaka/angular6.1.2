@@ -4,7 +4,8 @@ const express            = require('express'),
       userDataService    = Core.userDataService,
       libraryDataService = Core.libraryDataService,
       photoDataService   = Core.photoDataService,
-      router             = express.Router();
+      router             = express.Router(),
+      fs                 = require('fs');
 
 /**
  * Token
@@ -200,7 +201,12 @@ router.get('/users/:userid/photo', (req, res) => {
     };
 
     photoDataService.getPhoto(data)
-        .then(result => res.status(200).sendFile(`${result}`))
+        .then(result => {
+            // fs.readFile(result, "binary", function(error, file) {
+            //     res.status(200).json(file);
+            // });
+            res.status(200).sendFile(result);
+        })
         .catch(err => response(res, err, true));
 });
 

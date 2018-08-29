@@ -29,17 +29,22 @@ export class AdminBookBlockComponent implements OnInit {
         if (this.route.parent.routeConfig.path !== 'myprofile') {
             this.route.parent.params
                 .subscribe(params => {
+                    console.log('params.id',params.id);
                     this.id = params.id;
                 });
-        } else{
+        } else {
             this.userService.getMyId(this.token)
                 .subscribe(id => {
+                    console.log('id',id);
+                    
                     this.id = id;
                 });
         }
     }
 
     takeBook(): void {
+        console.log(this.id);
+        
         this.libraryService.takeBook(this.id, this.book._id, this.token)
             .subscribe()
     }
