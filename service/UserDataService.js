@@ -1,9 +1,9 @@
 const Core = require("../repository/core/dataCore").Core;
 
-UserDataServise.$inject = ['app.userRepository'];
-Core.module('app').service('app.userDataServise', UserDataServise);
+UserDataService.$inject = ['app.userRepository'];
+Core.module('app').service('app.userDataService', UserDataService);
 
-function UserDataServise (userRepository) {
+function UserDataService (userRepository) {
     const self = this;
 
     self.login  = data  => { return userRepository.login(data);   }

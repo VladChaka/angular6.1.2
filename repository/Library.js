@@ -116,45 +116,50 @@ function Library(userRepository) {
     self.takeBook = data => {
         return find('findOne', { userid: data.userid }, 'TakenBookSchemaModel')
             .then(user => {
-                if (!user) {
-                    const newData = { 
-                          login: data.login,
-                          userid: data.userid,
-                          books: [{
-                              bookid: data.bookid,
-                              dateReceived: Date.now()
-                          }]
-                    };
- 
-                    return take(data.bookid)
-                        .then(() => {
-                            return add(newData, 'TakenBookSchemaModel', false)
-                                .then(book => { 
-                                    if (!book) { throw { message: 'Unknown error.', status: 500 }; }
+                if (!user) { return createLibraryCard(data); }
 
-                                    return { message: 'Ok' }
-                                });
-                        });
-                    
-                } else {
-                    return checkBook(data, { message: 'User have this book.', status: 400 }, true)
-                    .then(() => {       
-                        return take(data.bookid)
-                            .then(result => { 
-                                return update(
-                                    { userid: data.userid },
-                                    { $push: {
-                                          books: {
-                                              bookid: data.bookid,
-                                              dateReceived: Date.now()
-                                          }
-                                      }
-                                    },
-                                    'TakenBookSchemaModel'
-                                ).then(() => { return { message: 'Ok' } });
-                            });
-                    })
-                }
+                return addBookInLibraryCard(data);
+            })
+    }
+
+    function createLibraryCard(data) {
+        const newData = { 
+            login: data.login,
+            userid: data.userid,
+            books: [{
+                bookid: data.bookid,
+                dateReceived: Date.now()
+            }]
+      };
+
+      return take(data.bookid)
+          .then(() => {
+              return add(newData, 'TakenBookSchemaModel', false)
+                  .then(book => { 
+                      if (!book) { throw { message: 'Unknown error.', status: 500 }; }
+
+                      return { message: 'Ok' }
+                  });
+          });
+    }
+
+    function addBookInLibraryCard(data) {
+        return checkBook(data, { message: 'User have this book.', status: 400 }, true)
+            .then(() => {       
+                return take(data.bookid)
+                    .then(() => { 
+                        return update(
+                            { userid: data.userid },
+                            { $push: {
+                                  books: {
+                                      bookid: data.bookid,
+                                      dateReceived: Date.now()
+                                  }
+                              }
+                            },
+                            'TakenBookSchemaModel'
+                        ).then(() => { return { message: 'Ok' } });
+                    });
             })
     }
 
@@ -173,6 +178,7 @@ function Library(userRepository) {
                 'TakenBookSchemaModel'
             ).then(user => {
                 if (!user) { throw { message: 'Incorrect ID.', status: 400 }; }
+
                 return checkBook(data, { message: 'User have this book.', status: 400 }, false)
                     .then(() => {
                         return find('findOne', { userid: data.userid }, 'ReturnedBookSchemaModel')
@@ -203,9 +209,7 @@ function Library(userRepository) {
                                                           } 
                                                         },
                                                         'TakenBookSchemaModel'
-                                                    ).then(() => {
-                                                        return { message: 'Ok' }
-                                                    });
+                                                    ).then(() => { return { message: 'Ok' } });
                                                 });
                                         });
 
@@ -233,9 +237,7 @@ function Library(userRepository) {
                                                         } 
                                                         },
                                                         'TakenBookSchemaModel'
-                                                        ).then(() => {
-                                                            return { message: 'Ok' }
-                                                        });
+                                                        ).then(() => { return { message: 'Ok' } });
                                                 });
                                         });
                                 }

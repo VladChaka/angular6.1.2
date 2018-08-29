@@ -10,7 +10,7 @@ const chai = require('chai'),
 
 chai.use(chaiHttp);
 
-function TestingServise() {
+function TestingService() {
     const self = this;
 
     self.success = function (res, status) {        
@@ -38,7 +38,7 @@ function TestingServise() {
 describe('Users', () => {
     const self = this;
     delete mongoose.connection.models['User'];
-    TestingServise.apply(self);
+    TestingService.apply(self);
 
     beforeEach(() => {
         userRepository.SchemaModel.remove({}, function (err) {

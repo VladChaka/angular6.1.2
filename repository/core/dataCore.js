@@ -5,15 +5,15 @@ module.exports.Core = Core;
 
 require("../User");
 require("../Library");
-require("../../servise/UserDataServise");
-require("../../servise/LibraryDataService");
-require("../../servise/PhotoDataService");
-require("../../servise/Middleware");
+require("../../service/UserDataService");
+require("../../service/LibraryDataService");
+require("../../service/PhotoDataService");
+require("../../service/Middleware");
 
 modules.run();
 
 module.exports = { 
-    userDataServise: modules.get('app.userDataServise'),
+    userDataService: modules.get('app.userDataService'),
     middleware: modules.get('app.middleware'),
     userRepository: modules.get('app.userRepository'),
     libraryRepository: modules.get('app.libraryRepository'),

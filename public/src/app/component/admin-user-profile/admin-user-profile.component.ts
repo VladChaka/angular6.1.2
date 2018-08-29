@@ -34,6 +34,10 @@ export class AdminUserProfileComponent implements OnInit {
         if (this.route.routeConfig.path !='myprofile'){
         this.route.params
             .subscribe(params => {
+
+                // this.userService.getUserPhoto(params.id, this.token)
+                //     .subscribe();
+
                 this.userService.getOne(params.id, this.token)
                     .subscribe(
                         userProfile => {
@@ -44,6 +48,12 @@ export class AdminUserProfileComponent implements OnInit {
         } else{
             this.userService.getMyId(this.token)
             .subscribe(id => {
+
+                // this.userService.getUserPhoto(id, this.token)
+                //     .subscribe();
+
+
+
                 this.userService.getOne(id, this.token)
                     .subscribe(
                         userProfile => {

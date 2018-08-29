@@ -1,7 +1,7 @@
 const express            = require('express'),
       Core               = require("../repository/core/dataCore"),
       response           = Core.middleware.response,
-      userDataServise    = Core.userDataServise,
+      userDataService    = Core.userDataService,
       libraryDataService = Core.libraryDataService,
       photoDataService   = Core.photoDataService,
       router             = express.Router();
@@ -13,7 +13,7 @@ const express            = require('express'),
 router.get('/token', (req, res) => {
     const data = { login: Zone.current.data.login };
 
-    userDataServise.getOne(data)
+    userDataService.getOne(data)
         .then(user => response(res, user._id, false))
         .catch(err => response(res, err, true));
 });
@@ -28,13 +28,13 @@ router.post('/login', (req, res) => {
         password: Zone.current.data.password
     };
     
-    userDataServise.login(data)
+    userDataService.login(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
 });
 
 router.get('/users', (req, res) => {
-    userDataServise.getAll(Zone.current.data.login)
+    userDataService.getAll(Zone.current.data.login)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
 });
@@ -45,7 +45,7 @@ router.get('/users/:userid', (req, res) => {
         id: req.params.userid  
     };
     
-    userDataServise.getOne(data)
+    userDataService.getOne(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
 });
@@ -63,7 +63,7 @@ router.post('/users', (req, res) => {
         photo: 'standart.png'
     };
     
-    userDataServise.add(data)
+    userDataService.add(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
 });
@@ -81,7 +81,7 @@ router.put('/users/:userid', (req, res) => {
         rating: Zone.current.data.rating
     };
     
-    userDataServise.update(data)
+    userDataService.update(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
 });
@@ -92,7 +92,7 @@ router.delete('/users/:userid', (req, res) => {
         id: req.params.userid
     };
 
-    userDataServise.delete(data)
+    userDataService.delete(data)
         .then(result => response(res, result, false))
         .catch(err => response(res, err, true));
 });
